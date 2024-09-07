@@ -1,0 +1,56 @@
+.parent {
+    -fx-background-color: #DBDBDB;
+}
+
+.sidebar {
+    -fx-background-color: linear-gradient(to top, #1A3395, #6243FF);
+}
+
+.sidebar_action {
+    -fx-background-color: transparent;
+}
+
+.icon_sidebar_action {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 100%;
+}
+
+.navbar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #A3B5ED;
+    -fx-border-width: 1px 0 1px 0;
+    -fx-border-style: solid;
+}
+
+.dropdown_avatar {
+    -fx-background-color: transparent;
+}
+
+.logo {
+    -fx-background-color: #FF4500;
+}
+
+.card_one {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10px;
+}
+
+.card_children {
+    -fx-background-radius: 10px;
+}
+
+.card_children_one {
+    -fx-background-color: linear-gradient(to right, #1A3395, #6243FF);
+}
+
+.card_children_two {
+    -fx-background-color: linear-gradient(to right, #AB8905, #C9AA00);
+}
+
+.block {
+    -fx-background-color: #7fff00;
+}
+
+.card_children_three {
+    -fx-background-color: linear-gradient(to right, #A7AB79, #DBE09F);
+}
