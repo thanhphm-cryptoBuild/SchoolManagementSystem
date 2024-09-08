@@ -1,19 +1,24 @@
 package com.app.schoolmanagementsystem.controller;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 public class Controller implements Initializable {
 
@@ -273,9 +278,8 @@ public class Controller implements Initializable {
         pieChart.setMaxHeight(350);
         pieChart.setClockwise(true);
         pieChart.setLabelsVisible(true);
-        pieChart.setStyle("-fx-font-weight: regular; -fx-font-family: Sitka Text; -fx-font-size: 14px;");
-        pieChart.setLabelLineLength(10);
-
+        pieChart.setStyle("-fx-font-weight: italic; -fx-font-family: Sitka Text; -fx-font-size: 14px;");
+        pieChart.setLabelLineLength(15);
 
         panepie.getChildren().add(pieChart);
 
@@ -331,6 +335,9 @@ public class Controller implements Initializable {
         lineChartThree.getData().add(new XYChart.Data<>("12", 100));
 
         lineview.getData().addAll(lineChartOne, lineChartTwo, lineChartThree);
+
+
+        lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }
 
 }

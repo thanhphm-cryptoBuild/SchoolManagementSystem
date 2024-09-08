@@ -13,6 +13,18 @@
     -fx-background-color: transparent;
 }
 
+.sidebar_action_children {
+    -fx-background-color: transparent;
+}
+
+.sidebar_action:hover {
+    -fx-background-color: linear-gradient(to right, #1A3395, #6243FF);
+}
+
+.sidebar_action_children:hover {
+    -fx-background-color: linear-gradient(to right, #5852FF, #B438FF);
+}
+
 .icon_sidebar_action {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 100%;
@@ -27,6 +39,10 @@
     -fx-border-color: #A3B5ED;
     -fx-border-width: 1px 0 1px 0;
     -fx-border-style: solid;
+}
+
+.title_label {
+    -fx-text-fill: #1A3395;
 }
 
 .dropdown_avatar {
@@ -64,6 +80,11 @@
 
 .card_children_three {
     -fx-background-color: linear-gradient(to right, #A7AB79, #DBE09F);
+}
+
+.card_chart {
+    -fx-background-radius: 10px;
+    -fx-background-color: #ABFFE6;
 }
 
 .cursor {
