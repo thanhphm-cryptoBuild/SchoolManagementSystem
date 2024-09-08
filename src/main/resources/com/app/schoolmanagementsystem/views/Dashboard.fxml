@@ -20,7 +20,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1028.0" styleClass="parent" stylesheets="@../css/Dashboard.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.Controller">
-  <children>
+   <children>
       <AnchorPane prefWidth="1028.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane fx:id="anchorSideBar" layoutY="60.0" prefHeight="708.0" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="60.0">
@@ -259,7 +259,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #E8E8E8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -518,12 +518,12 @@
                                     <StackPane prefHeight="400.0" prefWidth="457.0" styleClass="card_one">
                                        <children>
                                           <LineChart fx:id="lineview" prefHeight="394.0" prefWidth="472.0">
-                                            <xAxis>
-                                              <CategoryAxis side="BOTTOM" fx:id="x" />
-                                            </xAxis>
-                                            <yAxis>
-                                              <NumberAxis fx:id="y" side="LEFT" />
-                                            </yAxis>
+                                             <xAxis>
+                                                <CategoryAxis side="BOTTOM" fx:id="x" />
+                                             </xAxis>
+                                             <yAxis>
+                                                <NumberAxis fx:id="y" side="LEFT" />
+                                             </yAxis>
                                              <StackPane.margin>
                                                 <Insets />
                                              </StackPane.margin>
@@ -545,5 +545,5 @@
             </StackPane>
          </children>
       </AnchorPane>
-  </children>
+   </children>
 </AnchorPane>
