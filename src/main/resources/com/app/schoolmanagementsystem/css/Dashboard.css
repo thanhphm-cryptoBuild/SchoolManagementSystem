@@ -4,6 +4,9 @@
 
 .sidebar {
     -fx-background-color: linear-gradient(to top, #1A3395, #6243FF);
+    -fx-border-color: #A3B5ED;
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-style: solid;
 }
 
 .sidebar_action {
@@ -13,6 +16,10 @@
 .icon_sidebar_action {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 100%;
+}
+
+.icon_sidebar_action:hover {
+    -fx-background-color: yellow;
 }
 
 .navbar {
@@ -28,6 +35,10 @@
 
 .logo {
     -fx-background-color: #FF4500;
+}
+
+.logo_close {
+    -fx-background-color: #FFFFFF;
 }
 
 .card_one {
@@ -54,3 +65,8 @@
 .card_children_three {
     -fx-background-color: linear-gradient(to right, #A7AB79, #DBE09F);
 }
+
+.cursor {
+    -fx-cursor: hand;
+}
+

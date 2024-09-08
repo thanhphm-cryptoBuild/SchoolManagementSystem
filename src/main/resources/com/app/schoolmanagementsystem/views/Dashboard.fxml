@@ -23,22 +23,22 @@
   <children>
       <AnchorPane prefWidth="1028.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <AnchorPane layoutY="60.0" prefHeight="708.0" prefWidth="200.0" styleClass="sidebar" visible="false">
+            <AnchorPane fx:id="anchorSideBar" layoutY="60.0" prefHeight="708.0" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="60.0">
                <children>
                   <Pane layoutY="60.0" prefHeight="648.0" prefWidth="200.0" styleClass="sidebar_action">
                      <children>
                         <Pane layoutX="-2.0" layoutY="12.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                              <VBox fx:id="iconDashboardSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                  <children>
-                                    <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/dashboard.png" />
                                        </image>
                                     </ImageView>
                                  </children>
                               </VBox>
-                              <VBox alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                              <VBox fx:id="nameDashboardSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
                                        <font>
@@ -53,16 +53,16 @@
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                    <VBox fx:id="iconCalendarSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/time-management.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                    <VBox fx:id="nameCalendarSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                        <children>
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Calendar">
                                              <font>
@@ -79,16 +79,16 @@
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                    <VBox fx:id="iconStaffSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/management.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                    <VBox fx:id="nameStaffSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                        <children>
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Staff">
                                              <font>
@@ -105,16 +105,16 @@
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                    <VBox fx:id="iconStudentSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/student.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                    <VBox fx:id="nameStudentSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                        <children>
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Student">
                                              <font>
@@ -131,16 +131,16 @@
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                    <VBox fx:id="iconClassSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/school.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                    <VBox fx:id="nameClassSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                        <children>
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Class">
                                              <font>
@@ -157,16 +157,16 @@
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                    <VBox fx:id="iconEventSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/calendar%20(3).png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                    <VBox fx:id="nameEventSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                        <children>
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Event">
                                              <font>
@@ -183,16 +183,16 @@
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                    <VBox fx:id="iconAdvancedSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                        <children>
-                                          <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/privacy.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </VBox>
-                                    <VBox alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                    <VBox fx:id="nameAdvancedSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                        <children>
                                           <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Advanced">
                                              <font>
@@ -205,26 +205,30 @@
                               </Pane>
                            </children>
                         </Pane>
-                        <Pane layoutX="80.0" layoutY="583.0" prefHeight="40.0" prefWidth="40.0" styleClass="icon_sidebar_action">
+                        <Pane fx:id="navigateSideBar" layoutX="80.0" layoutY="583.0" prefHeight="40.0" prefWidth="40.0">
                            <children>
-                              <ImageView fitHeight="34.0" fitWidth="30.0" layoutX="7.0" layoutY="5.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="open" fitHeight="34.0" fitWidth="30.0" layoutX="7.0" layoutY="5.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
                                  <image>
                                     <Image url="@../images/right-arrow%20(1).png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="22.0" fitWidth="22.0" layoutX="8.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false">
+                              <ImageView fx:id="close" fitHeight="22.0" fitWidth="22.0" layoutX="8.0" layoutY="8.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/left-chevron.png" />
                                  </image>
                               </ImageView>
                            </children>
+                           <styleClass>
+                              <String fx:value="icon_sidebar_action" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
                      </children>
                      <rotationAxis>
                         <Point3D />
                      </rotationAxis>
                   </Pane>
-                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0" styleClass="logo">
+                  <VBox fx:id="logo" alignment="CENTER" layoutY="1.0" prefHeight="60.0" prefWidth="200.0" styleClass="logo">
                      <children>
                         <HBox alignment="CENTER" prefHeight="60.0" styleClass="logo">
                            <children>
@@ -237,20 +241,36 @@
                         </HBox>
                      </children>
                   </VBox>
+                  <VBox fx:id="logo_ref" alignment="CENTER" layoutY="1.0" prefHeight="60.0" prefWidth="200.0" styleClass="logo_close" visible="false">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" styleClass="logo_close">
+                           <children>
+                              <ImageView fx:id="iconGifCar" fitHeight="55.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/books.gif" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="8.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar">
+          <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #E8E8E8;">
+                  <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #E8E8E8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitHeight="42.0" fitWidth="42.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../images/school%20(2).png" />
+                              <Image url="@../images/gear%20(1).png" />
                            </image>
                         </ImageView>
                      </children>
                   </Pane>
-                  <Pane layoutX="748.0" prefHeight="60.0" prefWidth="280.0">
+                  <Pane layoutX="748.0" prefHeight="60.0" prefWidth="280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <VBox prefHeight="60.0" prefWidth="160.0">
                            <children>
@@ -324,20 +344,20 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <Pane layoutX="70.4000015258789" layoutY="59.20000076293945" prefWidth="958.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+            <StackPane layoutX="70.4" layoutY="60.0" prefHeight="708.0" prefWidth="958.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
                <children>
-                  <VBox prefHeight="250.0" prefWidth="958.0">
+                  <VBox prefHeight="565.0" prefWidth="936.0" spacing="15.0">
                      <children>
-                        <VBox prefHeight="200.0" prefWidth="250.0" spacing="10.0">
+                        <VBox prefHeight="200.0" prefWidth="250.0" spacing="5.0">
                            <children>
-                              <Label prefHeight="26.0" prefWidth="94.0" text="Dashboard">
+                              <Label prefHeight="26.0" prefWidth="94.0" text="Dashboard" textFill="#6243ff">
                                  <font>
                                     <Font name="Sitka Text" size="18.0" />
                                  </font>
                               </Label>
-                              <HBox alignment="CENTER" prefHeight="177.0" prefWidth="918.0" spacing="30.0" styleClass="card_one">
+                              <HBox alignment="CENTER" fillHeight="false" prefHeight="177.0" prefWidth="918.0" spacing="28.0" styleClass="card_one">
                                  <children>
-                                    <VBox prefHeight="167.0" prefWidth="275.0">
+                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="167.0" prefWidth="275.0">
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="86.0" prefWidth="231.0">
                                              <children>
@@ -345,7 +365,7 @@
                                                    <children>
                                                       <Label prefHeight="22.0" prefWidth="146.0" text="STAFF" textFill="CHARTREUSE">
                                                          <font>
-                                                            <Font name="Sitka Text" size="18.0" />
+                                                            <Font name="Sitka Text Bold" size="18.0" />
                                                          </font>
                                                       </Label>
                                                       <Label prefHeight="30.0" prefWidth="146.0" text="150" textFill="CHARTREUSE">
@@ -380,7 +400,7 @@
                                                    <children>
                                                       <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="138.0" text="TEACHER" textFill="CHARTREUSE">
                                                          <font>
-                                                            <Font name="Sitka Text" size="18.0" />
+                                                            <Font name="Sitka Text Bold" size="18.0" />
                                                          </font>
                                                       </Label>
                                                       <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="30.0" prefWidth="139.0" text="36" textFill="CHARTREUSE">
@@ -404,13 +424,13 @@
                                           <String fx:value="card_children_one" />
                                        </styleClass>
                                     </VBox>
-                                    <VBox layoutX="25.0" layoutY="25.0" prefHeight="167.0" prefWidth="275.0">
+                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="167.0" prefWidth="275.0">
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="86.0" prefWidth="231.0">
                                              <children>
                                                 <Label prefHeight="22.0" prefWidth="200.0" text="STUDENT" textFill="WHITE">
                                                    <font>
-                                                      <Font name="Sitka Text" size="18.0" />
+                                                      <Font name="Sitka Text Bold" size="18.0" />
                                                    </font>
                                                 </Label>
                                                 <Pane prefHeight="100.0" prefWidth="200.0" />
@@ -428,7 +448,7 @@
                                           </Separator>
                                           <Label prefHeight="76.0" prefWidth="231.0" text="547" textFill="WHITE">
                                              <font>
-                                                <Font size="36.0" />
+                                                <Font name="System Bold" size="36.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -443,13 +463,13 @@
                                           <Insets bottom="15.0" top="15.0" />
                                        </HBox.margin>
                                     </VBox>
-                                    <VBox layoutX="302.0" layoutY="10.0" prefHeight="167.0" prefWidth="275.0">
+                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="167.0" prefWidth="275.0">
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="86.0" prefWidth="231.0">
                                              <children>
-                                                <Label prefHeight="22.0" prefWidth="200.0" text="CLASS" textFill="WHITE">
+                                                <Label prefHeight="22.0" prefWidth="200.0" text="CLASS" textFill="#9e37ed">
                                                    <font>
-                                                      <Font name="Sitka Text" size="18.0" />
+                                                      <Font name="Sitka Text Bold" size="18.0" />
                                                    </font>
                                                 </Label>
                                                 <Pane prefHeight="100.0" prefWidth="200.0" />
@@ -465,9 +485,9 @@
                                                 <Insets bottom="15.0" top="15.0" />
                                              </padding>
                                           </Separator>
-                                          <Label prefHeight="76.0" prefWidth="231.0" text="20" textFill="WHITE">
+                                          <Label prefHeight="76.0" prefWidth="231.0" text="20" textFill="#9e37ed">
                                              <font>
-                                                <Font size="36.0" />
+                                                <Font name="System Bold" size="36.0" />
                                              </font>
                                           </Label>
                                        </children>
@@ -486,39 +506,43 @@
                               </HBox>
                            </children>
                         </VBox>
+                        <VBox alignment="CENTER_LEFT" prefHeight="420.0" prefWidth="918.0" spacing="5.0">
+                           <children>
+                              <Label prefHeight="22.0" prefWidth="136.0" text="Chart Income" textAlignment="RIGHT" textFill="#6243ff">
+                                 <font>
+                                    <Font name="Sitka Text" size="18.0" />
+                                 </font>
+                              </Label>
+                              <HBox alignment="CENTER" fillHeight="false" prefHeight="422.0" prefWidth="918.0" spacing="10.0">
+                                 <children>
+                                    <StackPane prefHeight="400.0" prefWidth="457.0" styleClass="card_one">
+                                       <children>
+                                          <LineChart fx:id="lineview" prefHeight="394.0" prefWidth="472.0">
+                                            <xAxis>
+                                              <CategoryAxis side="BOTTOM" fx:id="x" />
+                                            </xAxis>
+                                            <yAxis>
+                                              <NumberAxis fx:id="y" side="LEFT" />
+                                            </yAxis>
+                                             <StackPane.margin>
+                                                <Insets />
+                                             </StackPane.margin>
+                                          </LineChart>
+                                       </children>
+                                    </StackPane>
+                                    <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="378.0" prefWidth="1.0" />
+                                    <StackPane fx:id="panepie" prefHeight="400.0" prefWidth="450.0" styleClass="card_one" />
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
                      </children>
                      <padding>
                         <Insets left="20.0" right="20.0" top="20.0" />
                      </padding>
                   </VBox>
-                  <HBox layoutX="21.0" layoutY="299.0" prefHeight="386.0" prefWidth="918.0" spacing="5.0">
-                     <children>
-                        <StackPane prefHeight="408.0" prefWidth="449.0" styleClass="card_one">
-                           <children>
-                              <LineChart fx:id="lineview" prefHeight="408.0" prefWidth="460.0">
-                                <xAxis>
-                                  <CategoryAxis side="BOTTOM" fx:id="x" />
-                                </xAxis>
-                                <yAxis>
-                                  <NumberAxis fx:id="y" side="LEFT" />
-                                </yAxis>
-                                 <StackPane.margin>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                 </StackPane.margin>
-                              </LineChart>
-                           </children>
-                        </StackPane>
-                        <Pane prefHeight="408.0" prefWidth="11.0" />
-                        <StackPane fx:id="panepie" layoutX="10.0" layoutY="10.0" prefHeight="408.0" prefWidth="437.0" styleClass="card_one" />
-                     </children>
-                  </HBox>
-                  <Label layoutX="21.0" layoutY="265.0" prefHeight="26.0" prefWidth="146.0" text="Chart Income">
-                     <font>
-                        <Font name="Sitka Text" size="18.0" />
-                     </font>
-                  </Label>
                </children>
-            </Pane>
+            </StackPane>
          </children>
       </AnchorPane>
   </children>
