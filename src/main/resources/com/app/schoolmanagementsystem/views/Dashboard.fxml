@@ -27,7 +27,7 @@
                <children>
                   <Pane layoutY="60.0" prefHeight="648.0" prefWidth="200.0" styleClass="sidebar_action">
                      <children>
-                        <Pane layoutX="-2.0" layoutY="12.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <VBox fx:id="iconDashboardSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                  <children>
@@ -48,8 +48,12 @@
                                  </children>
                               </VBox>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="72.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="60.0" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -74,8 +78,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="132.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="120.0" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -100,8 +108,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="192.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="180.0" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -126,8 +138,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="252.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="240.0" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -152,8 +168,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="312.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="300.0" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -178,8 +198,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="372.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="360.0" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -204,6 +228,10 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
                         <Pane fx:id="navigateSideBar" layoutX="80.0" layoutY="583.0" prefHeight="40.0" prefWidth="40.0">
                            <children>
@@ -261,7 +289,7 @@
             </AnchorPane>
           <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #E8E8E8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #C9AA00;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitHeight="42.0" fitWidth="42.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -308,7 +336,7 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" styleClass="dropdown_avatar">
+                                    <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false">
                                        <graphic>
                                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -316,6 +344,10 @@
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <styleClass>
+                                          <String fx:value="dropdown_avatar" />
+                                          <String fx:value="cursor" />
+                                       </styleClass>
                                     </Button>
                                  </children>
                               </HBox>
@@ -350,7 +382,7 @@
                      <children>
                         <VBox prefHeight="200.0" prefWidth="250.0" spacing="5.0">
                            <children>
-                              <Label prefHeight="26.0" prefWidth="94.0" text="Dashboard" textFill="#6243ff">
+                              <Label prefHeight="26.0" prefWidth="94.0" styleClass="title_label" text="Dashboard">
                                  <font>
                                     <Font name="Sitka Text" size="18.0" />
                                  </font>
@@ -508,37 +540,34 @@
                         </VBox>
                         <VBox alignment="CENTER_LEFT" prefHeight="420.0" prefWidth="918.0" spacing="5.0">
                            <children>
-                              <Label prefHeight="22.0" prefWidth="136.0" text="Chart Income" textAlignment="RIGHT" textFill="#6243ff">
+                              <Label prefHeight="22.0" prefWidth="136.0" styleClass="title_label" text="Chart Income" textAlignment="RIGHT">
                                  <font>
                                     <Font name="Sitka Text" size="18.0" />
                                  </font>
                               </Label>
                               <HBox alignment="CENTER" fillHeight="false" prefHeight="422.0" prefWidth="918.0" spacing="10.0">
                                  <children>
-                                    <StackPane prefHeight="400.0" prefWidth="457.0" styleClass="card_one">
+                                    <StackPane prefHeight="400.0" prefWidth="457.0" styleClass="card_chart">
                                        <children>
-                                          <LineChart fx:id="lineview" prefHeight="394.0" prefWidth="472.0">
+                                          <LineChart fx:id="lineview" prefHeight="394.0" prefWidth="452.0">
                                             <xAxis>
                                               <CategoryAxis side="BOTTOM" fx:id="x" />
                                             </xAxis>
                                             <yAxis>
                                               <NumberAxis fx:id="y" side="LEFT" />
                                             </yAxis>
-                                             <StackPane.margin>
-                                                <Insets />
-                                             </StackPane.margin>
                                           </LineChart>
                                        </children>
                                     </StackPane>
                                     <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="378.0" prefWidth="1.0" />
-                                    <StackPane fx:id="panepie" prefHeight="400.0" prefWidth="450.0" styleClass="card_one" />
+                                    <StackPane fx:id="panepie" prefHeight="400.0" prefWidth="450.0" styleClass="card_chart" />
                                  </children>
                               </HBox>
                            </children>
                         </VBox>
                      </children>
                      <padding>
-                        <Insets left="20.0" right="20.0" top="20.0" />
+                        <Insets left="20.0" right="20.0" top="15.0" />
                      </padding>
                   </VBox>
                </children>
