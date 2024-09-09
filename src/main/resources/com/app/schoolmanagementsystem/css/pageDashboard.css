@@ -1,0 +1,97 @@
+.parent {
+    -fx-background-color: #DBDBDB;
+}
+
+.sidebar {
+    -fx-background-color: linear-gradient(to top, #1A3395, #6243FF);
+    -fx-border-color: #A3B5ED;
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-style: solid;
+}
+
+.sidebar_action {
+    -fx-background-color: transparent;
+}
+
+.sidebar_action_children {
+    -fx-background-color: transparent;
+}
+
+.sidebar_action:hover {
+    -fx-background-color: linear-gradient(to right, #1A3395, #6243FF);
+}
+
+.sidebar_action_children:hover {
+    -fx-background-color: linear-gradient(to right, #5852FF, #B438FF);
+}
+
+.icon_sidebar_action {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 100%;
+}
+
+.icon_sidebar_action:hover {
+    -fx-background-color: yellow;
+}
+
+.navbar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #A3B5ED;
+    -fx-border-width: 1px 0 1px 0;
+    -fx-border-style: solid;
+}
+
+.title_label {
+    -fx-text-fill: #1A3395;
+}
+
+.dropdown_avatar {
+    -fx-background-color: transparent;
+}
+
+.logo {
+    -fx-background-color: #FF4500;
+}
+
+.logo_close {
+    -fx-background-color: #FFFFFF;
+}
+
+.card_one {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10px;
+}
+
+.card_children {
+    -fx-background-radius: 10px;
+}
+
+.card_children_one {
+    -fx-background-color: linear-gradient(to right, #1A3395, #6243FF);
+}
+
+.card_children_two {
+    -fx-background-color: linear-gradient(to right, #AB8905, #C9AA00);
+}
+
+.block {
+    -fx-background-color: #7fff00;
+}
+
+.card_children_four {
+    -fx-background-color: linear-gradient(to right, #5F9EA0, #6FB8BA);
+}
+
+.card_children_three {
+    -fx-background-color: linear-gradient(to right, #A37C7C, #C49595);
+}
+
+.card_chart {
+    -fx-background-radius: 10px;
+    -fx-background-color: #FFFFFF;
+}
+
+.cursor {
+    -fx-cursor: hand;
+}
+

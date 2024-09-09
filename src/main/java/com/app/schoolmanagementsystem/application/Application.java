@@ -12,11 +12,11 @@ public class Application extends javafx.application.Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/Dashboard.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1028, 768);
-        stage.setResizable(false);
         stage.setMinWidth(1028);
         stage.setMinHeight(768);
         stage.setTitle("School Management System");
         stage.setScene(scene);
+//        stage.setFullScreen(true);
         stage.centerOnScreen();
 
         stage.show();
