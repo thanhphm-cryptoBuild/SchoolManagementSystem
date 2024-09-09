@@ -47,7 +47,6 @@
     </dependency>
 
     <!-- Thêm thư viện ở đây (link chính thống của maven này https://mvnrepository.com/)-->
-    
   </dependencies>
 
   <build>
