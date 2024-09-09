@@ -1,0 +1,10 @@
+.btn_search_idStaff {
+    -fx-background-color: #DBDBDB;
+}
+
+.table_list_Staff {
+    -fx-border-color: FEFAE0;
+    -fx-border-width: 5px 5px 5px 5px;
+    -fx-border-style: solid;
+
+}
