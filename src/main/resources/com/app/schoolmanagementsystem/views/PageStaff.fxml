@@ -1,19 +1,437 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="pageStaff" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StaffController">
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
+<AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1028.0" styleClass="parent" stylesheets="@../css/Dashboard.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StaffController">
    <children>
-      <StackPane layoutX="20.0" layoutY="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane prefWidth="1028.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="Page Staff" />
+            <AnchorPane fx:id="anchorSideBar" layoutY="60.0" prefHeight="708.0" prefWidth="200.0" styleClass="sidebar" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="60.0">
+               <children>
+                  <Pane layoutY="60.0" prefHeight="648.0" prefWidth="200.0" styleClass="sidebar_action">
+                     <children>
+                        <Pane layoutX="-2.0" layoutY="12.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                           <children>
+                              <VBox fx:id="iconDashboardSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/dashboard.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </VBox>
+                              <VBox fx:id="nameDashboardSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                 <children>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
+                                       <font>
+                                          <Font name="Sitka Text Bold" size="20.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-2.0" layoutY="72.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconCalendarSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/time-management.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameCalendarSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Calendar">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-2.0" layoutY="132.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconStaffSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/management.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameStaffSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Staff">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-2.0" layoutY="192.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconStudentSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/student.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameStudentSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Student">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-2.0" layoutY="252.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconClassSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/school.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameClassSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Class">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-2.0" layoutY="312.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconEventSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/calendar%20(3).png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameEventSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Event">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-2.0" layoutY="372.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconAdvancedSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/privacy.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameAdvancedSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Advanced">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                        </Pane>
+                        <Pane fx:id="navigateSideBar" layoutX="80.0" layoutY="583.0" prefHeight="40.0" prefWidth="40.0">
+                           <children>
+                              <ImageView fx:id="open" fitHeight="34.0" fitWidth="30.0" layoutX="7.0" layoutY="5.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
+                                 <image>
+                                    <Image url="@../images/right-arrow%20(1).png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="close" fitHeight="22.0" fitWidth="22.0" layoutX="8.0" layoutY="8.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/left-chevron.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <styleClass>
+                              <String fx:value="icon_sidebar_action" />
+                              <String fx:value="cursor" />
+                           </styleClass>
+                        </Pane>
+                     </children>
+                     <rotationAxis>
+                        <Point3D />
+                     </rotationAxis>
+                  </Pane>
+                  <VBox fx:id="logo" alignment="CENTER" layoutY="1.0" prefHeight="60.0" prefWidth="200.0" styleClass="logo">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="60.0" styleClass="logo">
+                           <children>
+                              <ImageView fitHeight="55.0" fitWidth="210.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/logo-school.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <VBox fx:id="logo_ref" alignment="CENTER" layoutY="1.0" prefHeight="60.0" prefWidth="200.0" styleClass="logo_close" visible="false">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="60.0" styleClass="logo_close">
+                           <children>
+                              <ImageView fx:id="iconGifCar" fitHeight="55.0" fitWidth="86.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/books.gif" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <VBox.margin>
+                              <Insets left="8.0" />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #E8E8E8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ImageView fitHeight="42.0" fitWidth="42.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/gear%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <Pane layoutX="748.0" prefHeight="60.0" prefWidth="280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <VBox prefHeight="60.0" prefWidth="160.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="160.0" spacing="5.0">
+                                 <children>
+                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/icons8-accuracy.gif" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="10.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Label text="Admin Master ">
+                                       <HBox.margin>
+                                          <Insets left="5.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Sitka Text" size="16.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox layoutX="160.0" prefHeight="60.0" prefWidth="120.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="60.0" prefWidth="120.0">
+                                 <children>
+                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="avatar">
+                                       <image>
+                                          <Image url="@../images/avatar-ex.jpg" />
+                                       </image>
+                                       <HBox.margin>
+                                          <Insets left="20.0" />
+                                       </HBox.margin>
+                                    </ImageView>
+                                    <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" styleClass="dropdown_avatar">
+                                       <graphic>
+                                          <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/icons8-expand-arrow-48%20(1).png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                  </Pane>
+                  <VBox alignment="CENTER" layoutX="70.0" prefHeight="60.0" prefWidth="300.0" spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" spacing="10.0">
+                           <children>
+                              <Label contentDisplay="CENTER" text="School Management System" textFill="#1a3395">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Sitka Text Bold" size="20.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+            <StackPane layoutX="70.0" layoutY="60.0" prefHeight="708.0" prefWidth="958.0">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <Pane prefHeight="50.0" prefWidth="958.0">
+                           <children>
+                              <Label layoutX="14.0" layoutY="12.0" prefHeight="26.0" prefWidth="171.0" text="Staff Management" textFill="#6243ff">
+                                 <font>
+                                    <Font name="Sitka Text" size="18.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="50.0" prefWidth="958.0">
+                           <children>
+                              <Label layoutX="31.0" layoutY="13.0" prefHeight="26.0" prefWidth="78.0" text="All Staffs">
+                                 <font>
+                                    <Font name="Arial Bold" size="15.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txt_search_idStaff" layoutX="689.0" layoutY="13.0" promptText="#ID Staff" />
+                              <Button fx:id="btn_search_idStaff" layoutX="838.0" layoutY="12.0" mnemonicParsing="false" styleClass="btn_search_idStaff" stylesheets="@../css/pageStaff.css">
+                                 <graphic>
+                                    <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor></Button>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="610.0" prefWidth="958.0">
+                           <children>
+                              <TableView fx:id="table_list_Staff" layoutX="15.0" layoutY="7.0" prefHeight="450.0" prefWidth="924.0" styleClass="table_list_Staff" stylesheets="@../css/pageStaff.css">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="staffID" />
+                                    <TableColumn prefWidth="75.0" text="photo" />
+                                    <TableColumn maxWidth="100.0" minWidth="1.0" prefWidth="120.0" text="fullName" />
+                                    <TableColumn minWidth="0.0" prefWidth="0.0" text="email" />
+                                    <TableColumn prefWidth="120.0" text="phone" />
+                                    <TableColumn prefWidth="120.0" text="day_of_birth" />
+                                    <TableColumn prefWidth="120.0" text="department" />
+                                    <TableColumn minWidth="0.0" prefWidth="120.0" text="role" />
+                                    <TableColumn prefWidth="120.0" text="hireDate" />
+                                    <TableColumn prefWidth="73.0" text="status" />
+                                 </columns>
+                              </TableView>
+                              <Pagination fx:id="pag_list_Staff" layoutY="457.0" prefHeight="51.0" prefWidth="958.0" />
+                              <HBox alignment="CENTER" layoutX="15.0" layoutY="508.0" prefHeight="100.0" prefWidth="924.0" spacing="30.0">
+                                 <children>
+                                    <Button fx:id="btn_add" mnemonicParsing="false" prefWidth="75.0" text="Add">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="btn_update" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" prefWidth="75.0" text="Update">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="btn_delete" layoutX="62.0" layoutY="10.0" mnemonicParsing="false" prefWidth="75.0" text="Delete">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="btn_salary" layoutX="114.0" layoutY="10.0" mnemonicParsing="false" prefWidth="75.0" text="Salary">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button fx:id="btn_promotion" layoutX="166.0" layoutY="10.0" mnemonicParsing="false" prefWidth="75.0" text="Promotion">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </Pane>
+                     </children>
+                  </VBox>
+               </children>
+            </StackPane>
          </children>
-      </StackPane>
+      </AnchorPane>
    </children>
 </AnchorPane>
