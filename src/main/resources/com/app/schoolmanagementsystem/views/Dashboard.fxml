@@ -231,12 +231,12 @@
                         </Pane>
                         <Pane fx:id="navigateSideBar" layoutX="80.0" layoutY="583.0" prefHeight="40.0" prefWidth="40.0">
                            <children>
-                              <ImageView fx:id="open" fitHeight="34.0" fitWidth="30.0" layoutX="7.0" layoutY="5.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
+                              <ImageView fx:id="open" fitHeight="40.0" fitWidth="40.0" layoutX="2.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
                                  <image>
                                     <Image url="@../images/right-arrow%20(1).png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="close" fitHeight="22.0" fitWidth="22.0" layoutX="8.0" layoutY="8.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="close" fitHeight="30.0" fitWidth="36.0" layoutX="4.0" layoutY="5.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/left-chevron.png" />
                                  </image>
