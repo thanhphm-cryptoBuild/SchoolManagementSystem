@@ -18,19 +18,19 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="pageClass" prefHeight="500.0" prefWidth="700.0" stylesheets="@../css/pageSignIn.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.ClassesController">
+<AnchorPane fx:id="pageSignIn" prefHeight="550.0" prefWidth="750.0" stylesheets="@../css/pageSignIn.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.SignInController">
    <children>
-      <HBox prefHeight="500.0" prefWidth="700.0">
+      <HBox prefHeight="550.0" prefWidth="750.0">
          <children>
-            <VBox alignment="TOP_CENTER" prefHeight="514.0" prefWidth="350.0" styleClass="logo_login">
+            <VBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="375.0" styleClass="logo_login">
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="87.0" prefWidth="350.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="134.0" prefWidth="375.0">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="108.0" prefWidth="350.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="94.0" prefWidth="375.0">
                            <children>
-                              <Pane prefHeight="50.0" prefWidth="350.0" styleClass="fill_logo">
+                              <Pane prefHeight="55.0" prefWidth="375.0" styleClass="fill_logo">
                                  <children>
-                                    <ImageView fitHeight="50.0" fitWidth="203.0" layoutX="86.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="60.0" fitWidth="177.0" layoutX="100.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/logo-school.png" />
                                        </image>
@@ -38,7 +38,7 @@
                                           <Blend mode="GREEN" />
                                        </effect>
                                     </ImageView>
-                                    <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="43.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fitHeight="32.0" fitWidth="32.0" layoutX="47.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/bookmark.png" />
                                        </image>
@@ -62,27 +62,27 @@
                         </VBox>
                      </children>
                   </HBox>
-                  <ImageView fitHeight="222.0" fitWidth="292.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="247.0" fitWidth="320.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/bg-login-removebg-preview.png" />
                      </image>
                   </ImageView>
-                  <HBox prefHeight="200.0" prefWidth="350.0">
+                  <HBox prefHeight="246.0" prefWidth="375.0">
                      <children>
-                        <VBox alignment="TOP_CENTER" prefHeight="134.0" prefWidth="350.0">
+                        <VBox alignment="TOP_CENTER" prefHeight="212.0" prefWidth="375.0">
                            <children>
                               <Pane prefHeight="160.0" prefWidth="350.0">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" prefHeight="123.0" prefWidth="253.0" text="Hello Friend, Welcome To Back!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="58.0" layoutY="24.0" prefHeight="110.0" prefWidth="260.0" text="Hello Friend, Welcome To Back!" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                        <font>
-                                          <Font name="Sitka Text Bold" size="24.0" />
+                                          <Font name="Sitka Text Bold" size="26.0" />
                                        </font>
                                     </Label>
                                  </children>
                               </Pane>
                               <Pane layoutX="10.0" layoutY="10.0" prefHeight="57.0" prefWidth="350.0">
                                  <children>
-                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="53.0" prefHeight="50.0" prefWidth="253.0" text="Copyright By ThreeTeam" textAlignment="CENTER" textFill="WHITE" wrapText="true">
+                                    <Label alignment="CENTER" contentDisplay="CENTER" layoutX="61.0" layoutY="-3.0" prefHeight="60.0" prefWidth="253.0" text="Copyright By ThreeTeam" textAlignment="CENTER" textFill="WHITE" wrapText="true">
                                        <font>
                                           <Font name="Sitka Text Italic" size="10.0" />
                                        </font>
@@ -98,37 +98,37 @@
                   <DropShadow />
                </effect>
             </VBox>
-            <Pane prefHeight="500.0" prefWidth="0.0" />
-            <VBox alignment="CENTER" prefHeight="500.0" prefWidth="350.0">
+            <Pane prefHeight="375.0" prefWidth="0.0" />
+            <VBox alignment="CENTER" prefHeight="550.0" prefWidth="375.0">
                <children>
-                  <Pane prefHeight="163.0" prefWidth="350.0" />
+                  <Pane prefHeight="0.0" prefWidth="375.0" />
                   <VBox>
                      <children>
-                        <StackPane prefHeight="666.0" prefWidth="350.0">
+                        <StackPane prefHeight="550.0" prefWidth="375.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="422.0" prefWidth="350.0" spacing="10.0" styleClass="border_form">
+                              <VBox alignment="CENTER" prefHeight="550.0" prefWidth="375.0" spacing="10.0" styleClass="border_form">
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="81.0" prefWidth="350.0">
                                        <children>
-                                          <Label prefHeight="60.0" prefWidth="108.0" styleClass="text" text="Sign In" textAlignment="CENTER">
+                                          <Label prefHeight="60.0" prefWidth="116.0" styleClass="text" text="Sign In" textAlignment="CENTER">
                                              <font>
-                                                <Font name="Sitka Text Bold" size="30.0" />
+                                                <Font name="Sitka Text Bold" size="32.0" />
                                              </font>
                                           </Label>
                                        </children>
                                     </HBox>
                                     <Pane layoutX="10.0" layoutY="180.0">
                                        <children>
-                                          <VBox alignment="CENTER" layoutX="55.0" prefHeight="60.0" prefWidth="240.0" spacing="2.0">
+                                          <VBox alignment="CENTER" layoutX="57.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
                                              <children>
-                                                <Label prefHeight="18.0" prefWidth="240.0" styleClass="text" text="Email">
+                                                <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="Email">
                                                    <font>
-                                                      <Font name="Sitka Text Bold" size="14.0" />
+                                                      <Font name="Sitka Text Bold" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField prefHeight="40.0" prefWidth="240.0" promptText="Email">
+                                                <TextField prefHeight="45.0" prefWidth="240.0" promptText="Email">
                                                    <font>
-                                                      <Font name="Sitka Text" size="12.0" />
+                                                      <Font name="Sitka Text" size="14.0" />
                                                    </font>
                                                 </TextField>
                                              </children>
@@ -137,26 +137,26 @@
                                     </Pane>
                                     <Pane>
                                        <children>
-                                          <VBox alignment="CENTER" layoutX="55.0" prefHeight="60.0" prefWidth="240.0" spacing="2.0">
+                                          <VBox alignment="CENTER" layoutX="57.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
                                              <children>
-                                                <Label prefHeight="18.0" prefWidth="240.0" styleClass="text" text="Password">
+                                                <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="Password">
                                                    <font>
-                                                      <Font name="Sitka Text Bold" size="14.0" />
+                                                      <Font name="Sitka Text Bold" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField prefHeight="40.0" prefWidth="240.0" promptText="Password">
+                                                <TextField prefHeight="45.0" prefWidth="240.0" promptText="Password">
                                                    <font>
-                                                      <Font name="Sitka Text" size="12.0" />
+                                                      <Font name="Sitka Text" size="14.0" />
                                                    </font>
                                                 </TextField>
                                              </children>
                                           </VBox>
-                                          <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="259.0" layoutY="27.0" pickOnBounds="true" preserveRatio="true" styleClass="cursor">
+                                          <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="277.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" styleClass="cursor">
                                              <image>
                                                 <Image url="@../images/hide.png" />
                                              </image>
                                           </ImageView>
-                                          <ImageView disable="true" fitHeight="29.0" fitWidth="24.0" layoutX="262.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" styleClass="cursor" visible="false">
+                                          <ImageView disable="true" fitHeight="29.0" fitWidth="24.0" layoutX="280.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" styleClass="cursor" visible="false">
                                              <image>
                                                 <Image url="@../images/visual.png" />
                                              </image>
@@ -165,7 +165,7 @@
                                     </Pane>
                                     <Pane layoutX="10.0" layoutY="287.0" prefHeight="18.0" prefWidth="350.0">
                                        <children>
-                                          <VBox alignment="CENTER_RIGHT" layoutX="55.0" prefHeight="18.0" prefWidth="240.0" spacing="2.0">
+                                          <VBox alignment="CENTER_RIGHT" layoutX="57.0" prefHeight="18.0" prefWidth="260.0" spacing="2.0">
                                              <children>
                                                 <Label prefHeight="18.0" prefWidth="102.0" text="Forgot Password?" underline="true">
                                                    <font>
@@ -182,9 +182,9 @@
                                     </Pane>
                                     <Pane layoutX="10.0" layoutY="282.0">
                                        <children>
-                                          <Button layoutX="55.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="240.0" styleClass="cursor" text="Login" textFill="WHITE">
+                                          <Button layoutX="57.0" mnemonicParsing="false" onMouseClicked="#loginSubmit" prefHeight="45.0" prefWidth="260.0" styleClass="cursor" text="Login" textFill="WHITE">
                                              <font>
-                                                <Font name="Sitka Text Bold" size="18.0" />
+                                                <Font name="Sitka Text Bold" size="20.0" />
                                              </font>
                                           </Button>
                                        </children>

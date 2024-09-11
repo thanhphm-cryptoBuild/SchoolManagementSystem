@@ -31,11 +31,11 @@ public class StudentController implements Initializable {
         pageStudent.getChildren().add(pageAddStudent);
 
         TranslateTransition translateTransition = new TranslateTransition();
-        translateTransition.setDuration(Duration.seconds(0.5));
+        translateTransition.setDuration(Duration.seconds(0.2));
         translateTransition.setNode(pageAddStudent);
         translateTransition.setFromX(2000);
-        translateTransition.setToY(10);
-        translateTransition.setToX(200);
+        translateTransition.setToY(9);
+        translateTransition.setToX(500);
 
         translateTransition.play();
     }
