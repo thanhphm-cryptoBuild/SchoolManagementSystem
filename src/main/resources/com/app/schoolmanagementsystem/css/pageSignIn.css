@@ -1,0 +1,42 @@
+.border_form {
+    -fx-border-color: #6243FF;
+    -fx-border-width: 1px 1px 1px 0;
+    -fx-border-style: solid;
+}
+
+.fill_logo {
+    -fx-background-color: #FF4500;
+    -fx-background-radius: 0 0 30px 30px;
+}
+
+.text {
+    -fx-text-fill: #6243FF;
+}
+
+.text_forgot {
+    -fx-text-fill: #6243FF;
+}
+
+.text_forgot:hover {
+    -fx-text-fill: #FF4500;
+}
+
+.logo_login {
+    -fx-background-color: linear-gradient(to top, #1A3395, #6243FF);
+}
+
+.logo_login:hover {
+    -fx-background-color: linear-gradient(to right, #1A3395, #6243FF);
+}
+
+.button {
+     -fx-background-color: #6243FF;
+}
+
+.button:hover {
+      -fx-background-color: linear-gradient(to top, #1A3395, #6243FF);
+}
+
+.cursor {
+    -fx-cursor: hand;
+}
