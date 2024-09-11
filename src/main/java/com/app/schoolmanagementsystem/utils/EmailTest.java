@@ -1,4 +1,4 @@
-package com.app.schoolmanagementsystem;
+package com.app.schoolmanagementsystem.utils;
 
 import com.app.schoolmanagementsystem.utils.Mail;
 

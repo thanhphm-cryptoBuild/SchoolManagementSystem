@@ -284,7 +284,7 @@ public class StaffController implements Initializable {
 
     private void loadStaffData() {
         // Tạo danh sách mới từ mô hình
-        List<Staff> newStaffList = staffModel.getAllStaff();
+        List<Staff> newStaffList = staffModel.getActiveStaff();
         staffList.clear();
         staffList.addAll(newStaffList);
         staffTableView.setItems(staffList);

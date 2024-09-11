@@ -42,7 +42,7 @@ public class DashboardController implements Initializable {
     }
 
     private void updateTotalStaff() {
-        int totalStaff = staffModel.countStaff();
+        int totalStaff = staffModel.countActiveStaff();
         label_totalStaff.setText(String.valueOf(totalStaff));
     }
     void loadDataPieChart() {

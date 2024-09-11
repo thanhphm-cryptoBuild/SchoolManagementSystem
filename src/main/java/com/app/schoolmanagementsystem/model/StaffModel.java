@@ -12,17 +12,19 @@ import java.util.List;
 
 public class StaffModel {
 
-    // Phương thức đếm số lượng nhân viên
-    public int countStaff() {
+    // Phương thức đếm số lượng nhân viên trang thai active
+    public int countActiveStaff() {
         int count = 0;
-        String query = "SELECT COUNT(*) AS totalStaff FROM staff";
+        String query = "SELECT COUNT(*) AS totalActiveStaff FROM staff WHERE status = ?";
 
         try (Connection conn = ConnectDB.connection();
-             PreparedStatement preparedStatement = conn.prepareStatement(query);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
 
-            if (resultSet.next()) {
-                count = resultSet.getInt("totalStaff");
+            preparedStatement.setString(1, "active");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    count = resultSet.getInt("totalActiveStaff");
+                }
             }
 
         } catch (SQLException e) {
@@ -32,10 +34,11 @@ public class StaffModel {
         return count;
     }
 
-    // Phương thức lấy danh sách tất cả nhân viên
-    public List<Staff> getAllStaff() {
+
+    // Phương thức lấy danh sách tất cả nhân viên trang thai active
+    public List<Staff> getActiveStaff() {
         List<Staff> staffList = new ArrayList<>();
-        String query = "SELECT * FROM staff";
+        String query = "SELECT * FROM staff WHERE status = 'active'";
 
         try (Connection conn = ConnectDB.connection();
              PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -68,6 +71,7 @@ public class StaffModel {
         return staffList;
     }
 
+    // phuong thuc add staff voi trang thai mac dinh la active
     public boolean addStaff(Staff staff) {
         String query = "INSERT INTO staff (fullName, address, phone, email, birthDate, department, position, hireDate, salary, lastLogin, profilePicture, sex, status) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -87,7 +91,13 @@ public class StaffModel {
             preparedStatement.setDate(10, staff.getLastLogin());
             preparedStatement.setString(11, staff.getProfilePicture());
             preparedStatement.setString(12, staff.getSex());
-            preparedStatement.setString(13, staff.getStatus());
+
+            // Nếu không có giá trị status được cung cấp, mặc định là 'active'
+            if (staff.getStatus() == null || staff.getStatus().isEmpty()) {
+                preparedStatement.setString(13, "active");
+            } else {
+                preparedStatement.setString(13, staff.getStatus());
+            }
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
@@ -97,6 +107,7 @@ public class StaffModel {
             return false;
         }
     }
+
 
     // Phương thức cập nhật thông tin nhân viên
     public boolean updateStaff(Staff staff) {
@@ -129,9 +140,9 @@ public class StaffModel {
         }
     }
 
-    // Phương thức xóa nhân viên theo ID
+    // Phương thức xóa nhân viên theo ID chuyen active thaành inactive
     public boolean deleteStaff(int staffID) {
-        String query = "DELETE FROM staff WHERE staffID = ?";
+        String query = "UPDATE staff SET status = 'inactive' WHERE staffID = ?";
 
         try (Connection conn = ConnectDB.connection();
              PreparedStatement preparedStatement = conn.prepareStatement(query)) {
@@ -139,14 +150,15 @@ public class StaffModel {
             preparedStatement.setInt(1, staffID);
             int rowsAffected = preparedStatement.executeUpdate();
 
-            // Trả về true nếu xóa thành công (có ít nhất 1 hàng bị ảnh hưởng)
+            // Trả về true nếu cập nhật thành công (có ít nhất 1 hàng bị ảnh hưởng)
             return rowsAffected > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        // Trả về false nếu không xóa thành công
+        // Trả về false nếu không cập nhật thành công
         return false;
     }
+
 }
