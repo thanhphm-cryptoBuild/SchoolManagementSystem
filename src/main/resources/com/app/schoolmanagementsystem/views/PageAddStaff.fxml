@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="add_staff" stylesheets="@../css/pageAddStaff.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.AddStaffController">
+   <children>
+      <StackPane prefHeight="750.0" prefWidth="750.0" styleClass="add_student">
+         <children>
+            <Label text="Add Staff" />
+         </children>
+      </StackPane>
+   </children>
+   <effect>
+      <DropShadow />
+   </effect>
+</StackPane>
