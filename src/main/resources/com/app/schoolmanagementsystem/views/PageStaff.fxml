@@ -14,111 +14,102 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="pageStaff" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StaffController">
+<AnchorPane fx:id="pageStaff" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/pageStaff.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StaffController">
    <children>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/pageStaff.css">
+      <VBox layoutY="10.0" prefHeight="700.0" prefWidth="946.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <VBox layoutY="10.0" prefHeight="700.0" prefWidth="946.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox alignment="CENTER" fillHeight="false" prefHeight="148.0" prefWidth="946.0" spacing="100.0">
                <children>
-                  <HBox alignment="CENTER" fillHeight="false" prefHeight="148.0" prefWidth="946.0" spacing="100.0">
+                  <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                           <children>
-                              <Label prefHeight="22.0" prefWidth="182.0" styleClass="title_label" text="Staff Detail">
-                                 <font>
-                                    <Font name="Sitka Text" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="400.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="132.0" styleClass="button">
-                                 <children>
-                                    <StackPane onMouseClicked="#addStaffBTN" prefWidth="200.0" styleClass="button_children">
-                                       <children>
-                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/add-file%20(1).png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </StackPane>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <StackPane prefWidth="200.0" styleClass="button_children">
-                                       <children>
-                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/recycle.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </StackPane>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <StackPane prefWidth="200.0" styleClass="button_children">
-                                       <children>
-                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/printer.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </StackPane>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                  </HBox>
-                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
-                     <children>
-                        <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
-                           <children>
-                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0">
-                                 <content>
-                                    <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
-                                       <columns>
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="140.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                       </columns>
-                                    </TableView>
-                                 </content>
-                              </ScrollPane>
-                           </children>
-                        </StackPane>
+                        <Label prefHeight="22.0" prefWidth="182.0" styleClass="title_label" text="Staff Detail">
+                           <font>
+                              <Font name="Sitka Text" size="18.0" />
+                           </font>
+                        </Label>
                      </children>
                   </VBox>
+                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="600.0">
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="60.0" prefWidth="400.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="132.0" styleClass="button">
+                           <children>
+                              <StackPane prefWidth="200.0" styleClass="button_children">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add-file%20(1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Separator orientation="VERTICAL" prefHeight="200.0" />
+                              <StackPane prefWidth="200.0" styleClass="button_children">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/recycle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Separator orientation="VERTICAL" prefHeight="200.0" />
+                              <StackPane prefWidth="200.0" styleClass="button_children">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/printer.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                           </children>
+                        </HBox>
+                     </children></VBox>
+               </children>
+            </HBox>
+            <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
+               <children>
+                  <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
+                     <children>
+                        <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0">
+                           <content>
+                              <TableView fx:id="staffTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                                 <columns>
+                                    <TableColumn fx:id="staffIDColumn" prefWidth="75.0" text="staffID" />
+                                    <TableColumn fx:id="fullNameColumn" prefWidth="120.0" text="fullName" />
+                                    <TableColumn fx:id="addressColumn" prefWidth="120.0" text="address" />
+                                    <TableColumn fx:id="phoneColumn" prefWidth="120.0" text="phone" />
+                                    <TableColumn fx:id="emailColumn" prefWidth="120.0" text="email" />
+                                    <TableColumn fx:id="birthDateColumn" prefWidth="120.0" text="birthDate" />
+                                    <TableColumn fx:id="departmentColumn" prefWidth="120.0" text="department" />
+                                    <TableColumn fx:id="positionColumn" prefWidth="120.0" text="position" />
+                                    <TableColumn fx:id="hireDateColumn" prefWidth="120.0" text="hireDate" />
+                                    <TableColumn fx:id="salaryColumn" prefWidth="120.0" text="salary" />
+                                    <TableColumn fx:id="lastLoginColumn" prefWidth="120.0" text="lastLogin" />
+                                    <TableColumn fx:id="profilePictureColumn" prefWidth="50.0" text="photo" />
+                                    <TableColumn fx:id="sexColumn" prefWidth="75.0" text="sex" />
+                                    <TableColumn fx:id="statusColumn" prefWidth="75.0" text="status" />
+                                    <TableColumn fx:id="actionColumn" prefWidth="150.0" text="action" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </StackPane>
                </children>
             </VBox>
          </children>
-      </AnchorPane>
+      </VBox>
    </children>
    <padding>
-      <Insets bottom="10.0" left="20.0" right="20.0" />
+      <Insets bottom="20.0" left="20.0" right="20.0" />
    </padding>
-</StackPane>
+</AnchorPane>
