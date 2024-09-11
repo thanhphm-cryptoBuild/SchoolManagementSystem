@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="pageDashboard" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/pageStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StudentController">
+   <children>
+      <VBox spacing="20" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         <children>
+            <HBox alignment="CENTER" prefHeight="24.0" prefWidth="953.0" spacing="20">
+               <children>
+                  <Label prefHeight="18.0" prefWidth="154.0" styleClass="title_label" text="Student List">
+                     <font>
+                        <Font name="Sitka Text" size="18.0" />
+                     </font></Label>
+                  <Region HBox.hgrow="ALWAYS" />
+                  <TextField fx:id="searchField" promptText="Search students..." />
+                  <HBox alignment="CENTER" prefHeight="62.0" prefWidth="185.0" styleClass="button">
+                     <children>
+                       <StackPane fx:id="addButtonPane" prefWidth="200.0" styleClass="button_children">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add-file%20(1).png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Separator orientation="VERTICAL" prefHeight="200.0" />
+                              <StackPane fx:id="refreshButtonPane" prefWidth="200.0" styleClass="button_children">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/recycle.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                              <Separator orientation="VERTICAL" prefHeight="200.0" />
+                              <StackPane fx:id="printButtonPane" prefWidth="200.0" styleClass="button_children">
+                                 <children>
+                                    <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/printer.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </StackPane>
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <StackPane styleClass="card_chart" VBox.vgrow="ALWAYS">
+               <children>
+                  <TableView fx:id="studentTable" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="avatarColumn" text="Avatar" />
+                        <TableColumn fx:id="idColumn" text="ID" />
+                        <TableColumn fx:id="nameColumn" text="Full Name" />
+                        <TableColumn fx:id="addressColumn" text="Address" />
+                        <TableColumn fx:id="phoneColumn" text="Phone Number" />
+                        <TableColumn fx:id="emailColumn" text="Email" />
+                        <TableColumn fx:id="birthDateColumn" text="Date of Birth" />
+                        <TableColumn fx:id="registrationNoColumn" text="Registration No." />
+                        <TableColumn fx:id="batchColumn" text="Class" />
+                       
+                        <TableColumn fx:id="admissionDateColumn" text="Admission Date" />
+                        <TableColumn fx:id="previousInstituteColumn" text="Previous Institute" />
+                        <TableColumn fx:id="actionColumn" text="Actions" />
+                     </columns>
+                  </TableView>
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

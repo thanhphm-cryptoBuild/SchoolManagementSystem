@@ -78,13 +78,17 @@
     -fx-background-color: #7fff00;
 }
 
+.card_children_four {
+    -fx-background-color: linear-gradient(to right, #5F9EA0, #6FB8BA);
+}
+
 .card_children_three {
-    -fx-background-color: linear-gradient(to right, #A7AB79, #DBE09F);
+    -fx-background-color: linear-gradient(to right, #A37C7C, #C49595);
 }
 
 .card_chart {
     -fx-background-radius: 10px;
-    -fx-background-color: #ABFFE6;
+    -fx-background-color: #FFFFFF;
 }
 
 .cursor {

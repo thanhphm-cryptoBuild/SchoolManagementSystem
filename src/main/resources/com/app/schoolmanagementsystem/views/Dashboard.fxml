@@ -3,12 +3,8 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.geometry.Point3D?>
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -19,15 +15,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1028.0" styleClass="parent" stylesheets="@../css/Dashboard.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.Controller">
-   <children>
+<AnchorPane id="AnchorPane" prefHeight="768.0" prefWidth="1028.0" styleClass="parent" stylesheets="@../css/Dashboard.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.Controller">
+  <children>
       <AnchorPane prefWidth="1028.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane fx:id="anchorSideBar" layoutY="60.0" prefHeight="708.0" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="60.0">
                <children>
-                  <Pane layoutY="60.0" prefHeight="648.0" prefWidth="200.0" styleClass="sidebar_action">
+                  <Pane layoutY="60.0" prefHeight="648.0" prefWidth="200.0" styleClass="sidebar_action" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="60.0">
                      <children>
-                        <Pane layoutX="-2.0" layoutY="12.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane onMouseClicked="#buttonHome" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <VBox fx:id="iconDashboardSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                  <children>
@@ -48,8 +44,12 @@
                                  </children>
                               </VBox>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="72.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="60.0" onMouseClicked="#buttonCalendar" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -74,8 +74,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="132.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="120.0" onMouseClicked="#buttonStaff" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -100,8 +104,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="192.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="180.0" onMouseClicked="#buttonStudent" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -126,8 +134,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="252.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="240.0" onMouseClicked="#buttonClass" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -152,8 +164,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="312.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="300.0" onMouseClicked="#buttonEvent" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -178,8 +194,12 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
-                        <Pane layoutX="-2.0" layoutY="372.0" prefHeight="60.0" prefWidth="200.0" styleClass="sidebar_action">
+                        <Pane layoutY="360.0" onMouseClicked="#buttonAdvanced" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -204,15 +224,19 @@
                                  </children>
                               </Pane>
                            </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
                         </Pane>
                         <Pane fx:id="navigateSideBar" layoutX="80.0" layoutY="583.0" prefHeight="40.0" prefWidth="40.0">
                            <children>
-                              <ImageView fx:id="open" fitHeight="34.0" fitWidth="30.0" layoutX="7.0" layoutY="5.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
+                              <ImageView fx:id="open" fitHeight="40.0" fitWidth="40.0" layoutX="2.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
                                  <image>
                                     <Image url="@../images/right-arrow%20(1).png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="close" fitHeight="22.0" fitWidth="22.0" layoutX="8.0" layoutY="8.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="close" fitHeight="30.0" fitWidth="36.0" layoutX="4.0" layoutY="5.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/left-chevron.png" />
                                  </image>
@@ -259,9 +283,9 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <AnchorPane layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #E8E8E8;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #C9AA00;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitHeight="42.0" fitWidth="42.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -308,7 +332,7 @@
                                           <Insets left="20.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false" styleClass="dropdown_avatar">
+                                    <Button alignment="CENTER" contentDisplay="BOTTOM" mnemonicParsing="false">
                                        <graphic>
                                           <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -316,6 +340,10 @@
                                              </image>
                                           </ImageView>
                                        </graphic>
+                                       <styleClass>
+                                          <String fx:value="dropdown_avatar" />
+                                          <String fx:value="cursor" />
+                                       </styleClass>
                                     </Button>
                                  </children>
                               </HBox>
@@ -344,206 +372,8 @@
                   </VBox>
                </children>
             </AnchorPane>
-            <StackPane layoutX="70.4" layoutY="60.0" prefHeight="708.0" prefWidth="958.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
-               <children>
-                  <VBox prefHeight="565.0" prefWidth="936.0" spacing="15.0">
-                     <children>
-                        <VBox prefHeight="200.0" prefWidth="250.0" spacing="5.0">
-                           <children>
-                              <Label prefHeight="26.0" prefWidth="94.0" text="Dashboard" textFill="#6243ff">
-                                 <font>
-                                    <Font name="Sitka Text" size="18.0" />
-                                 </font>
-                              </Label>
-                              <HBox alignment="CENTER" fillHeight="false" prefHeight="177.0" prefWidth="918.0" spacing="28.0" styleClass="card_one">
-                                 <children>
-                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="167.0" prefWidth="275.0">
-                                       <children>
-                                          <HBox alignment="CENTER" prefHeight="86.0" prefWidth="231.0">
-                                             <children>
-                                                <VBox alignment="CENTER_LEFT" prefHeight="53.0" prefWidth="185.0">
-                                                   <children>
-                                                      <Label prefHeight="22.0" prefWidth="146.0" text="STAFF" textFill="CHARTREUSE">
-                                                         <font>
-                                                            <Font name="Sitka Text Bold" size="18.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label prefHeight="30.0" prefWidth="146.0" text="150" textFill="CHARTREUSE">
-                                                         <font>
-                                                            <Font name="System Bold" size="20.0" />
-                                                         </font>
-                                                      </Label>
-                                                   </children>
-                                                </VBox>
-                                                <Pane prefHeight="53.0" prefWidth="87.0" />
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/management.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefHeight="46.0" prefWidth="231.0">
-                                             <padding>
-                                                <Insets bottom="15.0" top="15.0" />
-                                             </padding>
-                                          </Separator>
-                                          <HBox prefHeight="100.0" prefWidth="200.0">
-                                             <children>
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/leadership.png" />
-                                                   </image>
-                                                </ImageView>
-                                                <Pane prefHeight="54.0" prefWidth="59.0" />
-                                                <VBox alignment="CENTER_RIGHT" prefHeight="54.0" prefWidth="137.0">
-                                                   <children>
-                                                      <Label alignment="CENTER_RIGHT" prefHeight="22.0" prefWidth="138.0" text="TEACHER" textFill="CHARTREUSE">
-                                                         <font>
-                                                            <Font name="Sitka Text Bold" size="18.0" />
-                                                         </font>
-                                                      </Label>
-                                                      <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="30.0" prefWidth="139.0" text="36" textFill="CHARTREUSE">
-                                                         <font>
-                                                            <Font name="System Bold" size="20.0" />
-                                                         </font>
-                                                      </Label>
-                                                   </children>
-                                                </VBox>
-                                             </children>
-                                          </HBox>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </padding>
-                                       <HBox.margin>
-                                          <Insets bottom="15.0" top="15.0" />
-                                       </HBox.margin>
-                                       <styleClass>
-                                          <String fx:value="card_children" />
-                                          <String fx:value="card_children_one" />
-                                       </styleClass>
-                                    </VBox>
-                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="167.0" prefWidth="275.0">
-                                       <children>
-                                          <HBox alignment="CENTER" prefHeight="86.0" prefWidth="231.0">
-                                             <children>
-                                                <Label prefHeight="22.0" prefWidth="200.0" text="STUDENT" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Sitka Text Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <Pane prefHeight="100.0" prefWidth="200.0" />
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/student.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefHeight="46.0" prefWidth="231.0">
-                                             <padding>
-                                                <Insets bottom="15.0" top="15.0" />
-                                             </padding>
-                                          </Separator>
-                                          <Label prefHeight="76.0" prefWidth="231.0" text="547" textFill="WHITE">
-                                             <font>
-                                                <Font name="System Bold" size="36.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </padding>
-                                       <styleClass>
-                                          <String fx:value="card_children" />
-                                          <String fx:value="card_children_two" />
-                                       </styleClass>
-                                       <HBox.margin>
-                                          <Insets bottom="15.0" top="15.0" />
-                                       </HBox.margin>
-                                    </VBox>
-                                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="167.0" prefWidth="275.0">
-                                       <children>
-                                          <HBox alignment="CENTER" prefHeight="86.0" prefWidth="231.0">
-                                             <children>
-                                                <Label prefHeight="22.0" prefWidth="200.0" text="CLASS" textFill="#9e37ed">
-                                                   <font>
-                                                      <Font name="Sitka Text Bold" size="18.0" />
-                                                   </font>
-                                                </Label>
-                                                <Pane prefHeight="100.0" prefWidth="200.0" />
-                                                <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                                   <image>
-                                                      <Image url="@../images/school.png" />
-                                                   </image>
-                                                </ImageView>
-                                             </children>
-                                          </HBox>
-                                          <Separator prefHeight="46.0" prefWidth="231.0">
-                                             <padding>
-                                                <Insets bottom="15.0" top="15.0" />
-                                             </padding>
-                                          </Separator>
-                                          <Label prefHeight="76.0" prefWidth="231.0" text="20" textFill="#9e37ed">
-                                             <font>
-                                                <Font name="System Bold" size="36.0" />
-                                             </font>
-                                          </Label>
-                                       </children>
-                                       <padding>
-                                          <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-                                       </padding>
-                                       <styleClass>
-                                          <String fx:value="card_children" />
-                                          <String fx:value="card_children_three" />
-                                       </styleClass>
-                                       <HBox.margin>
-                                          <Insets bottom="15.0" top="15.0" />
-                                       </HBox.margin>
-                                    </VBox>
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER_LEFT" prefHeight="420.0" prefWidth="918.0" spacing="5.0">
-                           <children>
-                              <Label prefHeight="22.0" prefWidth="136.0" text="Chart Income" textAlignment="RIGHT" textFill="#6243ff">
-                                 <font>
-                                    <Font name="Sitka Text" size="18.0" />
-                                 </font>
-                              </Label>
-                              <HBox alignment="CENTER" fillHeight="false" prefHeight="422.0" prefWidth="918.0" spacing="10.0">
-                                 <children>
-                                    <StackPane prefHeight="400.0" prefWidth="457.0" styleClass="card_one">
-                                       <children>
-                                          <LineChart fx:id="lineview" prefHeight="394.0" prefWidth="472.0">
-                                             <xAxis>
-                                                <CategoryAxis side="BOTTOM" fx:id="x" />
-                                             </xAxis>
-                                             <yAxis>
-                                                <NumberAxis fx:id="y" side="LEFT" />
-                                             </yAxis>
-                                             <StackPane.margin>
-                                                <Insets />
-                                             </StackPane.margin>
-                                          </LineChart>
-                                       </children>
-                                    </StackPane>
-                                    <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="378.0" prefWidth="1.0" />
-                                    <StackPane fx:id="panepie" prefHeight="400.0" prefWidth="450.0" styleClass="card_one" />
-                                 </children>
-                              </HBox>
-                           </children>
-                        </VBox>
-                     </children>
-                     <padding>
-                        <Insets left="20.0" right="20.0" top="20.0" />
-                     </padding>
-                  </VBox>
-               </children>
-            </StackPane>
+            <StackPane fx:id="stackLoadPage" layoutX="70.4" layoutY="60.0" prefHeight="708.0" prefWidth="958.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
          </children>
       </AnchorPane>
-   </children>
+  </children>
 </AnchorPane>

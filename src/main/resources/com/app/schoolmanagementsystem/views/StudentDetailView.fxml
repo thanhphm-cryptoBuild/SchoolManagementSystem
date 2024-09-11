@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.app.schoolmanagementsystem.controller.StudentDetailController"
+      spacing="10" alignment="CENTER" style="-fx-padding: 20;">
+    <Label text="Thông tin chi tiết sinh viên" style="-fx-font-size: 20; -fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Mã sinh viên:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <Label fx:id="idLabel" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Họ và tên:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <Label fx:id="nameLabel" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Địa chỉ:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label fx:id="addressLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Số điện thoại:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <Label fx:id="phoneLabel" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <Label fx:id="emailLabel" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Ngày sinh:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <Label fx:id="birthDateLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+        <Label text="Số đăng ký:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <Label fx:id="registrationNoLabel" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+        <Label text="Khóa học:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <Label fx:id="batchLabel" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+        <Label text="Ngày nhập học:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <Label fx:id="admissionDateLabel" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+        <Label text="Trường học trước đây:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <Label fx:id="previousInstituteLabel" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+
+        <Label text="Lý do rời trường:" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+        <Label fx:id="reasonForLeavingLabel" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+
+        <Label text="Liên hệ người giám hộ:" GridPane.columnIndex="0" GridPane.rowIndex="11"/>
+        <Label fx:id="guardianContactLabel" GridPane.columnIndex="1" GridPane.rowIndex="11"/>
+
+        <Label text="Mã lớp:" GridPane.columnIndex="0" GridPane.rowIndex="12"/>
+        <Label fx:id="classIDLabel" GridPane.columnIndex="1" GridPane.rowIndex="12"/>
+
+        <Label text="Giới tính:" GridPane.columnIndex="0" GridPane.rowIndex="13"/>
+        <Label fx:id="sexLabel" GridPane.columnIndex="1" GridPane.rowIndex="13"/>
+    </GridPane>
+
+    <Button text="Đóng" onAction="#closeWindow"/>
+</VBox>

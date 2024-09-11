@@ -1,17 +1,17 @@
 package com.app.schoolmanagementsystem.controller;
 
 import javafx.animation.TranslateTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.*;
+import javafx.scene.Parent;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -48,9 +48,6 @@ public class Controller implements Initializable {
     private ImageView iconGifCar;
 
     @FXML
-    private LineChart<?, ?> lineview;
-
-    @FXML
     private VBox nameAdvancedSB;
 
     @FXML
@@ -74,7 +71,6 @@ public class Controller implements Initializable {
     @FXML
     private Pane navigateSideBar;
 
-
     @FXML
     private VBox logo;
 
@@ -85,23 +81,25 @@ public class Controller implements Initializable {
     private ImageView open;
 
     @FXML
-    private StackPane panepie;
-
-    @FXML
-    private CategoryAxis x;
-
-    @FXML
-    private NumberAxis y;
+    private StackPane stackLoadPage;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        anchorSideBar.setTranslateX(0);
-        anchorSideBar.toFront();
-        open.setVisible(false);
-        close.setVisible(true);
-        loadDataPieChart();
-        loadDataLineChart();
+
+        try {
+            anchorSideBar.setTranslateX(0);
+            anchorSideBar.toFront();
+            open.setVisible(false);
+            close.setVisible(true);
+
+            Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageDashboard.fxml"));
+            stackLoadPage.getChildren().removeAll();
+            stackLoadPage.getChildren().setAll(fxml);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     @FXML
@@ -259,78 +257,54 @@ public class Controller implements Initializable {
         iconGifCar.setTranslateX(0);
     }
 
-    void loadDataPieChart() {
-
-        ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
-                new PieChart.Data("Male Staff", 20),
-                new PieChart.Data("Female Staff", 60),
-                new PieChart.Data("Male Student", 75),
-                new PieChart.Data("Female Student", 90)
-        );
-
-        PieChart pieChart = new PieChart(list);
-        pieChart.setMaxWidth(500);
-        pieChart.setMaxHeight(350);
-        pieChart.setClockwise(true);
-        pieChart.setLabelsVisible(true);
-        pieChart.setStyle("-fx-font-weight: regular; -fx-font-family: Sitka Text; -fx-font-size: 14px;");
-        pieChart.setLabelLineLength(10);
-
-
-        panepie.getChildren().add(pieChart);
-
+    @FXML
+    void buttonAdvanced(MouseEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml"));
+        stackLoadPage.getChildren().removeAll();
+        stackLoadPage.getChildren().setAll(fxml);
     }
 
-    void loadDataLineChart() {
-        XYChart.Series lineChartOne = new XYChart.Series<>();
-        lineChartOne.setName("Staff");
-
-        lineChartOne.getData().add(new XYChart.Data<>("1", 2));
-        lineChartOne.getData().add(new XYChart.Data<>("2", 10));
-        lineChartOne.getData().add(new XYChart.Data<>("3", 9));
-        lineChartOne.getData().add(new XYChart.Data<>("4", 11));
-        lineChartOne.getData().add(new XYChart.Data<>("5", 15));
-        lineChartOne.getData().add(new XYChart.Data<>("6", 10));
-        lineChartOne.getData().add(new XYChart.Data<>("7", 14));
-        lineChartOne.getData().add(new XYChart.Data<>("8", 20));
-        lineChartOne.getData().add(new XYChart.Data<>("9", 21));
-        lineChartOne.getData().add(new XYChart.Data<>("10", 22));
-        lineChartOne.getData().add(new XYChart.Data<>("11", 34));
-        lineChartOne.getData().add(new XYChart.Data<>("12", 50));
-
-        XYChart.Series lineChartTwo = new XYChart.Series<>();
-        lineChartTwo.setName("Teacher    ");
-
-        lineChartTwo.getData().add(new XYChart.Data<>("1", 5));
-        lineChartTwo.getData().add(new XYChart.Data<>("2", 2));
-        lineChartTwo.getData().add(new XYChart.Data<>("3", 15));
-        lineChartTwo.getData().add(new XYChart.Data<>("4", 7));
-        lineChartTwo.getData().add(new XYChart.Data<>("5", 20));
-        lineChartTwo.getData().add(new XYChart.Data<>("6", 15));
-        lineChartTwo.getData().add(new XYChart.Data<>("7", 19));
-        lineChartTwo.getData().add(new XYChart.Data<>("8", 36));
-        lineChartTwo.getData().add(new XYChart.Data<>("9", 50));
-        lineChartTwo.getData().add(new XYChart.Data<>("10", 62));
-        lineChartTwo.getData().add(new XYChart.Data<>("11", 70));
-        lineChartTwo.getData().add(new XYChart.Data<>("12", 85));
-
-        XYChart.Series lineChartThree = new XYChart.Series<>();
-        lineChartThree.setName(" Student");
-
-        lineChartThree.getData().add(new XYChart.Data<>("1", 50));
-        lineChartThree.getData().add(new XYChart.Data<>("2", 30));
-        lineChartThree.getData().add(new XYChart.Data<>("3", 10));
-        lineChartThree.getData().add(new XYChart.Data<>("4", 25));
-        lineChartThree.getData().add(new XYChart.Data<>("5", 12));
-        lineChartThree.getData().add(new XYChart.Data<>("6", 15));
-        lineChartThree.getData().add(new XYChart.Data<>("7", 60));
-        lineChartThree.getData().add(new XYChart.Data<>("8", 62));
-        lineChartThree.getData().add(new XYChart.Data<>("9", 68));
-        lineChartThree.getData().add(new XYChart.Data<>("10", 89));
-        lineChartThree.getData().add(new XYChart.Data<>("11", 80));
-        lineChartThree.getData().add(new XYChart.Data<>("12", 100));
-
-        lineview.getData().addAll(lineChartOne, lineChartTwo, lineChartThree);
+    @FXML
+    void buttonCalendar(MouseEvent event) throws IOException {
+            Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageCalendar.fxml"));
+            stackLoadPage.getChildren().removeAll();
+            stackLoadPage.getChildren().setAll(fxml);
     }
+
+    @FXML
+    void buttonClass(MouseEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageClass.fxml"));
+        stackLoadPage.getChildren().removeAll();
+        stackLoadPage.getChildren().setAll(fxml);
+    }
+
+    @FXML
+    void buttonEvent(MouseEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageEvent.fxml"));
+        stackLoadPage.getChildren().removeAll();
+        stackLoadPage.getChildren().setAll(fxml);
+    }
+
+    @FXML
+    void buttonHome(MouseEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageDashboard.fxml"));
+        stackLoadPage.getChildren().removeAll();
+        stackLoadPage.getChildren().setAll(fxml);
+    }
+
+    @FXML
+    void buttonStaff(MouseEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageStaff.fxml"));
+        stackLoadPage.getChildren().removeAll();
+        stackLoadPage.getChildren().setAll(fxml);
+    }
+
+    @FXML
+    void buttonStudent(MouseEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageStudent.fxml"));
+        stackLoadPage.getChildren().removeAll();
+        stackLoadPage.getChildren().setAll(fxml);
+    }
+
 
 }

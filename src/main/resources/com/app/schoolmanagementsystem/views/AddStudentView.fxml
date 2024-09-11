@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.app.schoolmanagementsystem.controller.AddStudentController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <GridPane hgap="10" vgap="10">
+        <Label text="Họ và tên:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="nameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+        <Label text="Địa chỉ:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+        <Label text="Số điện thoại:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+        <Label text="Ngày sinh:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <DatePicker fx:id="birthDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+        <Label text="Số đăng ký:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <TextField fx:id="registrationNoField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+
+        <Label text="Lớp:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <TextField fx:id="batchField" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+        <Label text="Ngày nhập học:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <DatePicker fx:id="admissionDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+
+        <Label text="Trường trước đó:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <TextField fx:id="previousInstituteField" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+
+        <Label text="Giới tính:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <ComboBox fx:id="sexComboBox" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+    </GridPane>
+
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Thêm sinh viên" onAction="#addStudent"/>
+        <Button text="Hủy" onAction="#cancel"/>
+    </HBox>
+</VBox>
