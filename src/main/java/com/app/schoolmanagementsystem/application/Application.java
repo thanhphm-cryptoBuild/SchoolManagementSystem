@@ -20,7 +20,7 @@ Application extends javafx.application.Application {
         stage.setScene(scene);
 //        stage.setFullScreen(true);
         stage.centerOnScreen();
-
+// hhh
         stage.show();
     }
 
