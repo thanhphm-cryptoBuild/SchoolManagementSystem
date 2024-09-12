@@ -97,6 +97,7 @@
                                           <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Ngày nhập học" />
                                           <TableColumn fx:id="colClassID" prefWidth="75.0" text="Lớp" />
                                           <TableColumn fx:id="colStatus" prefWidth="75.0" text="Trạng thái" />
+                                          <TableColumn fx:id="colAction" prefWidth="75.0" text="Hành động" />
                                        </columns>
                                     </TableView>
                                  </content>
