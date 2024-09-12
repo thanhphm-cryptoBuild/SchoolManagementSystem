@@ -16,6 +16,7 @@ public class StudentModel {
     private String previousSchool;
     private String reasonForLeaving;
     private String status;
+    private int stt;
 
     // Constructor
     public StudentModel(int studentID, String firstName, String lastName, Date dateOfBirth, boolean gender,
@@ -136,5 +137,13 @@ public class StudentModel {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getSTT() {
+        return stt;
+    }
+
+    public void setSTT(int stt) {
+        this.stt = stt;
     }
 }

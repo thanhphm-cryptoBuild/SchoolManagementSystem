@@ -86,18 +86,19 @@
                                  <content>
                                     <TableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                        <columns>
-                                          <TableColumn fx:id="colStudentID" prefWidth="75.0" text="ID" />
-                                          <TableColumn fx:id="colFirstName" prefWidth="100.0" text="Họ" />
-                                          <TableColumn fx:id="colLastName" prefWidth="100.0" text="Tên" />
-                                          <TableColumn fx:id="colDateOfBirth" prefWidth="100.0" text="Ngày sinh" />
-                                          <TableColumn fx:id="colGender" prefWidth="75.0" text="Giới tính" />
-                                          <TableColumn fx:id="colAddress" prefWidth="150.0" text="Địa chỉ" />
-                                          <TableColumn fx:id="colPhoneNumber" prefWidth="100.0" text="Số điện thoại" />
+                                          <TableColumn fx:id="colSTT" prefWidth="75.0" text="No." />
+                                          <TableColumn fx:id="colFirstName" prefWidth="100.0" text="First Name" />
+                                          <TableColumn fx:id="colLastName" prefWidth="100.0" text="Last Name" />
+                                          <TableColumn fx:id="colDateOfBirth" prefWidth="100.0" text="Date of Birth" />
+                                          <TableColumn fx:id="colGender" prefWidth="75.0" text="Gender" />
+                                          <TableColumn fx:id="colAddress" prefWidth="150.0" text="Address" />
+                                          <TableColumn fx:id="colPhoneNumber" prefWidth="100.0" text="Phone Number" />
                                           <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
-                                          <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Ngày nhập học" />
-                                          <TableColumn fx:id="colClassID" prefWidth="75.0" text="Lớp" />
-                                          <TableColumn fx:id="colStatus" prefWidth="75.0" text="Trạng thái" />
-                                          <TableColumn fx:id="colAction" prefWidth="75.0" text="Hành động" />
+                                          <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Enrollment Date" />
+                                          <TableColumn fx:id="colClassID" prefWidth="75.0" text="Class" />
+                                          <TableColumn fx:id="colAction" prefWidth="75.0" text="Action" />
+                                          <!-- Ẩn cột Status -->
+                                          <!-- <TableColumn fx:id="colStatus" prefWidth="75.0" text="Status" /> -->
                                        </columns>
                                     </TableView>
                                  </content>

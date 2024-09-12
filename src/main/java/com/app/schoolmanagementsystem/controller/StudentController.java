@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.animation.TranslateTransition;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.util.Duration;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
@@ -36,7 +37,7 @@ public class StudentController implements Initializable {
     private TableView<StudentModel> studentTable;
 
     @FXML
-    private TableColumn<StudentModel, Integer> colStudentID;
+    private TableColumn<StudentModel, Integer> colSTT;
 
     @FXML
     private TableColumn<StudentModel, String> colFirstName;
@@ -66,7 +67,7 @@ public class StudentController implements Initializable {
     private TableColumn<StudentModel, Integer> colClassID;
 
     @FXML
-    private TableColumn<StudentModel, String> colStatus;
+    private TableColumn<StudentModel, String> colStatus; // Giữ khai báo này
 
     @FXML
     private TableColumn<StudentModel, Void> colAction;
@@ -79,7 +80,9 @@ public class StudentController implements Initializable {
     }
 //Hàm thiết lập các cột
     private void setupTableColumns() {
-        colStudentID.setCellValueFactory(new PropertyValueFactory<>("studentID"));
+        colSTT.setCellValueFactory(column -> 
+            new SimpleIntegerProperty(studentTable.getItems().indexOf(column.getValue()) + 1).asObject());
+        
         colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
@@ -89,7 +92,8 @@ public class StudentController implements Initializable {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colEnrollmentDate.setCellValueFactory(new PropertyValueFactory<>("enrollmentDate"));
         colClassID.setCellValueFactory(new PropertyValueFactory<>("classID"));
-        colStatus.setCellValueFactory(new PropertyValueFactory<>("status"));
+        // Không thiết lập colStatus ở đây
+
         //Hàm tạo biểu tượng trong cột active
         colAction.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button();
@@ -124,7 +128,7 @@ public class StudentController implements Initializable {
                 if (empty || item == null) {
                     setText(null);
                 } else {
-                    setText(item ? "Nam" : "Nữ");
+                    setText(item ? "Male" : "Female");
                 }
             }
         });
@@ -150,15 +154,13 @@ public class StudentController implements Initializable {
         ObservableList<StudentModel> studentData = FXCollections.observableArrayList();
         String query = "SELECT * FROM students WHERE Status = 'active'";
 
-        Connection conn = null;
-        try {
-            conn = ConnectDB.getConnection();
-            Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery(query);
+        try (Connection conn = ConnectDB.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
                 StudentModel student = new StudentModel(
-                        rs.getInt("StudentID"),
+                        rs.getInt("StudentID"),  // Vẫn giữ StudentID trong data
                         rs.getString("FirstName"),
                         rs.getString("LastName"),
                         rs.getDate("DateOfBirth"),
@@ -168,18 +170,15 @@ public class StudentController implements Initializable {
                         rs.getString("Email"),
                         rs.getDate("EnrollmentDate"),
                         rs.getInt("ClassID"),
-                        rs.getString("Status")
+                        rs.getString("Status") // Vẫn giữ Status trong data
                 );
                 studentData.add(student);
             }
 
             studentTable.setItems(studentData);
+            studentTable.refresh(); // Cập nhật bảng để hiển thị STT mới
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            if (conn != null) {
-                ConnectDB.closeConnection(conn);
-            }
         }
     }
 
