@@ -1,5 +1,30 @@
 package com.app.schoolmanagementsystem.utils;
 
-public class ConnectDB {
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
+public class ConnectDB {
+    private static final String URL = "jdbc:mysql://localhost:3306/schoolmanagementsystem";
+    private static final String USER = "root";
+    private static final String PASSWORD = "";
+
+    public static Connection getConnection() throws SQLException {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            return DriverManager.getConnection(URL, USER, PASSWORD);
+        } catch (ClassNotFoundException e) {
+            throw new SQLException("Không tìm thấy driver MySQL", e);
+        }
+    }
+
+    public static void closeConnection(Connection connection) {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                System.out.println("Lỗi khi đóng kết nối: " + e.getMessage());
+            }
+        }
+    }
 }

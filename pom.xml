@@ -45,6 +45,12 @@
       <artifactId>fontawesomefx</artifactId>
       <version>8.2</version>
     </dependency>
+    <dependency>
+    <!-- thêm thư viện mysql-->
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>8.0.33</version>
+</dependency>
 
     <!-- Thêm thư viện ở đây (link chính thống của maven này https://mvnrepository.com/)-->
   </dependencies>
