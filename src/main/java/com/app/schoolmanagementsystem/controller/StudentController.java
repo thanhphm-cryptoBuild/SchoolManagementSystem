@@ -116,6 +116,18 @@ public class StudentController implements Initializable {
                 }
             }
         });
+        //Update dữ liệu boolean thành text Nam, Nữ
+        colGender.setCellFactory(column -> new TableCell<StudentModel, Boolean>() {
+            @Override
+            protected void updateItem(Boolean item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(item ? "Nam" : "Nữ");
+                }
+            }
+        });
     }
 //Hàm xóa Student
     private void deleteStudent(StudentModel student) {
