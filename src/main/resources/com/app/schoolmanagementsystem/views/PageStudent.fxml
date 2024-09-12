@@ -14,7 +14,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-
 <StackPane fx:id="pageStudent" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StudentController">
    <children>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/pageStudent.css">
@@ -85,27 +84,19 @@
                            <children>
                               <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0">
                                  <content>
-                                    <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                                    <TableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                        <columns>
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="140.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
+                                          <TableColumn fx:id="colStudentID" prefWidth="75.0" text="ID" />
+                                          <TableColumn fx:id="colFirstName" prefWidth="100.0" text="Họ" />
+                                          <TableColumn fx:id="colLastName" prefWidth="100.0" text="Tên" />
+                                          <TableColumn fx:id="colDateOfBirth" prefWidth="100.0" text="Ngày sinh" />
+                                          <TableColumn fx:id="colGender" prefWidth="75.0" text="Giới tính" />
+                                          <TableColumn fx:id="colAddress" prefWidth="150.0" text="Địa chỉ" />
+                                          <TableColumn fx:id="colPhoneNumber" prefWidth="100.0" text="Số điện thoại" />
+                                          <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
+                                          <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Ngày nhập học" />
+                                          <TableColumn fx:id="colClassID" prefWidth="75.0" text="Lớp" />
+                                          <TableColumn fx:id="colStatus" prefWidth="75.0" text="Trạng thái" />
                                        </columns>
                                     </TableView>
                                  </content>

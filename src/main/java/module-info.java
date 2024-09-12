@@ -3,6 +3,9 @@ module com.app.schoolmanagementsystem {
     requires javafx.fxml;
     requires java.sql;
 
+    opens com.app.schoolmanagementsystem.model to javafx.base;
     opens com.app.schoolmanagementsystem.controller to javafx.fxml;
+    opens com.app.schoolmanagementsystem.application to javafx.graphics;
+
     exports com.app.schoolmanagementsystem.application;
 }

@@ -18,7 +18,19 @@ public class StudentModel {
     private String status;
 
     // Constructor
-    public StudentModel() {
+    public StudentModel(int studentID, String firstName, String lastName, Date dateOfBirth, boolean gender,
+                        String address, String phoneNumber, String email, Date enrollmentDate, int classID, String status) {
+        this.studentID = studentID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.gender = gender;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.enrollmentDate = enrollmentDate;
+        this.classID = classID;
+        this.status = status;
     }
 
     // Getters và Setters
@@ -54,11 +66,11 @@ public class StudentModel {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public boolean isGender() {
+    public Boolean getGender() {
         return gender;
     }
 
-    public void setGender(boolean gender) {
+    public void setGender(Boolean gender) {
         this.gender = gender;
     }
 
