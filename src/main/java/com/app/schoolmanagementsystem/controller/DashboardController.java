@@ -1,10 +1,12 @@
 package com.app.schoolmanagementsystem.controller;
 
+import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 
@@ -27,14 +29,17 @@ public class DashboardController implements Initializable {
     @FXML
     private NumberAxis y;
 
+    @FXML
+    private Label studentCountLabel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
+        loadStudentCount();
     }
 
     void loadDataPieChart() {
-
         ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
                 new PieChart.Data("Male Staff", 20),
                 new PieChart.Data("Female Staff", 60),
@@ -51,7 +56,6 @@ public class DashboardController implements Initializable {
         pieChart.setLabelLineLength(15);
 
         panepie.getChildren().add(pieChart);
-
     }
 
     void loadDataLineChart() {
@@ -72,7 +76,7 @@ public class DashboardController implements Initializable {
         lineChartOne.getData().add(new XYChart.Data<>("12", 50));
 
         XYChart.Series lineChartTwo = new XYChart.Series<>();
-        lineChartTwo.setName("Teacher    ");
+        lineChartTwo.setName("Teacher");
 
         lineChartTwo.getData().add(new XYChart.Data<>("1", 5));
         lineChartTwo.getData().add(new XYChart.Data<>("2", 2));
@@ -88,7 +92,7 @@ public class DashboardController implements Initializable {
         lineChartTwo.getData().add(new XYChart.Data<>("12", 85));
 
         XYChart.Series lineChartThree = new XYChart.Series<>();
-        lineChartThree.setName(" Student");
+        lineChartThree.setName("Student");
 
         lineChartThree.getData().add(new XYChart.Data<>("1", 50));
         lineChartThree.getData().add(new XYChart.Data<>("2", 30));
@@ -105,7 +109,11 @@ public class DashboardController implements Initializable {
 
         lineview.getData().addAll(lineChartOne, lineChartTwo, lineChartThree);
 
-
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
+    }
+
+    private void loadStudentCount() {
+        int studentCount = ConnectDB.countStudents();
+        studentCountLabel.setText(String.valueOf(studentCount)); // Chỉ hiển thị số
     }
 }
