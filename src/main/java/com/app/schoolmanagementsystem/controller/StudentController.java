@@ -10,7 +10,9 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -19,7 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javafx.scene.effect.GaussianBlur;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
@@ -30,6 +32,8 @@ import java.util.ResourceBundle;
 // Định nghĩa cho các trường và cột
 public class StudentController implements Initializable {
 
+
+    public AnchorPane moveBG;
     @FXML
     private StackPane pageStudent;
 
@@ -80,9 +84,9 @@ public class StudentController implements Initializable {
     }
 //Hàm thiết lập các cột
     private void setupTableColumns() {
-        colSTT.setCellValueFactory(column -> 
+        colSTT.setCellValueFactory(column ->
             new SimpleIntegerProperty(studentTable.getItems().indexOf(column.getValue()) + 1).asObject());
-        
+
         colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
@@ -136,7 +140,7 @@ public class StudentController implements Initializable {
 //Hàm xóa Student
     private void deleteStudent(StudentModel student) {
         String query = "UPDATE students SET Status = 'inactive' WHERE StudentID = " + student.getStudentID();
-        
+
         try (Connection conn = ConnectDB.getConnection();
              Statement stmt = conn.createStatement()) {
             int result = stmt.executeUpdate(query);
@@ -184,20 +188,27 @@ public class StudentController implements Initializable {
 
     @FXML
     void addStudentBTN(MouseEvent event) throws IOException {
-        StackPane pageAddStudent = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAddStudent.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAddStudent.fxml"));
+        StackPane pageAddStudent = loader.load();
+
+        AddStudentController addStudentController = loader.getController();
+        addStudentController.setPageStudent(pageStudent);
+        addStudentController.setBGPageStudent(moveBG);
 
         pageAddStudent.setTranslateX(2000);
         pageAddStudent.setTranslateY(10);
 
         pageStudent.getChildren().add(pageAddStudent);
 
+        GaussianBlur gaussianBlur = new GaussianBlur(10);
+        moveBG.setEffect(gaussianBlur);
+
         TranslateTransition translateTransition = new TranslateTransition();
         translateTransition.setDuration(Duration.seconds(0.2));
         translateTransition.setNode(pageAddStudent);
         translateTransition.setFromX(2000);
-        translateTransition.setToY(9);
-        translateTransition.setToX(500);
-
+        translateTransition.setToY(6);
+        translateTransition.setToX(420);
         translateTransition.play();
     }
 }
