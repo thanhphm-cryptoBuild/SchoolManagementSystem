@@ -36,15 +36,16 @@ public class DashboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
-        loadStudentCount();
+        loadStudentCount();// khởi chạy thêm hàm đếm student
     }
 
     void loadDataPieChart() {
+        int maleStudents = ConnectDB.countStudentsByGender(true);
+        int femaleStudents = ConnectDB.countStudentsByGender(false);
+
         ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
-                new PieChart.Data("Male Staff", 20),
-                new PieChart.Data("Female Staff", 60),
-                new PieChart.Data("Male Student", 75),
-                new PieChart.Data("Female Student", 90)
+                new PieChart.Data("Male Student", maleStudents),
+                new PieChart.Data("Female Student", femaleStudents)
         );
 
         PieChart pieChart = new PieChart(list);
@@ -111,9 +112,9 @@ public class DashboardController implements Initializable {
 
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }
-
+    //chạy hàm đếm student
     private void loadStudentCount() {
         int studentCount = ConnectDB.countStudents();
-        studentCountLabel.setText(String.valueOf(studentCount)); // Chỉ hiển thị số
+        studentCountLabel.setText(String.valueOf(studentCount)); 
     }
 }

@@ -43,4 +43,17 @@ public class ConnectDB {
         }
         return 0;
     }
+    public static int countStudentsByGender(boolean isMale) {
+        String query = "SELECT COUNT(*) AS total FROM students WHERE Status = 'active' AND Gender = " + (isMale ? 1 : 0);
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }
