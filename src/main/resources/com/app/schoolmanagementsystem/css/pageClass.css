@@ -21,3 +21,34 @@
     -fx-background-color: linear-gradient(to right, #5852FF, #B438FF);
 }
 
+.search {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #6F6F6F;
+    -fx-border-radius: 20px;
+    -fx-background-radius: 20px;
+}
+
+
+.search_field {
+    -fx-border: 0 0 0 1px;
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 0 20px 20px 0;
+    -fx-border-radius: 0 20px 20px 0 ;
+}
+
+.search_icon_field {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-background-color: #F4F4F4;
+    -fx-background-radius: 20px 0 0 20px;
+    -fx-border-radius: 20px 0 0 20px;
+}
+
+.search_icon_field:hover {
+    -fx-background-color: #00FFFF;
+}
+
+.block {
+    -fx-background-color: #6F6F6F;
+}
+

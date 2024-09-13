@@ -2,3 +2,20 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 10px 0 0 10px;
 }
+
+.text_title {
+    -fx-text-fill: #1a3395;
+}
+
+.close {
+    -fx-border: 0 0.5px 0.5px 0;
+    -fx-border-color: #00FFFF;
+    -fx-background-color: #00FFFF;
+    -fx-background-radius: 10px 0 10px 0;
+    -fx-border-radius: 10px 0 10px 0;
+    -fx-cursor: hand;
+}
+
+.close:hover {
+    -fx-background-color: #FF1460;
+}

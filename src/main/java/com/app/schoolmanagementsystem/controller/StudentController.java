@@ -4,6 +4,7 @@ import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
@@ -16,13 +17,20 @@ import java.util.ResourceBundle;
 
 public class StudentController implements Initializable {
 
+    @FXML
+    private AnchorPane moveBG;
 
     @FXML
     private StackPane pageStudent;
 
     @FXML
     void addStudentBTN(MouseEvent event) throws IOException {
-        StackPane pageAddStudent = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAddStudent.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAddStudent.fxml"));
+        StackPane pageAddStudent = loader.load();
+
+        AddStudentController addStudentController = loader.getController();
+        addStudentController.setPageStudent(pageStudent);
+        addStudentController.setBGPageStudent(moveBG);
 
         pageAddStudent.setTranslateX(2000);
         pageAddStudent.setTranslateY(10);
@@ -30,13 +38,15 @@ public class StudentController implements Initializable {
 //        pageStudent.getChildren().removeAll();
         pageStudent.getChildren().add(pageAddStudent);
 
+        GaussianBlur gaussianBlur = new GaussianBlur(10);
+        moveBG.setEffect(gaussianBlur);
+
         TranslateTransition translateTransition = new TranslateTransition();
         translateTransition.setDuration(Duration.seconds(0.2));
         translateTransition.setNode(pageAddStudent);
         translateTransition.setFromX(2000);
-        translateTransition.setToY(9);
-        translateTransition.setToX(500);
-
+        translateTransition.setToY(6);
+        translateTransition.setToX(420);
         translateTransition.play();
     }
 
