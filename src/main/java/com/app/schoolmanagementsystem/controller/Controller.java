@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -83,6 +84,9 @@ public class Controller implements Initializable {
     @FXML
     private StackPane stackLoadPage;
 
+    @FXML
+    private Label roleLabel; // Thêm fx:id cho Label
+    private String roleName;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -99,7 +103,11 @@ public class Controller implements Initializable {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+        roleLabel.setText(roleName);
     }
 
     @FXML
