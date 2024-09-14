@@ -308,7 +308,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <Label fx:id="roleLabel" text="Admin Master ">
+                                    <Label text="Admin Master ">
                                        <HBox.margin>
                                           <Insets left="5.0" />
                                        </HBox.margin>

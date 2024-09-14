@@ -1,4 +1,5 @@
 package com.app.schoolmanagementsystem.controller;
+
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,7 +9,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.control.Label;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -27,33 +28,14 @@ public class DashboardController implements Initializable {
 
     @FXML
     private NumberAxis y;
-    @FXML
-    private Label studentCountLabel;
-    @FXML
-    private Label label_totalStaff;
-
-    private com.app.schoolmanagementsystem.model.StaffModel staffModel;
 
     @FXML
     private Label studentCountLabel;
-
-    @FXML
-    private Label label_totalStaff;
-
-    private com.app.schoolmanagementsystem.model.StaffModel staffModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
-
-        staffModel = new com.app.schoolmanagementsystem.model.StaffModel();
-        updateTotalStaff();
-    }
-
-    private void updateTotalStaff() {
-        int totalStaff = staffModel.countActiveStaff();
-        label_totalStaff.setText(String.valueOf(totalStaff));
         loadStudentCount();// khởi chạy thêm hàm đếm student
     }
 
@@ -75,7 +57,6 @@ public class DashboardController implements Initializable {
         pieChart.setLabelLineLength(15);
 
         panepie.getChildren().add(pieChart);
-
     }
 
     void loadDataLineChart() {
@@ -134,6 +115,6 @@ public class DashboardController implements Initializable {
     //chạy hàm đếm student
     private void loadStudentCount() {
         int studentCount = ConnectDB.countStudents();
-        studentCountLabel.setText(String.valueOf(studentCount));
+        studentCountLabel.setText(String.valueOf(studentCount)); 
     }
 }

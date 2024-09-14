@@ -43,13 +43,13 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="297.0" styleClass="search">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="38.0" prefWidth="90.0" styleClass="search_icon_field">
+                                    <VBox alignment="CENTER" prefHeight="38.0" prefWidth="90.0" styleClass="search_icon_field" onMouseClicked="#onSearchIconClicked">
                                        <children>
-<!--                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />-->
+                                         <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField prefHeight="35.0" prefWidth="345.0" promptText="Search Here" styleClass="search_field">
+                                    <TextField fx:id="searchField" prefHeight="35.0" prefWidth="345.0" promptText="Search Here" styleClass="search_field" onKeyReleased="#onSearchKeyReleased">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
@@ -105,7 +105,7 @@
                                  <content>
                                     <TableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                        <columns>
-                                          <TableColumn fx:id="colAvatar" prefWidth="100.0" text="Avatar" />
+                                          <TableColumn fx:id="colAvatar" text="Avatar" />
                                           <TableColumn fx:id="colSTT" prefWidth="75.0" text="No." />
                                           <TableColumn fx:id="colFirstName" prefWidth="100.0" text="First Name" />
                                           <TableColumn fx:id="colLastName" prefWidth="100.0" text="Last Name" />

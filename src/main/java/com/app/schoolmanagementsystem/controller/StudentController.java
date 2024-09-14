@@ -8,10 +8,16 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -20,17 +26,14 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.util.Duration;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.shape.Circle;
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class StudentController implements Initializable {
@@ -78,10 +81,49 @@ public class StudentController implements Initializable {
     @FXML
     private TableColumn<StudentModel, String> colClassName;
 
+    // Path to the default avatar image
+    private final String defaultAvatarPath = "/com/app/schoolmanagementsystem/images/default_avatar.png";
+
+    @FXML
+    private TextField searchField;
+
+    private ObservableList<StudentModel> studentData = FXCollections.observableArrayList();
+
+    private boolean isSearchIconClicked = false;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setupTableColumns();
         loadStudentData();
+    }
+
+    @FXML
+    private void onSearchIconClicked() {
+        isSearchIconClicked = true;
+        onSearchKeyReleased();
+    }
+
+    @FXML
+    private void onSearchKeyReleased() {
+        if (!isSearchIconClicked) {
+            return;
+        }
+
+        String searchText = searchField.getText().toLowerCase();
+        ObservableList<StudentModel> filteredData = FXCollections.observableArrayList();
+
+        for (StudentModel student : studentData) {
+            if (student.getFirstName().toLowerCase().contains(searchText) ||
+                student.getLastName().toLowerCase().contains(searchText) ||
+                getClassNameById(student.getClassID()).toLowerCase().contains(searchText) ||
+                (student.getGender() ? "male" : "female").toLowerCase().contains(searchText) ||
+                student.getEmail().toLowerCase().contains(searchText)) {
+                filteredData.add(student);
+            }
+        }
+
+        studentTable.setItems(filteredData);
+        isSearchIconClicked = false; // Reset the flag after search
     }
 
     private void setupTableColumns() {
@@ -97,9 +139,9 @@ public class StudentController implements Initializable {
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
         colEnrollmentDate.setCellValueFactory(new PropertyValueFactory<>("enrollmentDate"));
 
+        // Configure Avatar column
         colAvatar.setCellFactory(column -> new TableCell<StudentModel, String>() {
             private final ImageView imageView = new ImageView();
-            private final String defaultAvatarPath = "file:/C:/Users/ADMIN/IdeaProjects/School/src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png";
 
             @Override
             protected void updateItem(String item, boolean empty) {
@@ -108,17 +150,33 @@ public class StudentController implements Initializable {
                     setGraphic(null);
                 } else {
                     try {
-                        // Kiểm tra và in ra đường dẫn avatar
-                        System.out.println("Avatar Path: " + item);
-                        Image image;
+                        String imagePath;
                         if (item.isEmpty()) {
-                            image = new Image(defaultAvatarPath);
+                            // Use default avatar path
+                            URL defaultImageURL = getClass().getResource(defaultAvatarPath);
+                            if (defaultImageURL != null) {
+                                imagePath = defaultImageURL.toExternalForm();
+                            } else {
+                                // If default image not found, do not display any image
+                                setGraphic(null);
+                                return;
+                            }
                         } else {
-                            image = new Image(item);
+                            // Check if the path is a resource in the classpath
+                            URL imageURL = getClass().getResource(item);
+                            if (imageURL != null) {
+                                imagePath = imageURL.toExternalForm();
+                            } else {
+                                // If not a resource, assume it's a file system path
+                                imagePath = "file:" + item;
+                            }
                         }
+
+                        Image image = new Image(imagePath, true);
                         imageView.setImage(image);
                         imageView.setFitHeight(50);
                         imageView.setFitWidth(50);
+                        imageView.setPreserveRatio(true);
                         setGraphic(imageView);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -128,28 +186,41 @@ public class StudentController implements Initializable {
             }
         });
 
+        // Configure Action column
         colAction.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button();
             private final Button editButton = new Button();
 
             {
-                // Nút xóa
+                // Delete button
                 Image deleteImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png"));
                 ImageView deleteImageView = new ImageView(deleteImage);
                 deleteImageView.setFitHeight(20);
                 deleteImageView.setFitWidth(20);
                 deleteButton.setGraphic(deleteImageView);
+                deleteButton.setStyle("-fx-background-color: transparent;");
                 deleteButton.setOnAction(event -> {
                     StudentModel student = getTableView().getItems().get(getIndex());
-                    deleteStudent(student);
+                    
+                    // Show confirmation dialog
+                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmationAlert.setTitle("Delete Confirmation");
+                    confirmationAlert.setHeaderText(null);
+                    confirmationAlert.setContentText("Are you sure you want to delete this student?");
+
+                    Optional<ButtonType> result = confirmationAlert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        deleteStudent(student);
+                    }
                 });
 
-                // Nút chỉnh sửa
+                // Edit button
                 Image gearImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/gear.png"));
                 ImageView gearImageView = new ImageView(gearImage);
                 gearImageView.setFitHeight(20);
                 gearImageView.setFitWidth(20);
                 editButton.setGraphic(gearImageView);
+                editButton.setStyle("-fx-background-color: transparent;");
                 editButton.setOnAction(event -> {
                     StudentModel student = getTableView().getItems().get(getIndex());
                     openEditStudentPage(student);
@@ -162,12 +233,13 @@ public class StudentController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    HBox actionButtons = new HBox(editButton, deleteButton);
+                    HBox actionButtons = new HBox(5, editButton, deleteButton);
                     setGraphic(actionButtons);
                 }
             }
         });
 
+        // Configure Gender column
         colGender.setCellFactory(column -> new TableCell<StudentModel, Boolean>() {
             @Override
             protected void updateItem(Boolean item, boolean empty) {
@@ -180,6 +252,7 @@ public class StudentController implements Initializable {
             }
         });
 
+        // Configure ClassName column
         colClassName.setCellValueFactory(cellData -> {
             int classID = cellData.getValue().getClassID();
             String className = getClassNameById(classID);
@@ -215,9 +288,13 @@ public class StudentController implements Initializable {
                 student.setStatus("inactive");
                 studentTable.refresh();
                 loadStudentData();
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Student has been deleted.");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Unable to delete student.");
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while deleting the student.");
         }
     }
 
@@ -229,7 +306,7 @@ public class StudentController implements Initializable {
             EditStudentController editStudentController = loader.getController();
             editStudentController.setPageStudent(pageStudent);
             editStudentController.setBGPageStudent(moveBG);
-            editStudentController.setStudentData(student); // Truyền dữ liệu sinh viên vào controller
+            editStudentController.setStudentData(student); // Pass student data to the controller
 
             pageEditStudent.setTranslateX(2000);
             pageEditStudent.setTranslateY(10);
@@ -243,16 +320,17 @@ public class StudentController implements Initializable {
             translateTransition.setDuration(Duration.seconds(0.2));
             translateTransition.setNode(pageEditStudent);
             translateTransition.setFromX(2000);
-            translateTransition.setToY(6);
             translateTransition.setToX(420);
+            translateTransition.setToY(6);
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to open the edit student page.");
         }
     }
 
     private void loadStudentData() {
-        ObservableList<StudentModel> studentData = FXCollections.observableArrayList();
+        studentData.clear();
         String query = "SELECT * FROM students WHERE Status = 'active'";
 
         try (Connection conn = ConnectDB.getConnection();
@@ -262,9 +340,14 @@ public class StudentController implements Initializable {
             while (rs.next()) {
                 String avatarPath = rs.getString("avatar");
                 if (avatarPath == null || avatarPath.isEmpty()) {
-                    avatarPath = "file:src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png";
+                    avatarPath = defaultAvatarPath;
+                } else {
+                    // Ensure the path starts with "/"
+                    if (!avatarPath.startsWith("/")) {
+                        avatarPath = "/" + avatarPath;
+                    }
                 }
-                System.out.println("Avatar Path: " + avatarPath); // In ra đường dẫn avatar để kiểm tra
+                System.out.println("Avatar Path: " + avatarPath); // Print avatar path for debugging
 
                 StudentModel student = new StudentModel(
                         rs.getInt("StudentID"),
@@ -287,6 +370,7 @@ public class StudentController implements Initializable {
             studentTable.refresh();
         } catch (SQLException e) {
             e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while loading student data.");
         }
     }
 
@@ -311,15 +395,23 @@ public class StudentController implements Initializable {
         translateTransition.setDuration(Duration.seconds(0.2));
         translateTransition.setNode(pageAddStudent);
         translateTransition.setFromX(2000);
-        translateTransition.setToY(6);
         translateTransition.setToX(420);
+        translateTransition.setToY(6);
         translateTransition.play();
     }
 
     @FXML
     void refreshData(MouseEvent event) {
         loadStudentData();
-        // Đã xóa đoạn mã hiển thị thông báo
+        showAlert(Alert.AlertType.INFORMATION, "Success", "Data has been refreshed.");
+    }
+
+    // Method to show alerts
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
-

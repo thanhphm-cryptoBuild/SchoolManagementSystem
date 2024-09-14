@@ -55,7 +55,7 @@
                                     <Insets bottom="15.0" top="15.0" />
                                  </padding>
                               </Separator>
-                              <Label fx:id="label_totalStaff" prefHeight="76.0" prefWidth="231.0" text="217" textFill="CHARTREUSE">
+                              <Label prefHeight="76.0" prefWidth="231.0" text="217" textFill="CHARTREUSE">
                                  <font>
                                     <Font name="System Bold" size="36.0" />
                                  </font>
