@@ -34,23 +34,17 @@ public class DashboardController implements Initializable {
     @FXML
     private Label label_totalStaff;
 
-    private com.app.schoolmanagementsystem.model.StaffModel staffModel;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
+        loadStudentCount();
 
-        staffModel = new com.app.schoolmanagementsystem.model.StaffModel();
-        updateTotalStaff();
     }
 
-    private void updateTotalStaff() {
-        int totalStaff = staffModel.countActiveStaff();
-        label_totalStaff.setText(String.valueOf(totalStaff));
-        loadStudentCount();// khởi chạy thêm hàm đếm student
-    }
+
 
 
     void loadDataPieChart() {
