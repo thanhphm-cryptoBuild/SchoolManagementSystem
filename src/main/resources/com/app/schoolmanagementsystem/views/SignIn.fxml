@@ -108,7 +108,7 @@
                      <children>
                         <StackPane prefHeight="550.0" prefWidth="375.0">
                            <children>
-                              <VBox alignment="CENTER" prefHeight="550.0" prefWidth="375.0" spacing="10.0" styleClass="border_form">
+                              <VBox alignment="CENTER" prefHeight="550.0" prefWidth="375.0" styleClass="border_form">
                                  <children>
                                     <HBox alignment="CENTER" prefHeight="81.0" prefWidth="350.0">
                                        <children>
@@ -119,9 +119,9 @@
                                           </Label>
                                        </children>
                                     </HBox>
-                                    <Pane layoutX="10.0" layoutY="180.0">
+                                    <Pane layoutX="10.0" layoutY="180.0" prefHeight="90.0" prefWidth="374.0">
                                        <children>
-                                          <VBox alignment="CENTER" layoutX="57.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
+                                          <VBox alignment="CENTER_LEFT" layoutX="57.0" prefHeight="90.0" prefWidth="260.0" spacing="2.0">
                                              <children>
                                                 <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="Email">
                                                    <font>
@@ -133,24 +133,26 @@
                                                       <Font name="Sitka Text" size="14.0" />
                                                    </font>
                                                 </TextField>
+                                                <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
                                              </children>
                                           </VBox>
                                        </children>
                                     </Pane>
-                                    <Pane>
+                                    <Pane prefHeight="90.0" prefWidth="374.0">
                                        <children>
-                                          <VBox alignment="CENTER" layoutX="57.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
+                                          <VBox alignment="CENTER" layoutX="57.0" prefHeight="90.0" prefWidth="260.0" spacing="2.0">
                                              <children>
                                                 <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="Password">
                                                    <font>
                                                       <Font name="Sitka Text Bold" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField prefHeight="45.0" prefWidth="240.0" promptText="Password">
+                                                <PasswordField prefHeight="45.0" prefWidth="260.0" promptText="Password">
                                                    <font>
                                                       <Font name="Sitka Text" size="14.0" />
                                                    </font>
-                                                </TextField>
+                                                </PasswordField>
+                                                <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
                                              </children>
                                           </VBox>
                                           <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="277.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" styleClass="cursor">
@@ -181,6 +183,9 @@
                                              </children>
                                           </VBox>
                                        </children>
+                                       <VBox.margin>
+                                          <Insets bottom="20.0" />
+                                       </VBox.margin>
                                     </Pane>
                                     <Pane layoutX="10.0" layoutY="282.0">
                                        <children>
@@ -238,9 +243,9 @@
                                                 <Insets bottom="10.0" />
                                              </VBox.margin>
                                           </HBox>
-                                          <Pane layoutX="10.0" layoutY="180.0">
+                                          <Pane layoutX="10.0" layoutY="180.0" prefHeight="90.0" prefWidth="375.0">
                                              <children>
-                                                <VBox alignment="CENTER" layoutX="57.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
+                                                <VBox alignment="CENTER" layoutX="57.0" prefHeight="90.0" prefWidth="260.0" spacing="2.0">
                                                    <children>
                                                       <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="Email">
                                                          <font>
@@ -252,6 +257,7 @@
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </TextField>
+                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -271,7 +277,7 @@
                               </StackPane>
                               <StackPane fx:id="changePWPane" prefHeight="450.0" prefWidth="375.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="492.0" prefWidth="375.0" spacing="10.0">
+                                    <VBox alignment="CENTER" prefHeight="492.0" prefWidth="375.0">
                                        <children>
                                           <HBox alignment="CENTER" prefHeight="47.0" prefWidth="374.0">
                                              <children>
@@ -279,6 +285,9 @@
                                                    <font>
                                                       <Font name="Sitka Text Bold" size="30.0" />
                                                    </font>
+                                                   <HBox.margin>
+                                                      <Insets bottom="10.0" />
+                                                   </HBox.margin>
                                                 </Label>
                                              </children>
                                              <VBox.margin>
@@ -287,7 +296,7 @@
                                           </HBox>
                                           <Pane layoutX="10.0" layoutY="78.0">
                                              <children>
-                                                <VBox alignment="CENTER" layoutX="58.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
+                                                <VBox alignment="CENTER" layoutX="58.0" prefHeight="90.0" prefWidth="260.0" spacing="2.0">
                                                    <children>
                                                       <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="New Password">
                                                          <font>
@@ -299,13 +308,14 @@
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </PasswordField>
+                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
                                                    </children>
                                                 </VBox>
                                              </children>
                                           </Pane>
                                           <Pane layoutX="10.0" layoutY="154.0">
                                              <children>
-                                                <VBox alignment="CENTER" layoutX="58.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
+                                                <VBox alignment="CENTER" layoutX="58.0" prefHeight="90.0" prefWidth="260.0" spacing="2.0">
                                                    <children>
                                                       <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="Confirm Password">
                                                          <font>
@@ -317,13 +327,14 @@
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </PasswordField>
+                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
                                                    </children>
                                                 </VBox>
                                              </children>
                                           </Pane>
-                                          <Pane layoutX="10.0" layoutY="78.0">
+                                          <Pane layoutX="10.0" layoutY="78.0" prefWidth="375.0">
                                              <children>
-                                                <VBox alignment="CENTER" layoutX="58.0" prefHeight="65.0" prefWidth="260.0" spacing="2.0">
+                                                <VBox alignment="CENTER" layoutX="58.0" prefHeight="90.0" prefWidth="260.0" spacing="2.0">
                                                    <children>
                                                       <Label prefHeight="18.0" prefWidth="260.0" styleClass="text" text="Code">
                                                          <font>
@@ -335,6 +346,7 @@
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </TextField>
+                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -348,7 +360,7 @@
                                                 </Button>
                                              </children>
                                              <VBox.margin>
-                                                <Insets top="10.0" />
+                                                <Insets bottom="10.0" top="10.0" />
                                              </VBox.margin>
                                           </Pane>
                                           <Pane layoutX="10.0" layoutY="316.0" prefHeight="45.0" prefWidth="375.0">
@@ -359,6 +371,9 @@
                                                    </font>
                                                 </Button>
                                              </children>
+                                             <VBox.margin>
+                                                <Insets top="5.0" />
+                                             </VBox.margin>
                                           </Pane>
                                        </children>
                                     </VBox>
