@@ -40,3 +40,20 @@
 .cursor {
     -fx-cursor: hand;
 }
+
+.form_forgot {
+    -fx-background-color: #FFFFFF;
+}
+
+.close {
+    -fx-background-radius: 0 0 30px 30px;
+    -fx-border: 0 1px 1px 0;
+    -fx-border-color: #00FFFF;
+    -fx-border-radius: 0 0 30px 30px;
+    -fx-background-color: #FF1460;
+    -fx-cursor: hand;
+}
+
+.close:hover {
+    -fx-background-color: #00FFFF;
+}

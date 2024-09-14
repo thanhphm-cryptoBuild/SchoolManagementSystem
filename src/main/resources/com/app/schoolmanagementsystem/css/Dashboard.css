@@ -91,3 +91,11 @@
     -fx-cursor: hand;
 }
 
+.dropdown {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10px;
+    -fx-border-color: #A3B5ED;
+    -fx-border-radius: 10px;
+    -fx-border-style: solid;
+}
+

@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,6 +33,7 @@ public class DashboardController implements Initializable {
         loadDataPieChart();
         loadDataLineChart();
     }
+
 
     void loadDataPieChart() {
 
