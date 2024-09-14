@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -18,10 +19,19 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
     @FXML
+    private AnchorPane appDashBoard;
+
+    @FXML
     private AnchorPane anchorSideBar;
 
     @FXML
     private ImageView close;
+
+    @FXML
+    private AnchorPane dropdownPane;
+
+    @FXML
+    private Pane navbarMain;
 
     @FXML
     private VBox iconAdvancedSB;
@@ -39,13 +49,19 @@ public class Controller implements Initializable {
     private VBox iconEventSB;
 
     @FXML
+    private ImageView iconGifCar;
+
+    @FXML
     private VBox iconStaffSB;
 
     @FXML
     private VBox iconStudentSB;
 
     @FXML
-    private ImageView iconGifCar;
+    private VBox logo;
+
+    @FXML
+    private VBox logo_ref;
 
     @FXML
     private VBox nameAdvancedSB;
@@ -72,16 +88,15 @@ public class Controller implements Initializable {
     private Pane navigateSideBar;
 
     @FXML
-    private VBox logo;
-
-    @FXML
-    private VBox logo_ref;
-
-    @FXML
     private ImageView open;
 
     @FXML
     private StackPane stackLoadPage;
+
+
+    private boolean isDropdownOpen = false;
+
+    private boolean isSideBarOpen = false;
 
 
     @Override
@@ -90,67 +105,48 @@ public class Controller implements Initializable {
         try {
             anchorSideBar.setTranslateX(0);
             anchorSideBar.toFront();
+            navbarMain.toFront();
+            stackLoadPage.toBack();
             open.setVisible(false);
             close.setVisible(true);
 
-            Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageDashboard.fxml"));
-            stackLoadPage.getChildren().removeAll();
-            stackLoadPage.getChildren().setAll(fxml);
+            loadPage("/com/app/schoolmanagementsystem/views/PageDashboard.fxml");
+
+
+            dropdownPane.setViewOrder(10);
+            navbarMain.setViewOrder(0);
+
         } catch(Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    private void loadPage(String page) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource(page));
+        stackLoadPage.getChildren().removeAll();
+        stackLoadPage.getChildren().setAll(fxml);
+
+        anchorSideBar.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            if (dropdownPane.isVisible()) {
+                closeDropdownPane();
+            }
+        });
+    }
+
+
     @FXML
     void closeSideBar(MouseEvent event) {
 
         TranslateTransition slide = new TranslateTransition();
-        slide.setDuration(Duration.seconds(0.05));
+        slide.setDuration(Duration.seconds(0.2));
         slide.setNode(anchorSideBar);
         slide.setToX(-130);
         slide.play();
 
-//        TranslateTransition iconSlideDashboard = new TranslateTransition(Duration.seconds(0.2), iconDashboardSB);
-//        iconSlideDashboard.setToX(130);
-//        nameDashboardSB.setVisible(false);
-//        iconSlideDashboard.play();
-//
-//        TranslateTransition iconSlideClass = new TranslateTransition(Duration.seconds(0.2), iconClassSB);
-//        iconSlideClass.setToX(130);
-//        nameClassSB.setVisible(false);
-//        iconSlideClass.play();
-//
-//        TranslateTransition iconSlideStudent = new TranslateTransition(Duration.seconds(0.2), iconStudentSB);
-//        iconSlideStudent.setToX(130);
-//        nameStudentSB.setVisible(false);
-//        iconSlideStudent.play();
-//
-//        TranslateTransition iconSlideStaff = new TranslateTransition(Duration.seconds(0.2), iconStaffSB);
-//        iconSlideStaff.setToX(130);
-//        nameStaffSB.setVisible(false);
-//        iconSlideStaff.play();
-//
-//        TranslateTransition iconSlideEvent = new TranslateTransition(Duration.seconds(0.2), iconEventSB);
-//        iconSlideEvent.setToX(130);
-//        nameEventSB.setVisible(false);
-//        iconSlideEvent.play();
-//
-//        TranslateTransition iconSlideAdvanced = new TranslateTransition(Duration.seconds(0.2), iconAdvancedSB);
-//        iconSlideAdvanced.setToX(130);
-//        nameAdvancedSB.setVisible(false);
-//        iconSlideAdvanced.play();
-//
-//        TranslateTransition iconSlideCalendar = new TranslateTransition(Duration.seconds(0.2), iconCalendarSB);
-//        iconSlideCalendar.setToX(130);
-//        nameCalendarSB.setVisible(false);
-//        iconSlideCalendar.play();
-//
-//        TranslateTransition navigateSB = new TranslateTransition(Duration.seconds(0.2), navigateSideBar);
-//        navigateSB.setToX(65);
-//        navigateSB.play();
-
         hideIcons();
+
+        isSideBarOpen = false;
 
         slide.setOnFinished((ActionEvent e) -> {
             close.setVisible(false);
@@ -158,58 +154,111 @@ public class Controller implements Initializable {
         });
     }
 
+
+
     @FXML
     void openSideBar(MouseEvent event) {
         TranslateTransition slide = new TranslateTransition();
-        slide.setDuration(Duration.seconds(0.05));
+        slide.setDuration(Duration.seconds(0.2));
         slide.setNode(anchorSideBar);
 
         slide.setToX(0);
         slide.play();
 
-//        TranslateTransition iconSlideDashboard = new TranslateTransition(Duration.seconds(0.2), iconDashboardSB);
-//        iconSlideDashboard.setToX(0);
-//        nameDashboardSB.setVisible(true);
-//        iconSlideDashboard.play();
-//
-//        TranslateTransition iconSlideClass = new TranslateTransition(Duration.seconds(0.2), iconClassSB);
-//        iconSlideClass.setToX(0);
-//        nameClassSB.setVisible(true);
-//        iconSlideClass.play();
-//
-//        TranslateTransition iconSlideStudent = new TranslateTransition(Duration.seconds(0.2), iconStudentSB);
-//        iconSlideStudent.setToX(0);
-//        nameStudentSB.setVisible(true);
-//        iconSlideStudent.play();
-//
-//        TranslateTransition iconSlideStaff = new TranslateTransition(Duration.seconds(0.2), iconStaffSB);
-//        iconSlideStaff.setToX(0);
-//        nameStaffSB.setVisible(true);
-//        iconSlideStaff.play();
-//
-//        TranslateTransition iconSlideEvent = new TranslateTransition(Duration.seconds(0.2), iconEventSB);
-//        iconSlideEvent.setToX(0);
-//        nameEventSB.setVisible(true);
-//        iconSlideEvent.play();
-//
-//        TranslateTransition iconSlideAdvanced = new TranslateTransition(Duration.seconds(0.2), iconAdvancedSB);
-//        iconSlideAdvanced.setToX(0);
-//        nameAdvancedSB.setVisible(true);
-//        iconSlideAdvanced.play();
-//
-//        TranslateTransition iconSlideCalendar = new TranslateTransition(Duration.seconds(0.2), iconCalendarSB);
-//        iconSlideCalendar.setToX(0);
-//        nameCalendarSB.setVisible(true);
-//        iconSlideCalendar.play();
-//
-//        TranslateTransition navigateSB = new TranslateTransition(Duration.seconds(0.2), navigateSideBar);
-//        navigateSB.setToX(0);
-//        navigateSB.play();
         showIcons();
+
+        isSideBarOpen = true;
+
         slide.setOnFinished((ActionEvent e) -> {
             close.setVisible(true);
             open.setVisible(false);
         });
+    }
+
+
+    @FXML
+    void anchorSideBarExited(MouseEvent event) {
+
+        if (isSideBarOpen) {
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.2));
+            slide.setNode(anchorSideBar);
+            slide.setToX(-130);
+            slide.play();
+
+            hideIcons();
+
+            isSideBarOpen = false;
+
+            slide.setOnFinished((ActionEvent e) -> {
+                close.setVisible(false);
+                open.setVisible(true);
+            });
+        }
+    }
+
+    @FXML
+    void anchorSideBarEntered(MouseEvent event) {
+
+        if(isSideBarOpen == false) {
+            TranslateTransition slide = new TranslateTransition();
+            slide.setDuration(Duration.seconds(0.2));
+            slide.setNode(anchorSideBar);
+
+            slide.setToX(0);
+            slide.play();
+
+            showIcons();
+
+            isSideBarOpen = true;
+
+            slide.setOnFinished((ActionEvent e) -> {
+                close.setVisible(true);
+                open.setVisible(false);
+            });
+        }
+    }
+
+
+    @FXML
+    void dropdownBTN(MouseEvent event) {
+
+        if (!isDropdownOpen) {
+            dropdownPane.setTranslateY(-10);
+            dropdownPane.setVisible(true);
+
+            GaussianBlur gaussianBlur = new GaussianBlur(10);
+            stackLoadPage.setEffect(gaussianBlur);
+
+            TranslateTransition translateTransition = new TranslateTransition();
+            translateTransition.setDuration(Duration.seconds(0.2));
+            translateTransition.setNode(dropdownPane);
+            translateTransition.setFromY(-10);
+            translateTransition.setToY(50);
+
+            translateTransition.play();
+            isDropdownOpen = true;
+        } else {
+            closeDropdownPane();
+        }
+
+    }
+
+    private void closeDropdownPane() {
+        TranslateTransition translateTransition = new TranslateTransition();
+        translateTransition.setDuration(Duration.seconds(0.1));
+        translateTransition.setNode(dropdownPane);
+        translateTransition.setFromY(50);
+        translateTransition.setToY(-10);
+
+        translateTransition.setOnFinished(event -> {
+            dropdownPane.setVisible(false);
+            stackLoadPage.setEffect(null);
+        });
+
+        translateTransition.play();
+
+        isDropdownOpen = false;
     }
 
     private void hideIcons() {
@@ -257,54 +306,42 @@ public class Controller implements Initializable {
         iconGifCar.setTranslateX(0);
     }
 
+
     @FXML
     void buttonAdvanced(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml");
     }
 
     @FXML
     void buttonCalendar(MouseEvent event) throws IOException {
-            Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageCalendar.fxml"));
-            stackLoadPage.getChildren().removeAll();
-            stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageCalendar.fxml");
     }
 
     @FXML
     void buttonClass(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageClass.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageClass.fxml");
     }
 
     @FXML
     void buttonEvent(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageEvent.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageEvent.fxml");
     }
 
     @FXML
     void buttonHome(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageDashboard.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageDashboard.fxml");
     }
 
     @FXML
     void buttonStaff(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageStaff.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageStaff.fxml");
     }
 
     @FXML
     void buttonStudent(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageStudent.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageStudent.fxml");
     }
+
 
 
 }
