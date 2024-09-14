@@ -45,7 +45,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="38.0" prefWidth="90.0" styleClass="search_icon_field">
                                        <children>
-                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
+<!--                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />-->
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
@@ -72,7 +72,7 @@
                                        </children>
                                     </StackPane>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <StackPane prefWidth="200.0" styleClass="button_children">
+                                    <StackPane onMouseClicked="#refreshData" prefWidth="200.0" styleClass="button_children">
                                        <children>
                                           <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
@@ -105,19 +105,18 @@
                                  <content>
                                     <TableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                        <columns>
+                                          <TableColumn fx:id="colAvatar" prefWidth="100.0" text="Avatar" />
                                           <TableColumn fx:id="colSTT" prefWidth="75.0" text="No." />
                                           <TableColumn fx:id="colFirstName" prefWidth="100.0" text="First Name" />
                                           <TableColumn fx:id="colLastName" prefWidth="100.0" text="Last Name" />
                                           <TableColumn fx:id="colDateOfBirth" prefWidth="100.0" text="Date of Birth" />
+                                          <TableColumn fx:id="colClassName" text="Class Name"/>
                                           <TableColumn fx:id="colGender" prefWidth="75.0" text="Gender" />
                                           <TableColumn fx:id="colAddress" prefWidth="150.0" text="Address" />
                                           <TableColumn fx:id="colPhoneNumber" prefWidth="100.0" text="Phone Number" />
                                           <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
                                           <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Enrollment Date" />
-                                          <TableColumn fx:id="colClassID" prefWidth="75.0" text="Class" />
-                                          <TableColumn fx:id="colAction" prefWidth="75.0" text="Action" />
-                                          <!-- Ẩn cột Status -->
-                                          <!-- <TableColumn fx:id="colStatus" prefWidth="75.0" text="Status" /> -->
+                                          <TableColumn fx:id="colAction" text="Action"/>
                                        </columns>
                                     </TableView>
                                  </content>

@@ -19,3 +19,7 @@
 .close:hover {
     -fx-background-color: #FF1460;
 }
+
+.error-label {
+    -fx-text-fill: red;
+}

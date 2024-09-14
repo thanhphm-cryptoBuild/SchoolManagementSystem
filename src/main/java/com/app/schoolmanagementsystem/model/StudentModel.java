@@ -17,10 +17,11 @@ public class StudentModel {
     private String reasonForLeaving;
     private String status;
     private int stt;
+    private String avatar;
 
     // Constructor
     public StudentModel(int studentID, String firstName, String lastName, Date dateOfBirth, boolean gender,
-                        String address, String phoneNumber, String email, Date enrollmentDate, int classID, String status) {
+                        String address, String phoneNumber, String email, Date enrollmentDate, int classID, String status, String avatar) {
         this.studentID = studentID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -32,6 +33,7 @@ public class StudentModel {
         this.enrollmentDate = enrollmentDate;
         this.classID = classID;
         this.status = status;
+        this.avatar = avatar;
     }
 
     // Getters và Setters
@@ -145,5 +147,13 @@ public class StudentModel {
 
     public void setSTT(int stt) {
         this.stt = stt;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 }
