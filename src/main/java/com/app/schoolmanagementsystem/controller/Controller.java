@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
@@ -135,7 +136,9 @@ public class Controller implements Initializable {
         stackLoadPage.getChildren().removeAll();
         stackLoadPage.getChildren().setAll(fxml);
 
-        anchorSideBar.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        AnchorPane anchorPane = new AnchorPane();
+        Scene scene = new Scene(anchorPane);
+        anchorPane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (dropdownPane.isVisible()) {
                 closeDropdownPane();
             }
