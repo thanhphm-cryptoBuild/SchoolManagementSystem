@@ -327,6 +327,8 @@ public class Controller implements Initializable {
         loadPage("/com/app/schoolmanagementsystem/views/PageCalendar.fxml");
     }
 
+
+
     @FXML
     void buttonClass(MouseEvent event) throws IOException {
         loadPage("/com/app/schoolmanagementsystem/views/PageClass.fxml");
