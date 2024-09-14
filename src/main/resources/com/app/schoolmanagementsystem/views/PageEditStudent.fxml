@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="add_student" stylesheets="@../css/pageAddStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.EditStudentController">
+<StackPane fx:id="formEditStudent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="add_student" stylesheets="@../css/pageAddStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.EditStudentController">
    <effect>
       <DropShadow />
    </effect>
@@ -25,7 +25,7 @@
          <children>
             <VBox alignment="CENTER" prefHeight="900.0" prefWidth="54.0">
                <children>
-                  <Pane onMouseClicked="#closeFormAddStudent" prefHeight="900.0" prefWidth="70.0" styleClass="close">
+                  <Pane onMouseClicked="#closeFormEditStudent" prefHeight="900.0" prefWidth="70.0" styleClass="close">
                      <children>
                         <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="3.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
                            <image>
