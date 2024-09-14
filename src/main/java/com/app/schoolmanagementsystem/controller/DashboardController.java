@@ -9,6 +9,8 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -34,13 +36,6 @@ public class DashboardController implements Initializable {
 
     private com.app.schoolmanagementsystem.model.StaffModel staffModel;
 
-    @FXML
-    private Label studentCountLabel;
-
-    @FXML
-    private Label label_totalStaff;
-
-    private com.app.schoolmanagementsystem.model.StaffModel staffModel;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -56,6 +51,7 @@ public class DashboardController implements Initializable {
         label_totalStaff.setText(String.valueOf(totalStaff));
         loadStudentCount();// khởi chạy thêm hàm đếm student
     }
+
 
     void loadDataPieChart() {
         int maleStudents = ConnectDB.countStudentsByGender(true);
@@ -128,6 +124,7 @@ public class DashboardController implements Initializable {
         lineChartThree.getData().add(new XYChart.Data<>("12", 100));
 
         lineview.getData().addAll(lineChartOne, lineChartTwo, lineChartThree);
+
 
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }

@@ -1,129 +1,146 @@
 package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.application.Application;
-import com.app.schoolmanagementsystem.services.AuthService;
+import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class SignInController implements Initializable {
+public class SignInController implements Initializable{
 
     @FXML
     private AnchorPane pageSignIn;
 
     @FXML
-    private TextField emailField;
+    private StackPane changePWPane;
 
     @FXML
-    private PasswordField passwordField;
+    private StackPane forgotPWPane;
 
     @FXML
-    private TextField passwordVisibleField;
+    private StackPane formForgotChange;
 
-    @FXML
-    private ImageView eyeOpenImageView;
-
-    @FXML
-    private ImageView eyeCloseImageView;
-
-    private boolean isPasswordVisible = false;
-
-    private AuthService authService;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        authService = new AuthService(); // Khởi tạo AuthService
-
-        // Đặt trạng thái ban đầu
-        passwordVisibleField.setVisible(false);
-        eyeCloseImageView.setVisible(false);
-
-        // Liên kết dữ liệu giữa TextField và PasswordField
-        passwordVisibleField.textProperty().bindBidirectional(passwordField.textProperty());
-    }
+    private boolean isSubmit = false;
 
     @FXML
     void loginSubmit(MouseEvent event) throws IOException {
-        String email = emailField.getText();
-        String password = passwordField.getText();
 
-        if (authService.login(email, password)) {
-            // Lấy vai trò của người dùng
-            String roleName = authService.getRoleName(email);
+        Stage stage = (Stage) pageSignIn.getScene().getWindow();
 
-            // Nếu đăng nhập thành công
-            try {
-                FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/Dashboard.fxml"));
-                Scene scene = new Scene(fxmlLoader.load(), 1366, 780);
+        try {
+            FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/Dashboard.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), 1366, 780);
+            stage.setResizable(false);
+            stage.setTitle("School Management System");
+            stage.setScene(scene);
+            stage.centerOnScreen();
 
-                // Truyền vai trò tới DashboardController
-                Controller dashboardController = fxmlLoader.getController();
-                dashboardController.setRoleName(roleName);
-
-                Stage stage = (Stage) pageSignIn.getScene().getWindow();
-                stage.setResizable(false);
-                stage.setTitle("School Management System");
-                stage.setScene(scene);
-                stage.centerOnScreen();
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // Nếu đăng nhập thất bại, hiển thị thông báo lỗi
-            showAlert(AlertType.ERROR, "Login failed", "Incorrect account or password.");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-    }
 
-    private void showAlert(AlertType alertType, String title, String message) {
-        Alert alert = new Alert(alertType);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
     }
 
     @FXML
-    public void handleEyeOpenClick() {
-        if (!isPasswordVisible) {
-            showPassword();
-        }
+    void closeFromForgotChange(MouseEvent event) {
+
+            formForgotChange.setTranslateY(0);
+//            formForgotChange.setVisible(false);
+            forgotPWPane.setVisible(false);
+            changePWPane.setVisible(false);
+
+            TranslateTransition transition = new TranslateTransition();
+            transition.setDuration(Duration.seconds(0.4));
+            transition.setNode(formForgotChange);
+            transition.setFromY(0);
+            transition.setToY(750);
+            transition.play();
+
+
+
+            forgotPWPane.setTranslateX(-50);
+            forgotPWPane.setVisible(false);
+            changePWPane.setVisible(false);
+
+            TranslateTransition backtransition = new TranslateTransition();
+            backtransition.setDuration(Duration.seconds(0.3));
+            backtransition.setNode(forgotPWPane);
+            backtransition.setFromX(-50);
+            backtransition.setToX(0);
+            backtransition.play();
     }
 
     @FXML
-    public void handleEyeCloseClick() {
-        if (isPasswordVisible) {
-            hidePassword();
-        }
+    void openFormForgotChange(MouseEvent event) {
+
+        formForgotChange.setTranslateY(500);
+        formForgotChange.setVisible(true);
+        forgotPWPane.setVisible(true);
+
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(0.3));
+        transition.setNode(formForgotChange);
+
+        transition.setFromY(750);
+        transition.setToY(0);
+
+        transition.play();
     }
 
-    private void showPassword() {
-        isPasswordVisible = true;
-        passwordField.setVisible(false);
-        passwordVisibleField.setVisible(true);
-        eyeOpenImageView.setVisible(false);
-        eyeCloseImageView.setVisible(true);
+    @FXML
+    void sendCodeBTN(MouseEvent event) {
+
+        forgotPWPane.setTranslateX(500);
+        forgotPWPane.setVisible(true);
+        changePWPane.setVisible(true);
+
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(0.3));
+        transition.setNode(changePWPane);
+
+        transition.setFromX(500);
+        transition.setToX(0);
+
+        transition.play();
     }
 
-    private void hidePassword() {
-        isPasswordVisible = false;
-        passwordVisibleField.setVisible(false);
-        passwordField.setVisible(true);
-        eyeOpenImageView.setVisible(true);
-        eyeCloseImageView.setVisible(false);
+    @FXML
+    void submitFormForgotChange(MouseEvent event) {
+        closeFromForgotChange(event);
+    }
+
+
+
+    @FXML
+    void backToForgotPW(MouseEvent event) {
+
+        forgotPWPane.setTranslateX(-50);
+        forgotPWPane.setVisible(true);
+        changePWPane.setVisible(false);
+
+        TranslateTransition transition = new TranslateTransition();
+        transition.setDuration(Duration.seconds(0.3));
+        transition.setNode(forgotPWPane);
+
+        transition.setFromX(-50);
+        transition.setToX(0);
+
+        transition.play();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+
     }
 }
