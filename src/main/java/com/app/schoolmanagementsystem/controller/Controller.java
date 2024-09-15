@@ -148,9 +148,7 @@ public class Controller implements Initializable {
         stackLoadPage.getChildren().removeAll();
         stackLoadPage.getChildren().setAll(fxml);
 
-        AnchorPane anchorPane = new AnchorPane();
-        Scene scene = new Scene(anchorPane);
-        anchorPane.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+        anchorSideBar.getScene().addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
             if (dropdownPane.isVisible()) {
                 closeDropdownPane();
             }
@@ -340,10 +338,9 @@ public class Controller implements Initializable {
 
     @FXML
     void buttonAdvanced(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml");
     }
+
 
 
     @FXML
@@ -353,38 +350,28 @@ public class Controller implements Initializable {
 
     @FXML
     void buttonCalendar(MouseEvent event) throws IOException {
-            Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageCalendar.fxml"));
-            stackLoadPage.getChildren().removeAll();
-            stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageCalendar.fxml");
     }
 
 
     @FXML
     void buttonClass(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageClass.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageClass.fxml");
     }
 
     @FXML
-    void buttonEvent(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageEvent.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+    void buttonSubject(MouseEvent event) throws IOException {
+        loadPage("/com/app/schoolmanagementsystem/views/PageSubject.fxml");
     }
 
     @FXML
     void buttonHome(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageDashboard.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageDashboard.fxml");
     }
 
     @FXML
     void buttonStaff(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageStaff.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageStaff.fxml");
     }
 
 
@@ -395,9 +382,7 @@ public class Controller implements Initializable {
 
     @FXML
     void buttonStudent(MouseEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageStudent.fxml"));
-        stackLoadPage.getChildren().removeAll();
-        stackLoadPage.getChildren().setAll(fxml);
+        loadPage("/com/app/schoolmanagementsystem/views/PageStudent.fxml");
     }
 
 

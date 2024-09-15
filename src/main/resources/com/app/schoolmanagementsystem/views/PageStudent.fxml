@@ -42,14 +42,13 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="42.0" prefWidth="400.0" styleClass="search">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="38.0" prefWidth="150.0" styleClass="search_icon_field">
                                     <VBox alignment="CENTER" prefHeight="38.0" prefWidth="90.0" styleClass="search_icon_field" onMouseClicked="#onSearchIconClicked">
                                        <children>
                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField fx:id="searchField" prefHeight="35.0" prefWidth="345.0" promptText="Search Here" styleClass="search_field" onKeyReleased="#onSearchKeyReleased">
+                                    <TextField fx:id="searchField" prefHeight="37.0" prefWidth="300.0" promptText="Search Here" styleClass="search_field" onKeyReleased="#onSearchKeyReleased">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
