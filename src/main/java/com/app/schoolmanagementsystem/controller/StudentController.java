@@ -33,6 +33,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -87,7 +88,7 @@ public class StudentController implements Initializable {
     @FXML
     private TextField searchField;
 
-    private ObservableList<StudentModel> studentData = FXCollections.observableArrayList();
+    private final ObservableList<StudentModel> studentData = FXCollections.observableArrayList();
 
     private boolean isSearchIconClicked = false;
 
@@ -193,7 +194,7 @@ public class StudentController implements Initializable {
 
             {
                 // Delete button
-                Image deleteImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png"));
+                Image deleteImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png")));
                 ImageView deleteImageView = new ImageView(deleteImage);
                 deleteImageView.setFitHeight(20);
                 deleteImageView.setFitWidth(20);
@@ -215,7 +216,7 @@ public class StudentController implements Initializable {
                 });
 
                 // Edit button
-                Image gearImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/gear.png"));
+                Image gearImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/gear.png")));
                 ImageView gearImageView = new ImageView(gearImage);
                 gearImageView.setFitHeight(20);
                 gearImageView.setFitWidth(20);
@@ -347,7 +348,6 @@ public class StudentController implements Initializable {
                         avatarPath = "/" + avatarPath;
                     }
                 }
-                System.out.println("Avatar Path: " + avatarPath); // Print avatar path for debugging
 
                 StudentModel student = new StudentModel(
                         rs.getInt("StudentID"),
