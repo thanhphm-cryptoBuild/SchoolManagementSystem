@@ -63,33 +63,30 @@
                      <children>
                         <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
                            <children>
-                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0">
-                                 <content>
-                                    <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
-                                       <columns>
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="140.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                       </columns>
-                                    </TableView>
-                                 </content>
-                              </ScrollPane>
+                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />
+                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="140.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                 </columns>
+                              </TableView>
                            </children>
                         </StackPane>
                      </children>
@@ -100,6 +97,6 @@
       </AnchorPane>
    </children>
    <padding>
-      <Insets bottom="10.0" left="20.0" right="20.0" />
+      <Insets bottom="20.0" left="20.0" right="20.0" />
    </padding>
 </StackPane>

@@ -23,7 +23,7 @@
 
 .search {
     -fx-background-color: #FFFFFF;
-    -fx-border-color: #6F6F6F;
+    -fx-border-color: #A3B5ED;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
@@ -34,6 +34,21 @@
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 0 20px 20px 0;
     -fx-border-radius: 0 20px 20px 0 ;
+}
+
+.select_box {
+    -fx-cursor: hand;
+    -fx-background-color: #F5F5F5;
+}
+
+.select_box:hover {
+    -fx-background-color: #00FFFF;
+}
+
+.block_search {
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-style: solid;
+    -fx-border-color: #A3B5ED;
 }
 
 .search_icon_field {

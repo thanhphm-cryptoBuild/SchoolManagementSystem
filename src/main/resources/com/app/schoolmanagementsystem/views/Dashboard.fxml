@@ -110,7 +110,7 @@
                               <String fx:value="cursor" />
                            </styleClass>
                         </Pane>
-                        <Pane layoutY="180.0" onMouseClicked="#buttonStudent" prefHeight="60.0" prefWidth="200.0">
+                        <Pane layoutY="240.0" onMouseClicked="#buttonStudent" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -140,7 +140,7 @@
                               <String fx:value="cursor" />
                            </styleClass>
                         </Pane>
-                        <Pane layoutY="240.0" onMouseClicked="#buttonClass" prefHeight="60.0" prefWidth="200.0">
+                        <Pane layoutY="300.0" onMouseClicked="#buttonClass" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -170,22 +170,22 @@
                               <String fx:value="cursor" />
                            </styleClass>
                         </Pane>
-                        <Pane layoutY="300.0" onMouseClicked="#buttonEvent" prefHeight="60.0" prefWidth="200.0">
+                        <Pane layoutY="360.0" onMouseClicked="#buttonSubject" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
-                                    <VBox fx:id="iconEventSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                    <VBox fx:id="iconSubjectSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
                                        <children>
                                           <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../images/calendar%20(3).png" />
+                                                <Image url="@../images/books.png" />
                                              </image>
                                           </ImageView>
                                        </children>
                                     </VBox>
-                                    <VBox fx:id="nameEventSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                    <VBox fx:id="nameSubjectSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
                                        <children>
-                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Event">
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Subject">
                                              <font>
                                                 <Font name="Sitka Text Bold" size="20.0" />
                                              </font>
@@ -200,7 +200,85 @@
                               <String fx:value="cursor" />
                            </styleClass>
                         </Pane>
-                        <Pane layoutY="360.0" onMouseClicked="#buttonAdvanced" prefHeight="60.0" prefWidth="200.0">
+                        <Pane layoutY="420.0" onMouseClicked="#buttonTuition" prefHeight="60.0" prefWidth="200.0">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconTuitionSB" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/tuition.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameTuitionSB" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Tuition">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
+                        </Pane>
+                        <Pane fx:id="navigateSideBar" layoutX="81.0" layoutY="596.0" prefHeight="40.0" prefWidth="40.0">
+                           <children>
+                              <ImageView fx:id="open" fitHeight="40.0" fitWidth="40.0" layoutX="2.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
+                                 <image>
+                                    <Image url="@../images/right-arrow%20(1).png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="close" fitHeight="30.0" fitWidth="36.0" layoutX="4.0" layoutY="5.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/left-chevron.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                           <styleClass>
+                              <String fx:value="icon_sidebar_action" />
+                              <String fx:value="cursor" />
+                           </styleClass>
+                        </Pane>
+                        <Pane layoutY="180.0" onMouseClicked="#buttonTeacher" prefHeight="60.0" prefWidth="200.0">
+                           <children>
+                              <Pane prefHeight="60.0" prefWidth="200.0">
+                                 <children>
+                                    <VBox fx:id="iconTeacherSB1" alignment="CENTER" prefHeight="60.0" prefWidth="70.0">
+                                       <children>
+                                          <ImageView fitHeight="38.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/leadership.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </VBox>
+                                    <VBox fx:id="nameTeacherSB1" alignment="CENTER_LEFT" layoutX="70.0" prefHeight="60.0" prefWidth="130.0">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Teacher">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="20.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </Pane>
+                           </children>
+                           <styleClass>
+                              <String fx:value="sidebar_action_children" />
+                              <String fx:value="cursor" />
+                           </styleClass>
+                        </Pane>
+                        <Pane layoutY="480.0" onMouseClicked="#buttonAdvanced" prefHeight="60.0" prefWidth="200.0">
                            <children>
                               <Pane prefHeight="60.0" prefWidth="200.0">
                                  <children>
@@ -227,24 +305,6 @@
                            </children>
                            <styleClass>
                               <String fx:value="sidebar_action_children" />
-                              <String fx:value="cursor" />
-                           </styleClass>
-                        </Pane>
-                        <Pane fx:id="navigateSideBar" layoutX="80.0" layoutY="583.0" prefHeight="40.0" prefWidth="40.0">
-                           <children>
-                              <ImageView fx:id="open" fitHeight="40.0" fitWidth="40.0" layoutX="2.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
-                                 <image>
-                                    <Image url="@../images/right-arrow%20(1).png" />
-                                 </image>
-                              </ImageView>
-                              <ImageView fx:id="close" fitHeight="30.0" fitWidth="36.0" layoutX="4.0" layoutY="5.0" onMouseClicked="#closeSideBar" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../images/left-chevron.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                           <styleClass>
-                              <String fx:value="icon_sidebar_action" />
                               <String fx:value="cursor" />
                            </styleClass>
                         </Pane>

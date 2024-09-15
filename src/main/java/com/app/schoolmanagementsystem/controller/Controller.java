@@ -39,6 +39,9 @@ public class Controller implements Initializable {
     private VBox iconAdvancedSB;
 
     @FXML
+    private VBox iconTuitionSB;
+
+    @FXML
     private VBox iconCalendarSB;
 
     @FXML
@@ -48,13 +51,16 @@ public class Controller implements Initializable {
     private VBox iconDashboardSB;
 
     @FXML
-    private VBox iconEventSB;
+    private VBox iconSubjectSB;
 
     @FXML
     private ImageView iconGifCar;
 
     @FXML
     private VBox iconStaffSB;
+
+    @FXML
+    private VBox iconTeacherSB1;
 
     @FXML
     private VBox iconStudentSB;
@@ -69,6 +75,9 @@ public class Controller implements Initializable {
     private VBox nameAdvancedSB;
 
     @FXML
+    private VBox nameTuitionSB;
+
+    @FXML
     private VBox nameCalendarSB;
 
     @FXML
@@ -78,10 +87,13 @@ public class Controller implements Initializable {
     private VBox nameDashboardSB;
 
     @FXML
-    private VBox nameEventSB;
+    private VBox nameSubjectSB;
 
     @FXML
     private VBox nameStaffSB;
+
+    @FXML
+    private VBox nameTeacherSB1;
 
     @FXML
     private VBox nameStudentSB;
@@ -277,8 +289,10 @@ public class Controller implements Initializable {
         nameClassSB.setVisible(false);
         nameStudentSB.setVisible(false);
         nameStaffSB.setVisible(false);
-        nameEventSB.setVisible(false);
+        nameTeacherSB1.setVisible(false);
+        nameSubjectSB.setVisible(false);
         nameAdvancedSB.setVisible(false);
+        nameTuitionSB.setVisible(false);
         nameCalendarSB.setVisible(false);
         logo.setVisible(false);
         logo_ref.setVisible(true);
@@ -287,8 +301,10 @@ public class Controller implements Initializable {
         iconClassSB.setTranslateX(130);
         iconStudentSB.setTranslateX(130);
         iconStaffSB.setTranslateX(130);
-        iconEventSB.setTranslateX(130);
+        iconTeacherSB1.setTranslateX(130);
+        iconSubjectSB.setTranslateX(130);
         iconAdvancedSB.setTranslateX(130);
+        iconTuitionSB.setTranslateX(130);
         iconCalendarSB.setTranslateX(130);
         navigateSideBar.setTranslateX(65);
         iconGifCar.setTranslateX(130);
@@ -300,8 +316,10 @@ public class Controller implements Initializable {
         nameClassSB.setVisible(true);
         nameStudentSB.setVisible(true);
         nameStaffSB.setVisible(true);
-        nameEventSB.setVisible(true);
+        nameTeacherSB1.setVisible(true);
+        nameSubjectSB.setVisible(true);
         nameAdvancedSB.setVisible(true);
+        nameTuitionSB.setVisible(true);
         nameCalendarSB.setVisible(true);
         logo.setVisible(true);
         logo_ref.setVisible(false);
@@ -310,8 +328,10 @@ public class Controller implements Initializable {
         iconClassSB.setTranslateX(0);
         iconStudentSB.setTranslateX(0);
         iconStaffSB.setTranslateX(0);
-        iconEventSB.setTranslateX(0);
+        iconTeacherSB1.setTranslateX(0);
+        iconSubjectSB.setTranslateX(0);
         iconAdvancedSB.setTranslateX(0);
+        iconTuitionSB.setTranslateX(0);
         iconCalendarSB.setTranslateX(0);
         navigateSideBar.setTranslateX(0);
         iconGifCar.setTranslateX(0);
@@ -325,12 +345,19 @@ public class Controller implements Initializable {
         stackLoadPage.getChildren().setAll(fxml);
     }
 
+
+    @FXML
+    void buttonTuition(MouseEvent event) throws IOException {
+        loadPage("/com/app/schoolmanagementsystem/views/PageTuition.fxml");
+    }
+
     @FXML
     void buttonCalendar(MouseEvent event) throws IOException {
             Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageCalendar.fxml"));
             stackLoadPage.getChildren().removeAll();
             stackLoadPage.getChildren().setAll(fxml);
     }
+
 
     @FXML
     void buttonClass(MouseEvent event) throws IOException {
@@ -360,12 +387,19 @@ public class Controller implements Initializable {
         stackLoadPage.getChildren().setAll(fxml);
     }
 
+
+    @FXML
+    void buttonTeacher(MouseEvent event) throws IOException {
+        loadPage("/com/app/schoolmanagementsystem/views/PageTeacher.fxml");
+    }
+
     @FXML
     void buttonStudent(MouseEvent event) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/PageStudent.fxml"));
         stackLoadPage.getChildren().removeAll();
         stackLoadPage.getChildren().setAll(fxml);
     }
+
 
 
 }
