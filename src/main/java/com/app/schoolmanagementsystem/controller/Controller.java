@@ -37,6 +37,9 @@ public class Controller implements Initializable {
     private VBox iconAdvancedSB;
 
     @FXML
+    private VBox iconTuitionSB;
+
+    @FXML
     private VBox iconCalendarSB;
 
     @FXML
@@ -68,6 +71,9 @@ public class Controller implements Initializable {
 
     @FXML
     private VBox nameAdvancedSB;
+
+    @FXML
+    private VBox nameTuitionSB;
 
     @FXML
     private VBox nameCalendarSB;
@@ -275,6 +281,7 @@ public class Controller implements Initializable {
         nameTeacherSB1.setVisible(false);
         nameSubjectSB.setVisible(false);
         nameAdvancedSB.setVisible(false);
+        nameTuitionSB.setVisible(false);
         nameCalendarSB.setVisible(false);
         logo.setVisible(false);
         logo_ref.setVisible(true);
@@ -286,6 +293,7 @@ public class Controller implements Initializable {
         iconTeacherSB1.setTranslateX(130);
         iconSubjectSB.setTranslateX(130);
         iconAdvancedSB.setTranslateX(130);
+        iconTuitionSB.setTranslateX(130);
         iconCalendarSB.setTranslateX(130);
         navigateSideBar.setTranslateX(65);
         iconGifCar.setTranslateX(130);
@@ -300,6 +308,7 @@ public class Controller implements Initializable {
         nameTeacherSB1.setVisible(true);
         nameSubjectSB.setVisible(true);
         nameAdvancedSB.setVisible(true);
+        nameTuitionSB.setVisible(true);
         nameCalendarSB.setVisible(true);
         logo.setVisible(true);
         logo_ref.setVisible(false);
@@ -311,6 +320,7 @@ public class Controller implements Initializable {
         iconTeacherSB1.setTranslateX(0);
         iconSubjectSB.setTranslateX(0);
         iconAdvancedSB.setTranslateX(0);
+        iconTuitionSB.setTranslateX(0);
         iconCalendarSB.setTranslateX(0);
         navigateSideBar.setTranslateX(0);
         iconGifCar.setTranslateX(0);
@@ -322,11 +332,16 @@ public class Controller implements Initializable {
         loadPage("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml");
     }
 
+
+    @FXML
+    void buttonTuition(MouseEvent event) throws IOException {
+        loadPage("/com/app/schoolmanagementsystem/views/PageTuition.fxml");
+    }
+
     @FXML
     void buttonCalendar(MouseEvent event) throws IOException {
         loadPage("/com/app/schoolmanagementsystem/views/PageCalendar.fxml");
     }
-
 
 
     @FXML
