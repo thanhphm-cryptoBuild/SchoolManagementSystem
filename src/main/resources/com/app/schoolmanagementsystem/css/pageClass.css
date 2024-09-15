@@ -23,7 +23,7 @@
 
 .search {
     -fx-background-color: #FFFFFF;
-    -fx-border-color: #6F6F6F;
+    -fx-border-color: #A3B5ED;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
@@ -56,14 +56,11 @@
 .block_search {
     -fx-border-width: 0 1px 0 0;
     -fx-border-style: solid;
-    -fx-border-color: #6F6F6F;
+    -fx-border-color: #A3B5ED;
 }
 
 .search_icon_field:hover {
     -fx-background-color: #00FFFF;
 }
 
-.block {
-    -fx-background-color: #6F6F6F;
-}
 

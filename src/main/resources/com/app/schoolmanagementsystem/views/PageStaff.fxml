@@ -26,37 +26,37 @@
                <children>
                   <HBox alignment="CENTER" fillHeight="false" prefHeight="148.0" prefWidth="946.0" spacing="100.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label prefHeight="22.0" prefWidth="182.0" styleClass="title_label" text="Staff Detail">
+                              <Label prefHeight="26.0" prefWidth="182.0" styleClass="title_label" text="Staff Detail">
                                  <font>
                                     <Font name="Sitka Text" size="18.0" />
                                  </font>
                               </Label>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="801.0">
+                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="700.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="580.0" styleClass="search">
+                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="400.0" styleClass="search">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="38.0" prefWidth="215.0" styleClass="search_icon_field">
+                                    <VBox alignment="CENTER" prefHeight="38.0" prefWidth="150.0" styleClass="search_icon_field">
                                        <children>
                                           <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField prefHeight="37.0" prefWidth="345.0" promptText="Search Here" styleClass="search_field">
+                                    <TextField prefHeight="37.0" prefWidth="300.0" promptText="Search Here" styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
                                     </TextField>
                                     <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <ChoiceBox prefHeight="38.0" prefWidth="300.0" styleClass="select_box" />
+                                    <ChoiceBox prefHeight="38.0" prefWidth="200.0" styleClass="select_box" />
                                     <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <TextField layoutX="44.0" layoutY="12.0" prefHeight="37.0" prefWidth="345.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
+                                    <TextField layoutX="44.0" layoutY="12.0" prefHeight="37.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
@@ -65,13 +65,13 @@
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="400.0">
+                        <VBox alignment="CENTER" prefHeight="42.0" prefWidth="200.0">
                            <children>
-                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="132.0" styleClass="button">
+                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="200.0" styleClass="button">
                                  <children>
                                     <StackPane onMouseClicked="#addStaffBTN" prefWidth="200.0" styleClass="button_children">
                                        <children>
-                                          <ImageView fitHeight="50.0" fitWidth="53.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/team%20(1).png" />
                                              </image>
@@ -81,19 +81,9 @@
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
                                     <StackPane prefWidth="200.0" styleClass="button_children">
                                        <children>
-                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/recycle.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </StackPane>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <StackPane prefWidth="200.0" styleClass="button_children">
-                                       <children>
-                                          <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/printer.png" />
                                              </image>
                                           </ImageView>
                                        </children>
@@ -108,33 +98,30 @@
                      <children>
                         <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
                            <children>
-                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0">
-                                 <content>
-                                    <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
-                                       <columns>
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="140.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                          <TableColumn prefWidth="75.0" text="Column X" />
-                                       </columns>
-                                    </TableView>
-                                 </content>
-                              </ScrollPane>
+                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="140.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                 </columns>
+                              </TableView>
+                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />
                            </children>
                         </StackPane>
                      </children>
@@ -145,6 +132,6 @@
       </AnchorPane>
    </children>
    <padding>
-      <Insets bottom="10.0" left="20.0" right="20.0" />
+      <Insets bottom="20.0" left="20.0" right="20.0" />
    </padding>
 </StackPane>
