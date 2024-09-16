@@ -2,14 +2,18 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -20,35 +24,39 @@
          <children>
             <VBox layoutY="10.0" prefHeight="700.0" prefWidth="946.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <HBox alignment="CENTER" fillHeight="false" prefHeight="148.0" prefWidth="946.0" spacing="100.0">
+                  <HBox alignment="CENTER_LEFT" fillHeight="false" prefHeight="148.0" prefWidth="946.0" spacing="150.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="250.0">
                            <children>
-                              <Label prefHeight="26.0" prefWidth="182.0" styleClass="title_label" text="Advanced">
+                              <Label prefHeight="26.0" prefWidth="200.0" styleClass="title_label" text="Advanced">
                                  <font>
-                                    <Font name="Sitka Text" size="18.0" />
+                                    <Font name="Sitka Text Bold" size="18.0" />
                                  </font>
                               </Label>
                            </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="400.0" />
-                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="450.0">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="550.0">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="297.0" styleClass="search">
+                              <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0" styleClass="search">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="38.0" prefWidth="90.0" styleClass="search_icon_field">
+                                    <HBox alignment="CENTER" prefHeight="20.0" prefWidth="150.0" styleClass="search_icon_field">
                                        <children>
-                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
+                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="20" wrappingWidth="23.59035873413086" />
                                        </children>
-                                    </VBox>
+                                    </HBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField prefHeight="35.0" prefWidth="345.0" promptText="Search Here" styleClass="search_field">
+                                    <TextField prefHeight="30.0" prefWidth="270.0" promptText="Search Here" styleClass="search_field">
+                                       <font>
+                                          <Font name="Sitka Text" size="14.0" />
+                                       </font>
+                                    </TextField>
+                                    <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
+                                    <ChoiceBox prefHeight="30.0" prefWidth="180.0" styleClass="select_box" />
+                                    <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
+                                    <TextField layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
@@ -56,6 +64,29 @@
                                  </children>
                               </HBox>
                            </children>
+                           <HBox.margin>
+                              <Insets right="50.0" />
+                           </HBox.margin>
+                        </VBox>
+                        <VBox alignment="CENTER_RIGHT" prefHeight="70.0" prefWidth="120.0">
+                           <children>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="36.0" prefWidth="120.0" styleClass="button">
+                                 <children>
+                                    <StackPane prefWidth="120.0" styleClass="button_children">
+                                       <children>
+                                          <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../images/recycle.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <HBox.margin>
+                              <Insets left="100.0" />
+                           </HBox.margin>
                         </VBox>
                      </children>
                   </HBox>

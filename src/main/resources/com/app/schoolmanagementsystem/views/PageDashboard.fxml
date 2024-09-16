@@ -22,9 +22,9 @@
          <children>
             <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                <children>
-                  <Label prefHeight="26.0" prefWidth="94.0" styleClass="title_label" text="Dashboard">
+                  <Label prefHeight="22.0" prefWidth="130.0" styleClass="title_label" text="Dashboard">
                      <font>
-                        <Font name="Sitka Text" size="18.0" />
+                        <Font name="Sitka Text Bold" size="18.0" />
                      </font>
                   </Label>
                   <HBox alignment="CENTER" fillHeight="false" prefHeight="177.0" prefWidth="918.0" spacing="15.0" styleClass="card_one">
@@ -196,9 +196,9 @@
             </VBox>
             <VBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
                <children>
-                  <Label prefHeight="22.0" prefWidth="136.0" styleClass="title_label" text="Chart Income" textAlignment="RIGHT">
+                  <Label prefHeight="22.0" prefWidth="150.0" styleClass="title_label" text="Chart Income" textAlignment="RIGHT">
                      <font>
-                        <Font name="Sitka Text" size="18.0" />
+                        <Font name="Sitka Text Bold" size="18.0" />
                      </font>
                   </Label>
                   <HBox alignment="CENTER" fillHeight="false" prefHeight="500.0" prefWidth="918.0" spacing="10.0">
