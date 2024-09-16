@@ -203,9 +203,9 @@ public class StudentController implements Initializable {
                     }
                     imageView.setImage(avatarImage);
                 }
-                imageView.setFitHeight(85); // Set fixed height for the avatar
-                imageView.setFitWidth(57.5); // Set fixed width for the avatar
-                imageView.setPreserveRatio(true); // Maintain aspect ratio
+                imageView.setFitHeight(85);
+                imageView.setFitWidth(50);
+                imageView.setPreserveRatio(true);
 
                 // Cắt ảnh thành hình tròn
                 imageView.setClip(new Circle(28, 28, 28)); // Create a circular clip
