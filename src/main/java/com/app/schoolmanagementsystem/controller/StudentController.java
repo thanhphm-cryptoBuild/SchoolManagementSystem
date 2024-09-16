@@ -203,12 +203,12 @@ public class StudentController implements Initializable {
                     }
                     imageView.setImage(avatarImage);
                 }
-                imageView.setFitHeight(85); // Set fixed height for the avatar
-                imageView.setFitWidth(57.5); // Set fixed width for the avatar
+                imageView.setFitHeight(32); // Set fixed height for the avatar
+                imageView.setFitWidth(32); // Set fixed width for the avatar
                 imageView.setPreserveRatio(true); // Maintain aspect ratio
 
                 // Cắt ảnh thành hình tròn
-                imageView.setClip(new Circle(28, 28, 28)); // Create a circular clip
+                imageView.setClip(new Circle(12, 12, 12)); // Create a circular clip
                 setGraphic(empty ? null : imageView);
             }
         });
@@ -227,7 +227,7 @@ public class StudentController implements Initializable {
                 deleteImageView.setFitHeight(20);
                 deleteImageView.setFitWidth(20);
                 deleteButton.setGraphic(deleteImageView);
-                deleteButton.setStyle("-fx-background-color: transparent;");
+                deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 deleteButton.setOnAction(event -> {
                     StudentModel student = getTableView().getItems().get(getIndex());
                     
@@ -244,12 +244,12 @@ public class StudentController implements Initializable {
                 });
 
                 // Edit button
-                Image gearImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/gear.png")));
+                Image gearImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/edit.png")));
                 ImageView gearImageView = new ImageView(gearImage);
                 gearImageView.setFitHeight(20);
                 gearImageView.setFitWidth(20);
                 editButton.setGraphic(gearImageView);
-                editButton.setStyle("-fx-background-color: transparent;");
+                editButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 editButton.setOnAction(event -> {
                     StudentModel student = getTableView().getItems().get(getIndex());
                     openEditStudentPage(student);

@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -18,9 +19,6 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.scene.control.cell.PropertyValueFactory?>
-<?import javafx.util.Callback?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 <StackPane fx:id="pageStudent" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StudentController">
    <children>
       <AnchorPane fx:id="moveBG" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/pageStudent.css">
@@ -42,21 +40,21 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0" styleClass="search">
                                  <children>
-                                    <HBox alignment="CENTER" prefHeight="38.0" prefWidth="90.0" styleClass="search_icon_field" onMouseClicked="#onSearchIconClicked">
+                                    <HBox alignment="CENTER" onMouseClicked="#onSearchIconClicked" prefHeight="20.0" prefWidth="150.0" styleClass="search_icon_field">
                                        <children>
                                         <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
                                        </children>
                                     </HBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField fx:id="searchField" prefHeight="37.0" prefWidth="300.0" promptText="Search Here" styleClass="search_field" onKeyReleased="#onSearchKeyReleased">
+                                    <TextField fx:id="searchField" onKeyReleased="#onSearchKeyReleased" prefHeight="30.0" prefWidth="270.0" promptText="Search Here" styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
                                     </TextField>
                                     <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <ChoiceBox fx:id="searchChoiceBox" prefHeight="38.0" prefWidth="200.0" styleClass="select_box" />
+                                    <ChoiceBox fx:id="searchChoiceBox" prefHeight="30.0" prefWidth="180.0" styleClass="select_box" />
                                     <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <TextField fx:id="filterField" layoutX="44.0" layoutY="12.0" prefHeight="37.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field" onKeyReleased="#onSearchKeyReleased">
+                                    <TextField fx:id="filterField" layoutX="44.0" layoutY="12.0" onKeyReleased="#onSearchKeyReleased" prefHeight="30.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
@@ -104,30 +102,27 @@
                      <children>
                         <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
                            <children>
-                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0">
-                                 <content>
-                                    <TableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
-                                       <columns>
-                                          <TableColumn fx:id="colAvatar" text="Avatar">
-                                             <cellValueFactory>
-                                                <PropertyValueFactory property="avatar" />
-                                             </cellValueFactory>
-                                          </TableColumn>
-                                          <TableColumn fx:id="colStudentID" prefWidth="75.0" text="Student ID" /> <!-- Changed from No. to Student ID -->
-                                          <TableColumn fx:id="colFirstName" prefWidth="100.0" text="First Name" />
-                                          <TableColumn fx:id="colLastName" prefWidth="100.0" text="Last Name" />
-                                          <TableColumn fx:id="colDateOfBirth" prefWidth="100.0" text="Date of Birth" />
-                                          <TableColumn fx:id="colClassName" text="Class Name"/>
-                                          <TableColumn fx:id="colGender" prefWidth="75.0" text="Gender" />
-                                          <TableColumn fx:id="colAddress" prefWidth="150.0" text="Address" />
-                                          <TableColumn fx:id="colPhoneNumber" prefWidth="100.0" text="Phone Number" />
-                                          <TableColumn fx:id="colEmail" prefWidth="150.0" text="Email" />
-                                          <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Enrollment Date" />
-                                          <TableColumn fx:id="colAction" text="Action"/>
-                                       </columns>
-                                    </TableView>
-                                 </content>
-                              </ScrollPane>
+                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />
+                              <TableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                                 <columns>
+                                    <TableColumn fx:id="colAvatar" text="Avatar">
+                                       <cellValueFactory>
+                                          <PropertyValueFactory property="avatar" />
+                                       </cellValueFactory>
+                                    </TableColumn>
+                                    <TableColumn fx:id="colStudentID" prefWidth="75.0" text="Student ID" /> <!-- Changed from No. to Student ID -->
+                                    <TableColumn fx:id="colFirstName" prefWidth="100.0" text="First Name" />
+                                    <TableColumn fx:id="colLastName" prefWidth="100.0" text="Last Name" />
+                                    <TableColumn fx:id="colDateOfBirth" prefWidth="100.0" text="Date of Birth" />
+                                    <TableColumn fx:id="colClassName" text="Class Name" />
+                                    <TableColumn fx:id="colGender" prefWidth="75.0" text="Gender" />
+                                    <TableColumn fx:id="colAddress" prefWidth="150.0" text="Address" />
+                                    <TableColumn fx:id="colPhoneNumber" prefWidth="100.0" text="Phone Number" />
+                                    <TableColumn fx:id="colEmail" prefWidth="170.0" text="Email" />
+                                    <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Enrollment Date" />
+                                    <TableColumn fx:id="colAction" prefWidth="130.0" text="Action" />
+                                 </columns>
+                              </TableView>
                            </children>
                         </StackPane>
                      </children>
