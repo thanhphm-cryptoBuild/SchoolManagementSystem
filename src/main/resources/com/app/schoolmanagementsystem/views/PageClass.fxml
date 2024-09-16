@@ -26,14 +26,14 @@
                <children>
                   <HBox alignment="CENTER" fillHeight="false" prefHeight="148.0" prefWidth="946.0" spacing="100.0">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="200.0">
+                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="250.0">
                            <HBox.margin>
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label prefHeight="22.0" prefWidth="182.0" styleClass="title_label" text="Class Detail">
+                              <Label prefHeight="22.0" prefWidth="200.0" styleClass="title_label" text="Class Detail">
                                  <font>
-                                    <Font name="Sitka Text" size="18.0" />
+                                    <Font name="Sitka Text Bold" size="18.0" />
                                  </font>
                               </Label>
                            </children>

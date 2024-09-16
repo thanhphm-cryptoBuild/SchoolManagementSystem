@@ -230,7 +230,7 @@
                               <String fx:value="cursor" />
                            </styleClass>
                         </Pane>
-                        <Pane fx:id="navigateSideBar" layoutX="81.0" layoutY="596.0" prefHeight="40.0" prefWidth="40.0">
+                        <Pane fx:id="navigateSideBar" layoutX="78.0" layoutY="609.0" prefHeight="40.0" prefWidth="40.0">
                            <children>
                               <ImageView fx:id="open" fitHeight="40.0" fitWidth="40.0" layoutX="2.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
                                  <image>
@@ -443,16 +443,16 @@
                         </VBox>
                      </children>
                   </AnchorPane>
-                  <VBox alignment="CENTER" layoutX="70.0" prefHeight="60.0" prefWidth="300.0" spacing="10.0">
+                  <VBox alignment="CENTER" layoutX="70.0" prefHeight="60.0" prefWidth="325.0" spacing="10.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="325.0" spacing="10.0">
                            <children>
-                              <Label contentDisplay="CENTER" text="School Management System" textFill="#1a3395">
+                              <Label contentDisplay="CENTER" prefHeight="26.0" prefWidth="325.0" text="School Management System" textFill="#1a3395">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                                  <font>
-                                    <Font name="Sitka Text Bold" size="20.0" />
+                                    <Font name="Sitka Text Bold" size="22.0" />
                                  </font>
                               </Label>
                            </children>
