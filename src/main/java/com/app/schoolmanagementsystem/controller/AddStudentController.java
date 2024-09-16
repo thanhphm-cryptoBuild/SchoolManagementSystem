@@ -133,9 +133,34 @@ public class AddStudentController implements Initializable {
         );
         File selectedFile = fileChooser.showOpenDialog(formAddStudent.getScene().getWindow());
         if (selectedFile != null) {
-            avatarPath = selectedFile.toURI().toString();
-            Image avatarImage = new Image(avatarPath);
-            avatarImageView.setImage(avatarImage);
+            // Validate the image before setting it
+            if (isValidImage(selectedFile)) {
+                // Set the image directly without resizing
+                Image avatarImage = new Image(selectedFile.toURI().toString());
+                avatarImageView.setImage(avatarImage);
+                avatarPath = selectedFile.toURI().toString();
+            } else {
+                // Show error message if the image is not valid
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Image");
+                alert.setHeaderText(null);
+                alert.setContentText("Your image must be 2x3, 3x4, or 4x6 ratio.");
+                alert.showAndWait();
+            }
+        }
+    }
+
+    // Update this method to validate the image
+    private boolean isValidImage(File file) {
+        // Check if the image dimensions are approximately 2x3, 3x4, or 4x6 (width:height ratios)
+        try {
+            Image image = new Image(file.toURI().toString());
+            double aspectRatio = image.getWidth() / image.getHeight();
+            return (aspectRatio >= 0.67 && aspectRatio <= 0.75) || // Acceptable range for 2x3
+                   (aspectRatio >= 0.75 && aspectRatio <= 0.85) || // Acceptable range for 3x4
+                   (aspectRatio >= 0.5 && aspectRatio <= 0.75);   // Acceptable range for 4x6
+        } catch (Exception e) {
+            return false; // Return false if any error occurs
         }
     }
 
@@ -225,87 +250,111 @@ public class AddStudentController implements Initializable {
         }
 
         if (!hasError) {
-            String lastName = lastNameField.getText();
-            String firstName = firstNameField.getText();
-            String email = emailField.getText();
-            String dob = dobField.getValue() != null ? dobField.getValue().toString() : null;
-            String phoneNumber = phoneNumberField.getText();
-            String gender = genderField.getValue();
-            String address = addressField.getText();
-            ClassModel selectedClass = classNameField.getValue();
-            String enrollmentDate = enrollmentDateField.getValue() != null ? enrollmentDateField.getValue().toString() : null;
-            String fatherName = fatherNameField.getText();
-            String fatherPhoneNumber = fatherPhoneNumberField.getText();
-            String motherName = motherNameField.getText();
-            String motherPhoneNumber = motherPhoneNumberField.getText();
-            String previousSchool = previousSchoolField.getText();
-            String reasonForLeaving = reasonForLeavingField.getText();
+            // Check for duplicate email
+            if (isEmailExists(emailField.getText())) {
+                emailErrorLabel.setText("Email already exists");
+                emailErrorLabel.setVisible(true);
+                hasError = true;
+            }
 
-            String status = "active"; // Default status
+            if (!hasError) {
+                String lastName = lastNameField.getText();
+                String firstName = firstNameField.getText();
+                String email = emailField.getText();
+                String dob = dobField.getValue() != null ? dobField.getValue().toString() : null;
+                String phoneNumber = phoneNumberField.getText();
+                String gender = genderField.getValue();
+                String address = addressField.getText();
+                ClassModel selectedClass = classNameField.getValue();
+                String enrollmentDate = enrollmentDateField.getValue() != null ? enrollmentDateField.getValue().toString() : null;
+                String fatherName = fatherNameField.getText();
+                String fatherPhoneNumber = fatherPhoneNumberField.getText();
+                String motherName = motherNameField.getText();
+                String motherPhoneNumber = motherPhoneNumberField.getText();
+                String previousSchool = previousSchoolField.getText();
+                String reasonForLeaving = reasonForLeavingField.getText();
 
-            // Kết nối và lưu dữ liệu vào database
-            try (Connection connection = ConnectDB.getConnection()) {
-                // Lấy ID tiếp theo cho sinh viên
-                String getMaxStudentIdQuery = "SELECT COALESCE(MAX(StudentID), 0) + 1 AS nextID FROM students";
-                PreparedStatement getMaxStudentIdStatement = connection.prepareStatement(getMaxStudentIdQuery);
-                ResultSet studentResultSet = getMaxStudentIdStatement.executeQuery();
-                int nextStudentID = 0;
-                if (studentResultSet.next()) {
-                    nextStudentID = studentResultSet.getInt("nextID");
+                String status = "active"; // Default status
+
+                // Kết nối và lưu dữ liệu vào database
+                try (Connection connection = ConnectDB.getConnection()) {
+                    // Lấy ID tiếp theo cho sinh viên
+                    String getMaxStudentIdQuery = "SELECT COALESCE(MAX(StudentID), 0) + 1 AS nextID FROM students";
+                    PreparedStatement getMaxStudentIdStatement = connection.prepareStatement(getMaxStudentIdQuery);
+                    ResultSet studentResultSet = getMaxStudentIdStatement.executeQuery();
+                    int nextStudentID = 0;
+                    if (studentResultSet.next()) {
+                        nextStudentID = studentResultSet.getInt("nextID");
+                    }
+
+                    // Lưu thông tin sinh viên
+                    String studentQuery = "INSERT INTO students (StudentID, lastName, firstName, email, dateOfBirth, phoneNumber, gender, address, classID, enrollmentDate, previousSchool, reasonForLeaving, status, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    PreparedStatement studentPreparedStatement = connection.prepareStatement(studentQuery);
+                    studentPreparedStatement.setInt(1, nextStudentID);
+                    studentPreparedStatement.setString(2, lastName);
+                    studentPreparedStatement.setString(3, firstName);
+                    studentPreparedStatement.setString(4, email);
+                    studentPreparedStatement.setString(5, dob);
+                    studentPreparedStatement.setString(6, phoneNumber);
+                    studentPreparedStatement.setBoolean(7, gender.equals("Male"));
+                    studentPreparedStatement.setString(8, address);
+                    studentPreparedStatement.setInt(9, selectedClass.getClassID());
+                    studentPreparedStatement.setString(10, enrollmentDate);
+                    studentPreparedStatement.setString(11, previousSchool);
+                    studentPreparedStatement.setString(12, reasonForLeaving);
+                    studentPreparedStatement.setString(13, status);
+                    studentPreparedStatement.setString(14, avatarPath);
+
+                    studentPreparedStatement.executeUpdate();
+
+                    // Lấy ID tiếp theo cho gia đình
+                    String getMaxFamilyIdQuery = "SELECT COALESCE(MAX(FamilyID), 0) + 1 AS nextID FROM studentfamily";
+                    PreparedStatement getMaxFamilyIdStatement = connection.prepareStatement(getMaxFamilyIdQuery);
+                    ResultSet familyResultSet = getMaxFamilyIdStatement.executeQuery();
+                    int nextFamilyID = 0;
+                    if (familyResultSet.next()) {
+                        nextFamilyID = familyResultSet.getInt("nextID");
+                    }
+
+                    // Lưu thông tin gia đình
+                    String familyQuery = "INSERT INTO studentfamily (FamilyID, StudentID, FatherName, FatherPhoneNumber, MotherName, MotherPhoneNumber) VALUES (?, ?, ?, ?, ?, ?)";
+                    PreparedStatement familyPreparedStatement = connection.prepareStatement(familyQuery);
+                    familyPreparedStatement.setInt(1, nextFamilyID);
+                    familyPreparedStatement.setInt(2, nextStudentID);
+                    familyPreparedStatement.setString(3, fatherName);
+                    familyPreparedStatement.setString(4, fatherPhoneNumber);
+                    familyPreparedStatement.setString(5, motherName);
+                    familyPreparedStatement.setString(6, motherPhoneNumber);
+
+                    familyPreparedStatement.executeUpdate();
+
+                    // Hiển thị thông báo thành công
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Student added successfully!");
+                    alert.showAndWait();
+
+                } catch (SQLException e) {
+                    e.printStackTrace();
                 }
-
-                // Lưu thông tin sinh viên
-                String studentQuery = "INSERT INTO students (StudentID, lastName, firstName, email, dateOfBirth, phoneNumber, gender, address, classID, enrollmentDate, previousSchool, reasonForLeaving, status, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                PreparedStatement studentPreparedStatement = connection.prepareStatement(studentQuery);
-                studentPreparedStatement.setInt(1, nextStudentID);
-                studentPreparedStatement.setString(2, lastName);
-                studentPreparedStatement.setString(3, firstName);
-                studentPreparedStatement.setString(4, email);
-                studentPreparedStatement.setString(5, dob);
-                studentPreparedStatement.setString(6, phoneNumber);
-                studentPreparedStatement.setBoolean(7, gender.equals("Male"));
-                studentPreparedStatement.setString(8, address);
-                studentPreparedStatement.setInt(9, selectedClass.getClassID());
-                studentPreparedStatement.setString(10, enrollmentDate);
-                studentPreparedStatement.setString(11, previousSchool);
-                studentPreparedStatement.setString(12, reasonForLeaving);
-                studentPreparedStatement.setString(13, status);
-                studentPreparedStatement.setString(14, avatarPath);
-
-                studentPreparedStatement.executeUpdate();
-
-                // Lấy ID tiếp theo cho gia đình
-                String getMaxFamilyIdQuery = "SELECT COALESCE(MAX(FamilyID), 0) + 1 AS nextID FROM studentfamily";
-                PreparedStatement getMaxFamilyIdStatement = connection.prepareStatement(getMaxFamilyIdQuery);
-                ResultSet familyResultSet = getMaxFamilyIdStatement.executeQuery();
-                int nextFamilyID = 0;
-                if (familyResultSet.next()) {
-                    nextFamilyID = familyResultSet.getInt("nextID");
-                }
-
-                // Lưu thông tin gia đình
-                String familyQuery = "INSERT INTO studentfamily (FamilyID, StudentID, FatherName, FatherPhoneNumber, MotherName, MotherPhoneNumber) VALUES (?, ?, ?, ?, ?, ?)";
-                PreparedStatement familyPreparedStatement = connection.prepareStatement(familyQuery);
-                familyPreparedStatement.setInt(1, nextFamilyID);
-                familyPreparedStatement.setInt(2, nextStudentID);
-                familyPreparedStatement.setString(3, fatherName);
-                familyPreparedStatement.setString(4, fatherPhoneNumber);
-                familyPreparedStatement.setString(5, motherName);
-                familyPreparedStatement.setString(6, motherPhoneNumber);
-
-                familyPreparedStatement.executeUpdate();
-
-                // Hiển thị thông báo thành công
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText(null);
-                alert.setContentText("Student added successfully!");
-                alert.showAndWait();
-
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
         }
+    }
+
+    private boolean isEmailExists(String email) {
+        try (Connection connection = ConnectDB.getConnection()) {
+            String query = "SELECT COUNT(*) FROM students WHERE email = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0; // Return true if email exists
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false; // Return false if no error occurs and email does not exist
     }
 
     @FXML

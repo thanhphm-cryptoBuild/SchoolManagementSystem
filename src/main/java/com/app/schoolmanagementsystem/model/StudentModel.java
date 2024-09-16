@@ -3,7 +3,7 @@ package com.app.schoolmanagementsystem.model;
 import java.util.Date;
 
 public class StudentModel {
-    private int studentID;
+    private int studentID; // Add this line if it doesn't exist
     private String firstName;
     private String lastName;
     private Date dateOfBirth;
@@ -18,11 +18,12 @@ public class StudentModel {
     private String status;
     private int stt;
     private String avatar;
+    private boolean isExternalAvatar; // Thêm trường để xác định nguồn avatar
 
     // Constructor
     public StudentModel(int studentID, String firstName, String lastName, Date dateOfBirth, boolean gender,
                         String address, String phoneNumber, String email, Date enrollmentDate, int classID, String status, String avatar) {
-        this.studentID = studentID;
+        this.studentID = studentID; // Initialize studentID
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -33,7 +34,7 @@ public class StudentModel {
         this.enrollmentDate = enrollmentDate;
         this.classID = classID;
         this.status = status;
-        this.avatar = avatar;
+        setAvatar(avatar); // Sử dụng setter để thiết lập avatar và nguồn
     }
 
     // Getters và Setters
@@ -153,7 +154,51 @@ public class StudentModel {
         return avatar;
     }
 
+    /**
+     * Thiết lập avatar và xác định nguồn của nó.
+     * 
+     * @param avatar Đường dẫn đến ảnh avatar. Có thể là đường dẫn nội bộ hoặc đường dẫn bên ngoài.
+     */
     public void setAvatar(String avatar) {
-        this.avatar = avatar;
+        if (avatar != null && !avatar.isEmpty()) {
+            this.avatar = avatar;
+            this.isExternalAvatar = avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/");
+        } else {
+            // Đặt avatar mặc định nếu không cung cấp
+            this.avatar = "C:/Users/ADMIN/IdeaProjects/School/src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png";
+            this.isExternalAvatar = false;
+        }
+    }
+
+    /**
+     * Kiểm tra xem avatar có phải từ nguồn bên ngoài hay không.
+     * 
+     * @return true nếu avatar là từ nguồn bên ngoài, ngược lại false.
+     */
+    public boolean isExternalAvatar() {
+        return isExternalAvatar;
+    }
+
+    /**
+     * Thiết lập nguồn của avatar.
+     * 
+     * @param external true nếu avatar từ nguồn bên ngoài, ngược lại false.
+     */
+    public void setExternalAvatar(boolean external) {
+        this.isExternalAvatar = external;
+    }
+
+    /**
+     * Lấy đường dẫn đầy đủ đến avatar dựa trên nguồn của nó.
+     * 
+     * @return Đường dẫn đầy đủ đến ảnh avatar.
+     */
+    public String getFullAvatarPath() {
+        if (isExternalAvatar) {
+            return avatar;
+        } else {
+            // Trả về đường dẫn tài nguyên nội bộ
+            return "/com/app/schoolmanagementsystem/images/" + avatar;
+        }
     }
 }

@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -26,6 +27,7 @@ import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.util.Duration;
+import javafx.scene.shape.Circle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -33,6 +35,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -47,7 +51,7 @@ public class StudentController implements Initializable {
     private TableView<StudentModel> studentTable;
 
     @FXML
-    private TableColumn<StudentModel, Integer> colSTT;
+    private TableColumn<StudentModel, Integer> colStudentID; // Add this line
 
     @FXML
     private TableColumn<StudentModel, String> colFirstName;
@@ -77,31 +81,52 @@ public class StudentController implements Initializable {
     private TableColumn<StudentModel, Void> colAction;
 
     @FXML
+    private TableColumn<StudentModel, String> colClassName;
+
+    @FXML
     private TableColumn<StudentModel, String> colAvatar;
 
     @FXML
-    private TableColumn<StudentModel, String> colClassName;
-
-    // Path to the default avatar image
-    private final String defaultAvatarPath = "/com/app/schoolmanagementsystem/images/default_avatar.png";
+    private TextField searchField;
 
     @FXML
-    private TextField searchField;
+    private ChoiceBox<String> searchChoiceBox;
+
+    @FXML
+    private TextField filterField;
 
     private final ObservableList<StudentModel> studentData = FXCollections.observableArrayList();
 
     private boolean isSearchIconClicked = false;
 
+    // Thêm biến để lưu trữ ảnh mặc định và cache các ảnh đã tải
+    private Image defaultAvatar;
+    private final Map<String, Image> avatarCache = new HashMap<>();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Khởi tạo ảnh mặc định một lần
+        defaultAvatar = new Image(Objects.requireNonNull(getClass().getResource("/com/app/schoolmanagementsystem/images/default_avatar.png")).toExternalForm());
         setupTableColumns();
         loadStudentData();
+        setupSearchChoiceBox();
+        searchChoiceBox.getItems().add("Select"); // Add "Select" as the first item
+        searchChoiceBox.setValue("Select"); // Set default value to "Select"
+    }
+
+    private void setupSearchChoiceBox() {
+        searchChoiceBox.setItems(FXCollections.observableArrayList("Student ID", "Gender", "Class")); // Updated line
     }
 
     @FXML
     private void onSearchIconClicked() {
         isSearchIconClicked = true;
-        onSearchKeyReleased();
+        if (searchField.getText().isEmpty() && filterField.getText().isEmpty()) {
+            loadStudentData(); // Refresh the page if search fields are empty
+            isSearchIconClicked = false; // Reset the flag after refresh
+        } else {
+            onSearchKeyReleased();
+        }
     }
 
     @FXML
@@ -111,25 +136,38 @@ public class StudentController implements Initializable {
         }
 
         String searchText = searchField.getText().toLowerCase();
+        String filterText = filterField.getText().toLowerCase();
+        String searchChoice = searchChoiceBox.getValue();
         ObservableList<StudentModel> filteredData = FXCollections.observableArrayList();
 
         for (StudentModel student : studentData) {
-            if (student.getFirstName().toLowerCase().contains(searchText) ||
-                student.getLastName().toLowerCase().contains(searchText) ||
-                getClassNameById(student.getClassID()).toLowerCase().contains(searchText) ||
-                (student.getGender() ? "male" : "female").toLowerCase().contains(searchText) ||
-                student.getEmail().toLowerCase().contains(searchText)) {
+            boolean matches = false;
+            if (student.getFirstName().toLowerCase().contains(searchText) || student.getEmail().toLowerCase().contains(searchText)) {
+                if ("Student ID".equals(searchChoice) && String.valueOf(student.getStudentID()).contains(filterText)) { // Updated line
+                    matches = true;
+                } else if ("Gender".equals(searchChoice) && (student.getGender() ? "male" : "female").equalsIgnoreCase(filterText)) { // Updated line
+                    matches = true;
+                } else if ("Class".equals(searchChoice) && getClassNameById(student.getClassID()).toLowerCase().contains(filterText)) {
+                    matches = true;
+                } else if (filterText.isEmpty()) {
+                    matches = true;
+                }
+            }
+
+            if (matches) {
                 filteredData.add(student);
             }
         }
 
         studentTable.setItems(filteredData);
         isSearchIconClicked = false; // Reset the flag after search
+
+        // Reset ChoiceBox to "Select" after search
+        searchChoiceBox.setValue("Select");
     }
 
     private void setupTableColumns() {
-        colSTT.setCellValueFactory(column ->
-                new SimpleIntegerProperty(studentTable.getItems().indexOf(column.getValue()) + 1).asObject());
+        colStudentID.setCellValueFactory(new PropertyValueFactory<>("studentID")); // Set the cell value factory for Student ID
 
         colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -145,47 +183,37 @@ public class StudentController implements Initializable {
             private final ImageView imageView = new ImageView();
 
             @Override
-            protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                if (empty || item == null) {
-                    setGraphic(null);
+            protected void updateItem(String avatarPath, boolean empty) {
+                super.updateItem(avatarPath, empty);
+                if (empty || avatarPath == null || avatarPath.isEmpty()) {
+                    imageView.setImage(defaultAvatar);
                 } else {
-                    try {
-                        String imagePath;
-                        if (item.isEmpty()) {
-                            // Use default avatar path
-                            URL defaultImageURL = getClass().getResource(defaultAvatarPath);
-                            if (defaultImageURL != null) {
-                                imagePath = defaultImageURL.toExternalForm();
-                            } else {
-                                // If default image not found, do not display any image
-                                setGraphic(null);
-                                return;
-                            }
-                        } else {
-                            // Check if the path is a resource in the classpath
-                            URL imageURL = getClass().getResource(item);
-                            if (imageURL != null) {
-                                imagePath = imageURL.toExternalForm();
-                            } else {
-                                // If not a resource, assume it's a file system path
-                                imagePath = "file:" + item;
-                            }
-                        }
+                    // Lấy đối tượng StudentModel hiện tại
+                    StudentModel student = getTableView().getItems().get(getIndex());
+                    String fullAvatarPath = student.getFullAvatarPath();
 
-                        Image image = new Image(imagePath, true);
-                        imageView.setImage(image);
-                        imageView.setFitHeight(50);
-                        imageView.setFitWidth(50);
-                        imageView.setPreserveRatio(true);
-                        setGraphic(imageView);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        setGraphic(null);
+                    Image avatarImage = avatarCache.get(fullAvatarPath);
+                    if (avatarImage == null) {
+                        try {
+                            avatarImage = new Image(student.isExternalAvatar() ? fullAvatarPath : getClass().getResource(fullAvatarPath).toExternalForm());
+                            avatarCache.put(fullAvatarPath, avatarImage);
+                        } catch (Exception e) {
+                            avatarImage = defaultAvatar;
+                        }
                     }
+                    imageView.setImage(avatarImage);
                 }
+                imageView.setFitHeight(85); // Set fixed height for the avatar
+                imageView.setFitWidth(57.5); // Set fixed width for the avatar
+                imageView.setPreserveRatio(true); // Maintain aspect ratio
+
+                // Cắt ảnh thành hình tròn
+                imageView.setClip(new Circle(28, 28, 28)); // Create a circular clip
+                setGraphic(empty ? null : imageView);
             }
         });
+
+        colAvatar.setCellValueFactory(new PropertyValueFactory<>("avatar"));
 
         // Configure Action column
         colAction.setCellFactory(param -> new TableCell<>() {
@@ -339,17 +367,7 @@ public class StudentController implements Initializable {
              ResultSet rs = stmt.executeQuery(query)) {
 
             while (rs.next()) {
-                String avatarPath = rs.getString("avatar");
-                if (avatarPath == null || avatarPath.isEmpty()) {
-                    avatarPath = defaultAvatarPath;
-                } else {
-                    // Ensure the path starts with "/"
-                    if (!avatarPath.startsWith("/")) {
-                        avatarPath = "/" + avatarPath;
-                    }
-                }
-
-                StudentModel student = new StudentModel(
+                StudentModel student =  new StudentModel(
                         rs.getInt("StudentID"),
                         rs.getString("FirstName"),
                         rs.getString("LastName"),
@@ -361,7 +379,7 @@ public class StudentController implements Initializable {
                         rs.getDate("EnrollmentDate"),
                         rs.getInt("ClassID"),
                         rs.getString("Status"),
-                        avatarPath
+                        rs.getString("Avatar") // Thêm tham số avatar
                 );
                 studentData.add(student);
             }

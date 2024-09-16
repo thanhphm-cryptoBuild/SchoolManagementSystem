@@ -29,6 +29,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
+
 public class EditStudentController implements Initializable {
 
     @FXML
@@ -202,72 +203,169 @@ public class EditStudentController implements Initializable {
         );
         File selectedFile = fileChooser.showOpenDialog(formEditStudent.getScene().getWindow());
         if (selectedFile != null) {
-            avatarPath = selectedFile.toURI().toString();
-            Image avatarImage = new Image(avatarPath);
-            avatarImageView.setImage(avatarImage);
+            // Validate the image before setting it
+            if (isValidImage(selectedFile)) {
+                // Set the image directly without resizing
+                Image avatarImage = new Image(selectedFile.toURI().toString());
+                avatarImageView.setImage(avatarImage);
+                avatarPath = selectedFile.toURI().toString();
+            } else {
+                // Show error message if the image is not valid
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Image");
+                alert.setHeaderText(null);
+                alert.setContentText("Your image must be 2x3, 3x4, or 4x6 ratio.");
+                alert.showAndWait();
+            }
+        }
+    }
+
+    // Update this method to validate the image
+    private boolean isValidImage(File file) {
+        // Check if the image dimensions are approximately 2x3, 3x4, or 4x6 (width:height ratios)
+        try {
+            Image image = new Image(file.toURI().toString());
+            double aspectRatio = image.getWidth() / image.getHeight();
+            return (aspectRatio >= 0.67 && aspectRatio <= 0.75) || // Acceptable range for 2x3
+                   (aspectRatio >= 0.75 && aspectRatio <= 0.85) || // Acceptable range for 3x4
+                   (aspectRatio >= 0.5 && aspectRatio <= 0.75);   // Acceptable range for 4x6
+        } catch (Exception e) {
+            return false; // Return false if any error occurs
         }
     }
 
     @FXML
     private void updateStudent(MouseEvent event) {
-        String lastName = lastNameField.getText();
-        String firstName = firstNameField.getText();
-        String email = emailField.getText();
-        String dob = dobField.getValue() != null ? dobField.getValue().toString() : null;
-        String phoneNumber = phoneNumberField.getText();
-        String gender = genderField.getValue();
-        String address = addressField.getText();
-        ClassModel selectedClass = classNameField.getValue();
-        String enrollmentDate = enrollmentDateField.getValue() != null ? enrollmentDateField.getValue().toString() : null;
-        String fatherName = fatherNameField.getText();
-        String fatherPhoneNumber = fatherPhoneNumberField.getText();
-        String motherName = motherNameField.getText();
-        String motherPhoneNumber = motherPhoneNumberField.getText();
-        String previousSchool = previousSchoolField.getText();
-        String reasonForLeaving = reasonForLeavingField.getText();
+        // Reset error labels
+        lastNameErrorLabel.setVisible(false);
+        emailErrorLabel.setVisible(false);
+        phoneNumberErrorLabel.setVisible(false);
+        firstNameErrorLabel.setVisible(false);
+        dobErrorLabel.setVisible(false);
+        genderErrorLabel.setVisible(false);
+        addressErrorLabel.setVisible(false);
+        classNameErrorLabel.setVisible(false);
+        enrollmentDateErrorLabel.setVisible(false);
 
-        // Kết nối và cập nhật dữ liệu vào database
+        boolean hasError = false;
+
+        // Validate fields
+        if (lastNameField.getText().isEmpty() || !Character.isUpperCase(lastNameField.getText().charAt(0))) {
+            lastNameErrorLabel.setText("Last name must start with an uppercase letter");
+            lastNameErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (firstNameField.getText().isEmpty() || !Character.isUpperCase(firstNameField.getText().charAt(0))) {
+            firstNameErrorLabel.setText("First name must start with an uppercase letter");
+            firstNameErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (!isValidEmail(emailField.getText())) {
+            emailErrorLabel.setText("Invalid email format");
+            emailErrorLabel.setVisible(true);
+            hasError = true;
+        } else if (isEmailExists(emailField.getText(), student.getStudentID())) { // Check for duplicate email
+            emailErrorLabel.setText("Email already exists");
+            emailErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (!isValidPhoneNumber(phoneNumberField.getText())) {
+            phoneNumberErrorLabel.setText("Invalid phone number");
+            phoneNumberErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (dobField.getValue() == null || !isValidDOB(dobField.getValue())) {
+            dobErrorLabel.setText("Invalid date of birth");
+            dobErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (enrollmentDateField.getValue() == null) {
+            enrollmentDateErrorLabel.setText("Enrollment date is required");
+            enrollmentDateErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (addressField.getText().isEmpty()) {
+            addressErrorLabel.setText("Address is required");
+            addressErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (genderField.getValue() == null) {
+            genderErrorLabel.setText("Gender is required");
+            genderErrorLabel.setVisible(true);
+            hasError = true;
+        }
+        if (classNameField.getValue() == null) {
+            classNameErrorLabel.setText("Class is required");
+            classNameErrorLabel.setVisible(true);
+            hasError = true;
+        }
+
+        if (!hasError) {
+            // Proceed with updating the student
+            String lastName = lastNameField.getText();
+            String firstName = firstNameField.getText();
+            String email = emailField.getText();
+            String dob = dobField.getValue() != null ? dobField.getValue().toString() : null;
+            String phoneNumber = phoneNumberField.getText();
+            String gender = genderField.getValue();
+            String address = addressField.getText();
+            ClassModel selectedClass = classNameField.getValue();
+            String enrollmentDate = enrollmentDateField.getValue() != null ? enrollmentDateField.getValue().toString() : null;
+            String fatherName = fatherNameField.getText();
+            String fatherPhoneNumber = fatherPhoneNumberField.getText();
+            String motherName = motherNameField.getText();
+            String motherPhoneNumber = motherPhoneNumberField.getText();
+            String previousSchool = previousSchoolField.getText();
+            String reasonForLeaving = reasonForLeavingField.getText();
+
+            // Connect and update data in the database
+            try (Connection connection = ConnectDB.getConnection()) {
+                // Update student information
+                String studentQuery = "UPDATE students SET lastName = ?, firstName = ?, email = ?, dateOfBirth = ?, phoneNumber = ?, gender = ?, address = ?, classID = ?, enrollmentDate = ?, previousSchool = ?, reasonForLeaving = ?, avatar = ? WHERE StudentID = ?";
+                PreparedStatement studentPreparedStatement = connection.prepareStatement(studentQuery);
+                studentPreparedStatement.setString(1, lastName);
+                studentPreparedStatement.setString(2, firstName);
+                studentPreparedStatement.setString(3, email);
+                studentPreparedStatement.setString(4, dob);
+                studentPreparedStatement.setString(5, phoneNumber);
+                studentPreparedStatement.setBoolean(6, gender.equals("Male"));
+                studentPreparedStatement.setString(7, address);
+                studentPreparedStatement.setInt(8, selectedClass.getClassID());
+                studentPreparedStatement.setString(9, enrollmentDate);
+                studentPreparedStatement.setString(10, previousSchool);
+                studentPreparedStatement.setString(11, reasonForLeaving);
+                studentPreparedStatement.setString(12, avatarPath);
+                studentPreparedStatement.setInt(13, student.getStudentID());
+
+                studentPreparedStatement.executeUpdate();
+
+                // Show success message
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText(null);
+                alert.setContentText("Student updated successfully!");
+                alert.showAndWait();
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private boolean isEmailExists(String email, int currentStudentId) {
         try (Connection connection = ConnectDB.getConnection()) {
-            // Cập nhật thông tin sinh viên
-            String studentQuery = "UPDATE students SET lastName = ?, firstName = ?, email = ?, dateOfBirth = ?, phoneNumber = ?, gender = ?, address = ?, classID = ?, enrollmentDate = ?, previousSchool = ?, reasonForLeaving = ?, avatar = ? WHERE StudentID = ?";
-            PreparedStatement studentPreparedStatement = connection.prepareStatement(studentQuery);
-            studentPreparedStatement.setString(1, lastName);
-            studentPreparedStatement.setString(2, firstName);
-            studentPreparedStatement.setString(3, email);
-            studentPreparedStatement.setString(4, dob);
-            studentPreparedStatement.setString(5, phoneNumber);
-            studentPreparedStatement.setBoolean(6, gender.equals("Male"));
-            studentPreparedStatement.setString(7, address);
-            studentPreparedStatement.setInt(8, selectedClass.getClassID());
-            studentPreparedStatement.setString(9, enrollmentDate);
-            studentPreparedStatement.setString(10, previousSchool);
-            studentPreparedStatement.setString(11, reasonForLeaving);
-            studentPreparedStatement.setString(12, avatarPath);
-            studentPreparedStatement.setInt(13, student.getStudentID());
-
-            studentPreparedStatement.executeUpdate();
-
-            // Cập nhật thông tin gia đình
-            String familyQuery = "UPDATE studentfamily SET FatherName = ?, FatherPhoneNumber = ?, MotherName = ?, MotherPhoneNumber = ? WHERE StudentID = ?";
-            PreparedStatement familyPreparedStatement = connection.prepareStatement(familyQuery);
-            familyPreparedStatement.setString(1, fatherName);
-            familyPreparedStatement.setString(2, fatherPhoneNumber);
-            familyPreparedStatement.setString(3, motherName);
-            familyPreparedStatement.setString(4, motherPhoneNumber);
-            familyPreparedStatement.setInt(5, student.getStudentID());
-
-            familyPreparedStatement.executeUpdate();
-
-            // Hiển thị thông báo thành công
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success");
-            alert.setHeaderText(null);
-            alert.setContentText("Student updated successfully!");
-            alert.showAndWait();
-
+            String query = "SELECT COUNT(*) FROM students WHERE email = ? AND StudentID != ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, email);
+            preparedStatement.setInt(2, currentStudentId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(1) > 0; // Return true if email exists for another student
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return false; // Return false if no error occurs and email does not exist
     }
 
     @FXML

@@ -18,6 +18,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+<?import javafx.util.Callback?>
 <StackPane fx:id="pageStudent" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.StudentController">
    <children>
       <AnchorPane fx:id="moveBG" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/pageStudent.css">
@@ -44,7 +46,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="38.0" prefWidth="90.0" styleClass="search_icon_field" onMouseClicked="#onSearchIconClicked">
                                        <children>
-                                         <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
+                                        <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
@@ -54,9 +56,9 @@
                                        </font>
                                     </TextField>
                                     <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <ChoiceBox prefHeight="38.0" prefWidth="200.0" styleClass="select_box" />
+                                    <ChoiceBox fx:id="searchChoiceBox" prefHeight="38.0" prefWidth="200.0" styleClass="select_box" />
                                     <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <TextField layoutX="44.0" layoutY="12.0" prefHeight="37.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
+                                    <TextField fx:id="filterField" layoutX="44.0" layoutY="12.0" prefHeight="37.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field" onKeyReleased="#onSearchKeyReleased">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
@@ -102,8 +104,12 @@
                                  <content>
                                     <TableView fx:id="studentTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                        <columns>
-                                          <TableColumn fx:id="colAvatar" text="Avatar" />
-                                          <TableColumn fx:id="colSTT" prefWidth="75.0" text="No." />
+                                          <TableColumn fx:id="colAvatar" text="Avatar">
+                                             <cellValueFactory>
+                                                <PropertyValueFactory property="avatar" />
+                                             </cellValueFactory>
+                                          </TableColumn>
+                                          <TableColumn fx:id="colStudentID" prefWidth="75.0" text="Student ID" /> <!-- Changed from No. to Student ID -->
                                           <TableColumn fx:id="colFirstName" prefWidth="100.0" text="First Name" />
                                           <TableColumn fx:id="colLastName" prefWidth="100.0" text="Last Name" />
                                           <TableColumn fx:id="colDateOfBirth" prefWidth="100.0" text="Date of Birth" />
