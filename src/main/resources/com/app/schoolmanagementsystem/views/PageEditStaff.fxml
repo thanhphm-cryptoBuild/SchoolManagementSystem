@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="add_student" stylesheets="@../css/pageAddStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.EditStaffController">
+<StackPane fx:id="formEditStaff" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="add_student" stylesheets="@../css/pageAddStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.EditStaffController">
    <effect>
       <DropShadow />
    </effect>
@@ -61,7 +61,7 @@
                                                 <Font name="Sitka Text Bold Italic" size="18.0" />
                                              </font>
                                           </Label>
-                                          <Label alignment="CENTER_RIGHT" layoutX="344.0" layoutY="10.0" prefHeight="26.0" prefWidth="42.0" styleClass="text_title" text="25">
+                                          <Label fx:id="label_StaffID" alignment="CENTER_RIGHT" layoutX="344.0" layoutY="10.0" prefHeight="26.0" prefWidth="42.0" styleClass="text_title" text="25">
                                              <font>
                                                 <Font name="Sitka Text Bold" size="18.0" />
                                              </font>
@@ -96,7 +96,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="130.0" prefWidth="223.0">
                                        <children>
-                                          <ImageView fitHeight="237.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true">
+                                          <ImageView fx:id="profileImageView" fitHeight="237.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
                                                 <Image url="@../images/david-beckham.jpg" />
                                              </image>
@@ -105,8 +105,8 @@
                                     </VBox>
                                     <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="5.0">
                                        <children>
-                                          <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="233.0" text="Change File" />
-                                          <Label text="Error 2" visible="false" />
+                                          <Button fx:id="chooseFileButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="233.0" text="Change File" />
+                                          <Label fx:id="chooseFileErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -115,23 +115,23 @@
                                  <children>
                                     <VBox prefHeight="85.0" prefWidth="228.0" spacing="5.0">
                                        <children>
-                                          <Label text="Last Name" />
-                                          <TextField prefHeight="35.0" prefWidth="325.0" promptText="First Name" />
-                                          <Label layoutX="10.0" layoutY="10.0" text="Error 1" visible="false" />
+                                          <Label text="First Name" />
+                                          <TextField fx:id="firstNameField" prefHeight="35.0" prefWidth="325.0" promptText="First Name" />
+                                          <Label fx:id="firstNameErrorLabel" layoutX="10.0" layoutY="10.0" text="Error 1" visible="false" />
                                        </children>
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="10.0" prefHeight="85.0" prefWidth="220.0" spacing="5.0">
                                        <children>
                                           <Label text="Role" />
-                                          <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
-                                          <Label text="Error 2" visible="false" />
+                                          <ChoiceBox fx:id="roleChoiceBox" prefHeight="35.0" prefWidth="325.0" />
+                                          <Label fx:id="roleErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="80.0" prefHeight="85.0" prefWidth="220.0" spacing="5.0">
                                        <children>
                                           <Label text="Gender" />
-                                          <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
-                                          <Label text="Error 2" visible="false" />
+                                          <ChoiceBox fx:id="genderChoiceBox" prefHeight="35.0" prefWidth="325.0" />
+                                          <Label fx:id="genderErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -140,23 +140,23 @@
                                  <children>
                                     <VBox prefHeight="85.0" prefWidth="100.0" spacing="5.0">
                                        <children>
-                                          <Label text="First Name" />
-                                          <TextField prefHeight="35.0" prefWidth="325.0" promptText="Last Name" />
-                                          <Label layoutX="10.0" layoutY="53.0" text="Error 2" visible="false" />
+                                          <Label text="Last Name" />
+                                          <TextField fx:id="lastNameField" prefHeight="35.0" prefWidth="325.0" promptText="Last Name" />
+                                          <Label fx:id="lastNameErrorLabel" layoutX="10.0" layoutY="53.0" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="10.0" prefHeight="85.0" prefWidth="220.0" spacing="5.0">
                                        <children>
                                           <Label text="Password" />
-                                          <PasswordField prefHeight="35.0" prefWidth="325.0" promptText="Password" />
-                                          <Label text="Error 2" visible="false" />
+                                          <PasswordField fx:id="passwordField" prefHeight="35.0" prefWidth="325.0" promptText="Password" />
+                                          <Label fx:id="passwordErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="80.0" prefHeight="85.0" prefWidth="220.0" spacing="5.0">
                                        <children>
                                           <Label text="Date Of Birth" />
-                                          <DatePicker prefHeight="35.0" prefWidth="325.0" promptText="Date Of Birth" />
-                                          <Label text="Error 2" visible="false" />
+                                          <DatePicker fx:id="dobDatePicker" prefHeight="35.0" prefWidth="325.0" promptText="Date Of Birth" />
+                                          <Label fx:id="dobErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -166,22 +166,22 @@
                                     <VBox prefHeight="85.0" prefWidth="100.0" spacing="5.0">
                                        <children>
                                           <Label text="Email" />
-                                          <TextField prefHeight="35.0" prefWidth="325.0" promptText="Email" />
-                                          <Label text="Error 3" visible="false" />
+                                          <TextField fx:id="emailField" prefHeight="35.0" prefWidth="325.0" promptText="Email" />
+                                          <Label fx:id="emailErrorLabel" text="Error 3" visible="false" />
                                        </children>
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="10.0" prefHeight="85.0" prefWidth="220.0" spacing="5.0">
                                        <children>
                                           <Label text="Confirm Password" />
-                                          <PasswordField prefHeight="35.0" prefWidth="325.0" promptText="Password" />
-                                          <Label text="Error 2" visible="false" />
+                                          <PasswordField fx:id="confirmPasswordField" prefHeight="35.0" prefWidth="325.0" promptText="Password" />
+                                          <Label fx:id="confirmPasswordErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="80.0" prefHeight="85.0" prefWidth="220.0" spacing="5.0">
                                        <children>
                                           <Label text="Phone Number" />
-                                          <TextField prefHeight="35.0" prefWidth="325.0" promptText="Phone Number" />
-                                          <Label text="Error 2" visible="false" />
+                                          <TextField fx:id="phoneNumberField" prefHeight="35.0" prefWidth="325.0" promptText="Phone Number" />
+                                          <Label fx:id="phoneErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -193,8 +193,8 @@
                               <VBox layoutX="10.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Address" />
-                                    <TextField prefHeight="35.0" prefWidth="325.0" promptText="Address" />
-                                    <Label text="Error 2" visible="false" />
+                                    <TextField fx:id="addressField" prefHeight="35.0" prefWidth="325.0" promptText="Address" />
+                                    <Label fx:id="addressErrorLabel" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                               <VBox layoutX="10.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
@@ -202,8 +202,8 @@
                                     <VBox prefHeight="200.0" prefWidth="375.0" spacing="5.0">
                                        <children>
                                           <Label text="Hire Date" />
-                                          <DatePicker prefHeight="35.0" prefWidth="325.0" promptText="Hire Date" />
-                                          <Label text="Error 2" visible="false" />
+                                          <DatePicker fx:id="hireDatePicker" prefHeight="35.0" prefWidth="325.0" promptText="Hire Date" />
+                                          <Label fx:id="hireDateErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -213,8 +213,8 @@
                                     <VBox prefHeight="200.0" prefWidth="375.0" spacing="5.0">
                                        <children>
                                           <Label text="Salary" />
-                                          <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
-                                          <Label text="Error 2" visible="false" />
+                                          <ChoiceBox fx:id="salaryChoiceBox" prefHeight="35.0" prefWidth="325.0" />
+                                          <Label fx:id="salaryErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -224,8 +224,8 @@
                                     <VBox prefHeight="200.0" prefWidth="375.0" spacing="5.0">
                                        <children>
                                           <Label text="Education Background " />
-                                          <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
-                                          <Label text="Error 2" visible="false" />
+                                          <ChoiceBox fx:id="educationChoiceBox" prefHeight="35.0" prefWidth="325.0" />
+                                          <Label fx:id="educationErrorLabel" text="Error 2" visible="false" />
                                        </children>
                                     </VBox>
                                  </children>
@@ -237,8 +237,8 @@
                               <VBox prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Experience " />
-                                    <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
-                                    <Label layoutX="10.0" layoutY="176.0" text="Error 2" visible="false" />
+                                    <ChoiceBox fx:id="experienceChoiceBox" prefHeight="35.0" prefWidth="325.0" />
+                                    <Label fx:id="experienceErrorLabel" layoutX="10.0" layoutY="176.0" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                               <VBox layoutX="10.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
@@ -251,15 +251,15 @@
                               <VBox layoutX="405.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Family Member Name 1 " />
-                                    <PasswordField prefHeight="35.0" prefWidth="325.0" promptText="Family Member Name 1 " />
-                                    <Label text="Error 2" visible="false" />
+                                    <PasswordField fx:id="familyMemberNameField1" prefHeight="35.0" prefWidth="325.0" promptText="Family Member Name 1 " />
+                                    <Label fx:id="familyMemberName1ErrorLabel" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                               <VBox layoutX="672.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Relation 1" />
-                                    <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
-                                    <Label text="Error 2" visible="false" />
+                                    <ChoiceBox fx:id="relationshipChoiceBox1" prefHeight="35.0" prefWidth="325.0" />
+                                    <Label fx:id="relationship1ErrorLabel" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                            </children>
@@ -269,29 +269,29 @@
                               <VBox prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Phone Number 1" />
-                                    <PasswordField prefHeight="35.0" prefWidth="325.0" promptText="Phone Number 1" />
-                                    <Label text="Error 2" visible="false" />
+                                    <PasswordField fx:id="contactNumberField1" prefHeight="35.0" prefWidth="325.0" promptText="Phone Number 1" />
+                                    <Label fx:id="contactNumber1ErrorLabel" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                               <VBox layoutX="10.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Family Member Name 2 " />
-                                    <PasswordField prefHeight="35.0" prefWidth="325.0" promptText="Family Member Name 2 " />
-                                    <Label text="Error 2" visible="false" />
+                                    <PasswordField fx:id="familyMemberNameField2" prefHeight="35.0" prefWidth="325.0" promptText="Family Member Name 2 " />
+                                    <Label fx:id="familyMemberName2ErrorLabel" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                               <VBox layoutX="405.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Relation 2" />
-                                    <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
-                                    <Label text="Error 2" visible="false" />
+                                    <ChoiceBox fx:id="relationshipChoiceBox2" prefHeight="35.0" prefWidth="325.0" />
+                                    <Label fx:id="relationship2ErrorLabel" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                               <VBox layoutX="672.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Phone Number 2" />
-                                    <PasswordField prefHeight="35.0" prefWidth="325.0" promptText="Phone Number 2" />
-                                    <Label text="Error 2" visible="false" />
+                                    <PasswordField fx:id="contactNumberField2" prefHeight="35.0" prefWidth="325.0" promptText="Phone Number 2" />
+                                    <Label fx:id="contactNumber2ErrorLabel" text="Error 2" visible="false" />
                                  </children>
                               </VBox>
                            </children>
@@ -300,12 +300,12 @@
                            <children>
                               <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="500.0" spacing="5.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="500.0" text="Update" />
+                                    <Button fx:id="updateButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="500.0" text="Update" />
                                  </children>
                               </VBox>
                               <VBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="200.0" prefWidth="500.0" spacing="5.0">
                                  <children>
-                                    <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="500.0" text="Cancel" />
+                                    <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="40.0" prefWidth="500.0" text="Cancel" />
                                  </children>
                               </VBox>
                            </children>

@@ -175,7 +175,10 @@ public class StaffController implements Initializable {
 
         reloadButton.setOnMouseClicked(event -> reloadPage());
 
-
+        // Cấu hình ChoiceBox cho Gender và ID
+        ObservableList<String> searchOptions = FXCollections.observableArrayList("Seclect", "Gender", "ID");
+        selectBox.setItems(searchOptions);
+        selectBox.setValue(""); // Đặt giá trị mặc định là "" (không chọn gì)
 
         // Tạo sự kiện khi người dùng nhập vào ô tìm kiếm
         searchField.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
@@ -185,10 +188,6 @@ public class StaffController implements Initializable {
         // Khởi tạo StaffModel
         staffModel = new StaffModel();
 
-        // Cấu hình ChoiceBox cho giới tính
-        ObservableList<String> genderList = FXCollections.observableArrayList("","Male", "Female");
-        selectBox.setItems(genderList);
-        selectBox.setValue(""); // Đặt giá trị mặc định là "Male"
         // Tải dữ liệu ban đầu
         loadStaffDataByLogic(null, null, null, null);
 
@@ -198,8 +197,8 @@ public class StaffController implements Initializable {
 
     private void searchStaff() {
         // Lấy giá trị từ các ô tìm kiếm
-        String searchText = searchField.getText().trim();
-        String extraSearchText = extraSearchField.getText().trim();
+        String searchText = searchField.getText().trim(); // Tìm kiếm theo firstName hoặc email
+        String extraSearchText = extraSearchField.getText().trim(); // Tìm kiếm theo ID hoặc Gender từ ChoiceBox
 
         // Tách phần tìm kiếm cho firstName, email từ searchField
         String firstName = null;
@@ -208,7 +207,7 @@ public class StaffController implements Initializable {
         // Xử lý tìm kiếm theo searchField
         if (searchText.contains("@")) {
             email = searchText;
-        } else {
+        } else if (!searchText.isEmpty()) {
             firstName = searchText;
         }
 
@@ -216,16 +215,23 @@ public class StaffController implements Initializable {
         Integer id = null;
         Byte gender = null;
 
-        // Nếu có số thì giả định đó là ID
-        try {
-            id = Integer.parseInt(extraSearchText);
-        } catch (NumberFormatException e) {
-            // Không xử lý lỗi vì gender được kiểm tra sau
-        }
-
-        // Lấy giới tính từ ChoiceBox nếu có
-        if (selectBox.getValue() != null && !selectBox.getValue().isEmpty()) {
-            gender = (byte) (selectBox.getValue().equalsIgnoreCase("Male") ? 1 : 0); // Giả sử Male là 1 và Female là 0
+        // Xử lý tìm kiếm theo lựa chọn từ ChoiceBox
+        String selectedOption = selectBox.getValue();
+        if ("ID".equals(selectedOption)) {
+            // Nếu lựa chọn là ID, tìm kiếm theo ID
+            try {
+                id = Integer.parseInt(extraSearchText);
+            } catch (NumberFormatException e) {
+                // Xử lý lỗi nếu extraSearchField không phải là số
+                id = null;
+            }
+        } else if ("Gender".equals(selectedOption)) {
+            // Nếu lựa chọn là Gender, tìm kiếm theo Gender
+            if ("Male".equalsIgnoreCase(extraSearchText)) {
+                gender = (byte) 1;
+            } else if ("Female".equalsIgnoreCase(extraSearchText)) {
+                gender = (byte) 0;
+            }
         }
 
         // Cập nhật cột hành động
@@ -233,8 +239,8 @@ public class StaffController implements Initializable {
 
         // Tải dữ liệu nhân viên theo các tiêu chí tìm kiếm
         loadStaffDataByLogic(firstName, email, gender, id);
-
     }
+
 
     private void resetSearchFields() {
         searchField.setText(""); // Đặt giá trị ô tìm kiếm chính là rỗng

@@ -6,15 +6,11 @@ import com.app.schoolmanagementsystem.entities.StaffRoles;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import com.app.schoolmanagementsystem.utils.PasswordUtil;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class StaffModel {
@@ -113,9 +109,9 @@ public class StaffModel {
                 isValid = false;
             } else {
                 LocalDate dateOfBirth = staff.getDateOfBirth().toLocalDate();
-                LocalDate limitDate = LocalDate.of(2010, 1, 1);
+                LocalDate limitDate = LocalDate.of(2000, 1, 1);
                 if (dateOfBirth.isAfter(limitDate)) {
-                    System.out.println("Ngày sinh phải trước năm 2010.");
+                    System.out.println("Ngày sinh phải trước năm 2000.");
                     isValid = false;
                 }
             }
@@ -174,9 +170,23 @@ public class StaffModel {
                 System.out.println("Kinh nghiệm làm việc không được trống.");
                 isValid = false;
             }
+            // Kiểm tra định dạng của hình đại diện
             if (staff.getAvatar() == null || staff.getAvatar().isEmpty()) {
                 System.out.println("Hình đại diện không được trống.");
                 isValid = false;
+            } else {
+                // Danh sách các định dạng hợp lệ
+                List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
+
+                // Lấy phần mở rộng của tệp
+                String avatar = staff.getAvatar();
+                String fileExtension = avatar.substring(avatar.lastIndexOf('.') + 1).toLowerCase();
+
+                // Kiểm tra định dạng
+                if (!validFormats.contains(fileExtension)) {
+                    System.out.println("Hình đại diện phải có định dạng: png, jpg, hoặc jpeg.");
+                    isValid = false;
+                }
             }
         }
 
@@ -359,50 +369,235 @@ public class StaffModel {
     }
 
 
-    // Phương thức cập nhật thông tin nhân viên
-    public boolean updateStaff(Staff staff) {
-        String query = "UPDATE Staffs SET FirstName = ?, LastName = ?, DateOfBirth = ?, Gender = ?, Address = ?, PhoneNumber = ?, Email = ?, Password = ?, HireDate = ?, Salary = ?, EducationBackground = ?, Experience = ?, Avatar = ?, Status = ?, ResetCode = ?, ResetCodeCreationTime = ?, IsResetCodeUsed = ? WHERE StaffID = ?";
+    // Phương thức cập nhật nhân viên
+    public boolean updateStaff(Staff staff, List<StaffFamily> familyMembers, StaffRoles staffRole) {
+        boolean isValid = true;
+
+        // Kiểm tra dữ liệu nhân viên (cùng logic như addStaff)
+        if (!validateStaffData(staff)) {
+            System.out.println("Dữ liệu nhân viên không hợp lệ.");
+            isValid = false;
+        } else {
+            // Kiểm tra từng trường cụ thể của nhân viên (giống như addStaff)
+            if (staff.getFirstName() == null || staff.getFirstName().isEmpty()) {
+                System.out.println("Tên nhân viên không được trống.");
+                isValid = false;
+            } else if (!Character.isUpperCase(staff.getFirstName().charAt(0))) {
+                System.out.println("Tên nhân viên phải bắt đầu bằng chữ hoa.");
+                isValid = false;
+            }
+
+            if (staff.getLastName() == null || staff.getLastName().isEmpty()) {
+                System.out.println("Họ nhân viên không được trống.");
+                isValid = false;
+            } else if (!Character.isUpperCase(staff.getLastName().charAt(0))) {
+                System.out.println("Họ nhân viên phải bắt đầu bằng chữ hoa.");
+                isValid = false;
+            }
+
+            if (staff.getDateOfBirth() == null) {
+                System.out.println("Ngày sinh không được trống.");
+                isValid = false;
+            } else {
+                LocalDate dateOfBirth = staff.getDateOfBirth().toLocalDate();
+                LocalDate limitDate = LocalDate.of(2000, 1, 1);
+                if (dateOfBirth.isAfter(limitDate)) {
+                    System.out.println("Ngày sinh phải trước năm 2000.");
+                    isValid = false;
+                }
+            }
+            if (staff.getGender() == null) {
+                System.out.println("Giới tính không được trống.");
+                isValid = false;
+            }
+            if (staff.getAddress() == null || staff.getAddress().isEmpty()) {
+                System.out.println("Địa chỉ không được trống.");
+                isValid = false;
+            }
+            if (staff.getPhoneNumber() == null || staff.getPhoneNumber().isEmpty() || !staff.getPhoneNumber().matches("\\d{10}")) {
+                if (staff.getPhoneNumber() == null || staff.getPhoneNumber().isEmpty()) {
+                    System.out.println("Số điện thoại không được trống.");
+                } else if (!staff.getPhoneNumber().matches("\\d{10}")) {
+                    System.out.println("Số điện thoại phải gồm 10 chữ số.");
+                }
+                isValid = false;
+            }
+
+            // Biểu thức chính quy để kiểm tra định dạng email
+            String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
+
+            if (staff.getEmail() == null || staff.getEmail().isEmpty()) {
+                System.out.println("Email không được trống.");
+                isValid = false;
+            } else if (!staff.getEmail().matches(emailRegex)) {
+                System.out.println("Email không đúng định dạng.");
+                isValid = false;
+            }
+
+            if (staff.getPassword() == null || staff.getPassword().isEmpty()) {
+                System.out.println("Mật khẩu không được trống.");
+                isValid = false;
+            } else if (staff.getPassword().length() < 5) {
+                System.out.println("Mật khẩu phải có ít nhất 5 ký tự.");
+                isValid = false;
+            }
+
+            if (staff.getHireDate() == null) {
+                System.out.println("Ngày tuyển dụng không được trống.");
+                isValid = false;
+            }
+
+            if (staff.getSalary() <= 0) {
+                System.out.println("Lương không hợp lệ.");
+                isValid = false;
+            }
+
+            if (staff.getEducationBackground() == null || staff.getEducationBackground().isEmpty()) {
+                System.out.println("Trình độ học vấn không được trống.");
+                isValid = false;
+            }
+
+            if (staff.getExperience() == null || staff.getExperience().isEmpty()) {
+                System.out.println("Kinh nghiệm làm việc không được trống.");
+                isValid = false;
+            }
+            // Kiểm tra định dạng của hình đại diện
+            if (staff.getAvatar() == null || staff.getAvatar().isEmpty()) {
+                System.out.println("Hình đại diện không được trống.");
+                isValid = false;
+            } else {
+                // Danh sách các định dạng hợp lệ
+                List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
+
+                // Lấy phần mở rộng của tệp
+                String avatar = staff.getAvatar();
+                String fileExtension = avatar.substring(avatar.lastIndexOf('.') + 1).toLowerCase();
+
+                // Kiểm tra định dạng
+                if (!validFormats.contains(fileExtension)) {
+                    System.out.println("Hình đại diện phải có định dạng: png, jpg, hoặc jpeg.");
+                    isValid = false;
+                }
+            }
+        }
+
+        // Kiểm tra danh sách thành viên gia đình
+        if (familyMembers == null || familyMembers.isEmpty()) {
+            System.out.println("Vui lòng nhập ít nhất một thành viên gia đình.");
+            isValid = false;
+        } else {
+            boolean validFamilyMemberFound = false;
+
+            for (StaffFamily familyMember : familyMembers) {
+                boolean isValidMember = true;
+
+                // Kiểm tra từng trường của thành viên gia đình
+                if (familyMember.getFamilyMemberName() == null || familyMember.getFamilyMemberName().isEmpty()) {
+                    System.out.println("Tên thành viên gia đình không được để trống.");
+                    isValidMember = false;
+                } else if (!familyMember.getFamilyMemberName().matches("[a-zA-Z\\s]+")) {
+                    System.out.println("Tên thành viên gia đình phải là chữ.");
+                    isValidMember = false;
+                }
+
+                if (familyMember.getRelationshipType() == null || familyMember.getRelationshipType().isEmpty()) {
+                    System.out.println("Mối quan hệ của thành viên gia đình không được trống.");
+                    isValidMember = false;
+                }
+
+                if (familyMember.getContactNumber() == null || !familyMember.getContactNumber().matches("\\d{10}")) {
+                    System.out.println("Số điện thoại của thành viên gia đình phải là 10 chữ số.");
+                    isValidMember = false;
+                }
+
+                // Nếu thông tin của thành viên này hợp lệ
+                if (isValidMember) {
+                    validFamilyMemberFound = true;
+                }
+            }
+
+            // Nếu không có bất kỳ thành viên hợp lệ nào
+            if (!validFamilyMemberFound) {
+                System.out.println("Vui lòng nhập thông tin chính xác cho ít nhất một thành viên gia đình.");
+                isValid = false;
+            }
+        }
+
+        if (!isValid) {
+            return false;
+        }
+
+        String updateStaffQuery = "UPDATE Staffs SET FirstName = ?, LastName = ?, DateOfBirth = ?, Gender = ?, Address = ?, PhoneNumber = ?, Email = ?, Password = ?, HireDate = ?, Salary = ?, EducationBackground = ?, Experience = ?, Avatar = ?, Status = 'active', ResetCode = ?, ResetCodeCreationTime = ?, IsResetCodeUsed = ? WHERE StaffID = ?";
+
+        String updateStaffRoleQuery = "UPDATE StaffRoles SET RoleName = ? WHERE StaffID = ?";
+
+        String deleteFamilyMembersQuery = "DELETE FROM StaffFamily WHERE StaffID = ?";
+        String insertFamilyMemberQuery = "INSERT INTO StaffFamily (StaffID, FamilyMemberName, RelationshipType, ContactNumber) VALUES (?, ?, ?, ?)";
 
         try (Connection conn = ConnectDB.connection();
-             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+             PreparedStatement staffStatement = conn.prepareStatement(updateStaffQuery);
+             PreparedStatement staffRoleStatement = conn.prepareStatement(updateStaffRoleQuery);
+             PreparedStatement deleteFamilyStatement = conn.prepareStatement(deleteFamilyMembersQuery);
+             PreparedStatement familyStatement = conn.prepareStatement(insertFamilyMemberQuery)) {
 
-            String password = staff.getPassword();
-            if (password != null && !password.isEmpty()) {
-                password = PasswordUtil.hashPassword(password);
-            }
+            conn.setAutoCommit(false); // Bắt đầu giao dịch
 
-            preparedStatement.setString(1, staff.getFirstName());
-            preparedStatement.setString(2, staff.getLastName());
-            preparedStatement.setDate(3, staff.getDateOfBirth());
-            preparedStatement.setByte(4, staff.getGender());
-            preparedStatement.setString(5, staff.getAddress());
-            preparedStatement.setString(6, staff.getPhoneNumber());
-            preparedStatement.setString(7, staff.getEmail());
-            preparedStatement.setString(8, password);
-            preparedStatement.setDate(9, staff.getHireDate());
-            preparedStatement.setDouble(10, staff.getSalary());
-            preparedStatement.setString(11, staff.getEducationBackground());
-            preparedStatement.setString(12, staff.getExperience());
-            preparedStatement.setString(13, staff.getAvatar());
-            preparedStatement.setString(14, staff.getStatus());
-            preparedStatement.setString(15, staff.getResetCode());
+            // Mã hóa mật khẩu
+            String password = PasswordUtil.hashPassword(staff.getPassword());
+            LocalDateTime resetCodeCreationTime = staff.getResetCodeCreationTime();
 
-            if (staff.getResetCodeCreationTime() != null) {
-                preparedStatement.setTimestamp(16, Timestamp.valueOf(staff.getResetCodeCreationTime()));
+            // Thiết lập tham số cho PreparedStatement
+            staffStatement.setString(1, staff.getFirstName());
+            staffStatement.setString(2, staff.getLastName());
+            staffStatement.setDate(3, staff.getDateOfBirth()); // Chuyển đổi LocalDate thành Date
+            staffStatement.setByte(4, staff.getGender());
+            staffStatement.setString(5, staff.getAddress());
+            staffStatement.setString(6, staff.getPhoneNumber());
+            staffStatement.setString(7, staff.getEmail());
+            staffStatement.setString(8, password); // Mã hóa mật khẩu
+            staffStatement.setDate(9, staff.getHireDate()); // Chuyển đổi LocalDate thành Date
+            staffStatement.setDouble(10, staff.getSalary());
+            staffStatement.setString(11, staff.getEducationBackground());
+            staffStatement.setString(12, staff.getExperience());
+            staffStatement.setString(13, staff.getAvatar());
+            staffStatement.setString(14, staff.getResetCode());
+
+            if (resetCodeCreationTime != null) {
+                staffStatement.setTimestamp(15, Timestamp.valueOf(resetCodeCreationTime));
             } else {
-                preparedStatement.setNull(16, java.sql.Types.TIMESTAMP);
+                staffStatement.setNull(15, Types.TIMESTAMP);
             }
-            preparedStatement.setBoolean(17, staff.isResetCodeUsed());
-            preparedStatement.setInt(18, staff.getStaffID());
 
-            int rowsAffected = preparedStatement.executeUpdate();
-            return rowsAffected > 0;
+            staffStatement.setBoolean(16, staff.isResetCodeUsed());
+            staffStatement.setInt(17, staff.getStaffID()); // Thêm StaffID vào điều kiện WHERE
+            staffStatement.executeUpdate();
 
+            // Cập nhật vai trò
+            staffRoleStatement.setString(1, staffRole.getRoleName());
+            staffRoleStatement.setInt(2, staff.getStaffID());
+            staffRoleStatement.executeUpdate();
+
+            // Xóa các thành viên gia đình cũ
+            deleteFamilyStatement.setInt(1, staff.getStaffID());
+            deleteFamilyStatement.executeUpdate();
+
+            // Thêm thành viên gia đình mới
+            for (StaffFamily familyMember : familyMembers) {
+                familyStatement.setInt(1, staff.getStaffID());
+                familyStatement.setString(2, familyMember.getFamilyMemberName());
+                familyStatement.setString(3, familyMember.getRelationshipType());
+                familyStatement.setString(4, familyMember.getContactNumber());
+                familyStatement.executeUpdate();
+            }
+
+            conn.commit(); // Commit nếu mọi thứ thành công
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
-        return false;
     }
+
 
     // Phương thức xóa nhân viên (thay vì xóa thực tế, cập nhật trạng thái)
     public boolean deleteStaff(int staffID) {
@@ -532,6 +727,7 @@ public class StaffModel {
 
         return staffList;
     }
+
 
 
 

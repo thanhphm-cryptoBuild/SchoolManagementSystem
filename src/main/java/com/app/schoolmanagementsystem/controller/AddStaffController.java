@@ -25,6 +25,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.io.File;
@@ -195,7 +196,7 @@ import java.io.InputStream;
             relationshipChoiceBox1.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
             relationshipChoiceBox2.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
             // Cấu hình DatePicker để chỉ cho phép chọn ngày từ năm 2010 trở về trước
-            LocalDate maxDate = LocalDate.of(2010, 12, 31); // Ngày tối đa
+            LocalDate maxDate = LocalDate.of(2000, 12, 31); // Ngày tối đa
             dobDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
                 @Override
                 public DateCell call(DatePicker datePicker) {
@@ -296,7 +297,7 @@ import java.io.InputStream;
             hasError = true;
             isValid = false;
         } else {
-            LocalDate limitDate = LocalDate.of(2010, 1, 1);
+            LocalDate limitDate = LocalDate.of(2000, 1, 1);
             if (dob.isAfter(limitDate)) {
                 dobErrorLabel.setText("Ngày sinh phải trước năm 2010.");
                 dobErrorLabel.setVisible(true);
@@ -408,6 +409,30 @@ import java.io.InputStream;
             experienceErrorLabel.setVisible(false);
         }
 
+            // Validate định dạng hình đại diện
+            if (avatar.isEmpty()) {
+                chooseFileErrorLabel.setText("Hình đại diện không được để trống.");
+                chooseFileErrorLabel.setVisible(true);
+                hasError = true;
+                isValid = false;
+            } else {
+                // Danh sách các định dạng hợp lệ
+                List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
+
+                // Lấy phần mở rộng của tệp
+                String fileExtension = avatar.substring(avatar.lastIndexOf('.') + 1).toLowerCase();
+
+                // Kiểm tra định dạng
+                if (!validFormats.contains(fileExtension)) {
+                    chooseFileErrorLabel.setText("Hình đại diện phải có định dạng: png, jpg, hoặc jpeg.");
+                    chooseFileErrorLabel.setVisible(true);
+                    hasError = true;
+                    isValid = false;
+                } else {
+                    chooseFileErrorLabel.setVisible(false);
+                }
+            }
+
         // Nếu có lỗi, dừng việc lưu
         if (hasError) {
             System.out.println("Dữ liệu nhập không hợp lệ.");
@@ -513,6 +538,8 @@ import java.io.InputStream;
             showAlert(Alert.AlertType.ERROR, "Lỗi", "Nhập thông tin ít nhất một thành viên gia đình.");
             return;
         }
+
+
 
 // Tạo danh sách thành viên gia đình
         List<StaffFamily> familyMembers = new ArrayList<>();
