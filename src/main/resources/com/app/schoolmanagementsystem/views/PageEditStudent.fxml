@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="formEditStudent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="edit_student" stylesheets="@../css/pageEditStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.EditStudentController">
+<StackPane fx:id="formEditStudent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="add_student" stylesheets="@../css/pageAddStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.EditStudentController">
    <effect>
       <DropShadow />
    </effect>
@@ -42,14 +42,36 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="800.0">
                            <children>
-                              <Label prefHeight="35.0" prefWidth="165.0" styleClass="text_title" text="Edit Student">
-                                 <font>
-                                    <Font name="Sitka Text Bold" size="22.0" />
-                                 </font>
-                              </Label>
+                              <VBox alignment="CENTER_LEFT" prefHeight="200.0" prefWidth="500.0">
+                                 <children>
+                                    <Label prefHeight="35.0" prefWidth="165.0" styleClass="text_title" text="Edit Student">
+                                       <font>
+                                          <Font name="Sitka Text Bold" size="22.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                              <VBox alignment="CENTER_RIGHT" layoutX="60.0" layoutY="10.0" prefHeight="200.0" prefWidth="500.0">
+                                 <children>
+                                    <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                                       <children>
+                                          <Label alignment="CENTER_RIGHT" prefHeight="30.0" prefWidth="88.0" styleClass="text_title" text="ID:">
+                                             <font>
+                                                <Font name="Sitka Text Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="30.0" prefWidth="22.0" styleClass="text_title" text="11">
+                                             <font>
+                                                <Font name="Sitka Text Bold Italic" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
                            </children>
                            <padding>
-                              <Insets left="50.0" />
+                              <Insets left="50.0" right="50.0" />
                            </padding>
                         </HBox>
                      </children>

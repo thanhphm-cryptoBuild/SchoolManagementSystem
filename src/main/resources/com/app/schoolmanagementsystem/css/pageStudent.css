@@ -1,10 +1,10 @@
 .button {
     -fx-background-color: #FFFFFF;
-    -fx-background-radius: 10px;
+    -fx-background-radius: 5px;
     -fx-border-color: #A3B5ED;
     -fx-border-width: 1px;
     -fx-border-style: solid;
-    -fx-border-radius: 10px;
+    -fx-border-radius: 5px;
 }
 
 .button_children {
@@ -13,11 +13,11 @@
 }
 
 .button_children:hover {
-    -fx-background-radius: 10px;
+    -fx-background-radius: 5px;
     -fx-border-color: #A3B5ED;
     -fx-border-width: 1px;
     -fx-border-style: solid;
-    -fx-border-radius: 10px;
+    -fx-border-radius: 5px;
     -fx-background-color: linear-gradient(to right, #5852FF, #B438FF);
 }
 
@@ -63,8 +63,5 @@
     -fx-background-color: #00FFFF;
 }
 
-.block {
-    -fx-background-color: #6F6F6F;
-}
 
 
