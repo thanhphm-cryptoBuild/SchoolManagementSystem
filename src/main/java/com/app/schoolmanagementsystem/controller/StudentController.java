@@ -168,15 +168,31 @@ public class StudentController implements Initializable {
 
     private void setupTableColumns() {
         colStudentID.setCellValueFactory(new PropertyValueFactory<>("studentID")); // Set the cell value factory for Student ID
+        colStudentID.setStyle("-fx-alignment: CENTER;"); // Center align Student ID column
 
         colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        colFirstName.setStyle("-fx-alignment: CENTER;"); // Center align First Name column
+
         colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        colLastName.setStyle("-fx-alignment: CENTER;"); // Center align Last Name column
+
         colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
+        colDateOfBirth.setStyle("-fx-alignment: CENTER;"); // Center align Date of Birth column
+
         colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
+        colGender.setStyle("-fx-alignment: CENTER;"); // Center align Gender column
+
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
+        colAddress.setStyle("-fx-alignment: CENTER;"); // Center align Address column
+
         colPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        colPhoneNumber.setStyle("-fx-alignment: CENTER;"); // Center align Phone Number column
+
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colEmail.setStyle("-fx-alignment: CENTER;"); // Center align Email column
+
         colEnrollmentDate.setCellValueFactory(new PropertyValueFactory<>("enrollmentDate"));
+        colEnrollmentDate.setStyle("-fx-alignment: CENTER;"); // Center align Enrollment Date column
 
         // Configure Avatar column
         colAvatar.setCellFactory(column -> new TableCell<StudentModel, String>() {
@@ -214,6 +230,7 @@ public class StudentController implements Initializable {
         });
 
         colAvatar.setCellValueFactory(new PropertyValueFactory<>("avatar"));
+        colAvatar.setStyle("-fx-alignment: CENTER;"); // Center align Avatar column
 
         // Configure Action column
         colAction.setCellFactory(param -> new TableCell<>() {
@@ -287,6 +304,7 @@ public class StudentController implements Initializable {
             String className = getClassNameById(classID);
             return new SimpleStringProperty(className);
         });
+        colClassName.setStyle("-fx-alignment: CENTER;"); // Center align ClassName column
     }
 
     private String getClassNameById(int classID) {
