@@ -104,6 +104,9 @@ public class EditStudentController implements Initializable {
     @FXML
     private ImageView avatarImageView;
 
+    @FXML
+    private Label studentIdValueLabel; // New Label to display Student ID
+
     private String avatarPath = "default_avatar.png"; // Default avatar
     private StudentModel student;
     private StudentFamilyModel studentFamily;
@@ -142,6 +145,9 @@ public class EditStudentController implements Initializable {
 
         // Lấy thông tin gia đình từ cơ sở dữ liệu
         loadStudentFamilyData(student.getStudentID());
+
+        // Set Student ID
+        studentIdValueLabel.setText(String.valueOf(student.getStudentID())); // Set the student ID
     }
 
     private LocalDate convertToLocalDateViaSqlDate(java.util.Date dateToConvert) {
