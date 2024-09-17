@@ -6,6 +6,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -105,6 +107,9 @@ public class Controller implements Initializable {
     @FXML
     private StackPane stackLoadPage;
 
+    @FXML
+    private Label roleLabel; // Thêm fx:id cho Label
+    private String roleName;
 
     private boolean isDropdownOpen = false;
 
@@ -131,7 +136,11 @@ public class Controller implements Initializable {
         } catch(Exception e) {
             e.printStackTrace();
         }
+    }
 
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+        roleLabel.setText(roleName);
     }
 
     private void loadPage(String page) throws IOException {
@@ -331,6 +340,7 @@ public class Controller implements Initializable {
     void buttonAdvanced(MouseEvent event) throws IOException {
         loadPage("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml");
     }
+
 
 
     @FXML

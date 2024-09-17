@@ -2,9 +2,9 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -18,120 +18,224 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="pageClass" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.ClassesController">
+<StackPane fx:id="pageClass" stylesheets="@../css/pageClass.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.ClassesController">
    <children>
-      <AnchorPane fx:id="moveBG" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../css/pageClass.css">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
          <children>
-            <VBox prefHeight="700.0" prefWidth="946.4" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <HBox prefHeight="700.0">
                <children>
-                  <HBox alignment="CENTER" fillHeight="false" prefHeight="148.0" prefWidth="946.0" spacing="100.0">
+                  <VBox prefHeight="626.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;">
                      <children>
-                        <VBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="250.0">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+                        <VBox alignment="CENTER" prefHeight="430.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
                            <children>
-                              <Label prefHeight="22.0" prefWidth="200.0" styleClass="title_label" text="Class Detail">
-                                 <font>
-                                    <Font name="Sitka Text Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="60.0" prefWidth="700.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="400.0" styleClass="search">
+                              <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
                                  <children>
-                                    <VBox alignment="CENTER" prefHeight="38.0" prefWidth="150.0" styleClass="search_icon_field">
-                                       <children>
-                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
-                                       </children>
-                                    </VBox>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField prefHeight="37.0" prefWidth="300.0" promptText="Search Here" styleClass="search_field">
+                                    <Label prefHeight="26.0" prefWidth="468.0" styleClass="title_label" text="Add New Class">
                                        <font>
-                                          <Font name="Sitka Text" size="14.0" />
+                                          <Font name="Sitka Text Bold" size="18.0" />
                                        </font>
-                                    </TextField>
-                                    <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <ChoiceBox prefHeight="38.0" prefWidth="200.0" styleClass="select_box" />
-                                    <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <TextField layoutX="44.0" layoutY="12.0" prefHeight="37.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
-                                       <font>
-                                          <Font name="Sitka Text" size="14.0" />
-                                       </font>
-                                    </TextField>
+                                    </Label>
                                  </children>
                               </HBox>
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="42.0" prefWidth="200.0">
-                           <children>
-                              <HBox alignment="CENTER" prefHeight="42.0" prefWidth="200.0" styleClass="button">
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" top="15.0" />
+                                 </VBox.margin>
+                              </Separator>
+                              <VBox prefHeight="450.0" prefWidth="400.0" spacing="5.0">
                                  <children>
-                                    <StackPane onMouseClicked="#addClassBTN" prefWidth="200.0" styleClass="button_children">
+                                    <HBox prefHeight="80.0" prefWidth="460.0" spacing="20.0">
                                        <children>
-                                          <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/account.png" />
-                                             </image>
-                                          </ImageView>
+                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="351.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Subject">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <ChoiceBox prefHeight="39.0" prefWidth="353.0" />
+                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                             </children>
+                                          </VBox>
                                        </children>
-                                    </StackPane>
-                                    <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <StackPane prefWidth="200.0" styleClass="button_children">
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="200.0" spacing="20.0">
                                        <children>
-                                          <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../images/recycle.png" />
-                                             </image>
-                                          </ImageView>
+                                          <VBox prefHeight="120.0" prefWidth="250.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Class Name">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <ChoiceBox prefHeight="40.0" prefWidth="250.0" />
+                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Time">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <ChoiceBox prefHeight="40.0" prefWidth="250.0" />
+                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                             </children>
+                                          </VBox>
                                        </children>
-                                    </StackPane>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="90.0" prefHeight="80.0" prefWidth="460.0">
+                                       <children>
+                                          <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Description">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <TextField prefHeight="40.0" prefWidth="250.0" />
+                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="250.0" prefHeight="45.0" prefWidth="460.0" spacing="20.0">
+                                       <children>
+                                          <VBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="250.0" styleClass="button_form_add" text="Add" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Sitka Text Bold" size="14.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                          </VBox>
+                                          <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
+                                             <children>
+                                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="250.0" styleClass="reset_form_add" text="Reset" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Sitka Text Bold" size="14.0" />
+                                                   </font>
+                                                </Button>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                       <VBox.margin>
+                                          <Insets />
+                                       </VBox.margin>
+                                    </HBox>
                                  </children>
-                              </HBox>
+                              </VBox>
                            </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+                           </padding>
                         </VBox>
-                     </children>
-                  </HBox>
-                  <VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="5.0">
-                     <children>
-                        <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
-                           <children>
-                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
-                                 <columns>
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="140.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                 </columns>
-                              </TableView>
-                              <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />
-                           </children>
-                        </StackPane>
                      </children>
                   </VBox>
+                  <Pane prefHeight="690.0" prefWidth="15.0" />
+                  <VBox prefHeight="700.0" prefWidth="895.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10px;">
+                     <children>
+                        <VBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="30.0" prefHeight="150.0" prefWidth="855.0">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="83.0" prefWidth="855.0">
+                                 <children>
+                                    <VBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="450.0">
+                                       <children>
+                                          <Label prefHeight="51.0" prefWidth="227.0" styleClass="title_label" text="All Class List">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="36.0" prefWidth="643.0">
+                                       <children>
+                                          <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0" styleClass="search_class">
+                                             <children>
+                                                <HBox alignment="CENTER" prefHeight="20.0" prefWidth="170.0" styleClass="search_icon_field_class">
+                                                   <children>
+                                                      <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
+                                                   </children>
+                                                </HBox>
+                                                <Separator orientation="VERTICAL" prefHeight="200.0" />
+                                                <TextField prefHeight="30.0" prefWidth="280.0" promptText="Search Here" styleClass="search_field_class">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="14.0" />
+                                                   </font>
+                                                </TextField>
+                                                <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search_class" />
+                                                <ChoiceBox prefHeight="30.0" prefWidth="200.0" styleClass="select_box_class" />
+                                                <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search_class" />
+                                                <TextField layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="220.0" promptText="..." styleClass="search_field_class">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="14.0" />
+                                                   </font>
+                                                </TextField>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets right="50.0" />
+                                       </HBox.margin></VBox>
+                                    <VBox alignment="CENTER_RIGHT" layoutX="438.0" layoutY="10.0" prefHeight="22.0" prefWidth="280.0">
+                                       <children>
+                                          <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="400.0" styleClass="button_class">
+                                             <children>
+                                                <StackPane prefWidth="400.0" styleClass="button_children">
+                                                   <children>
+                                                      <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../images/recycle.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </StackPane>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                       <HBox.margin>
+                                          <Insets left="100.0" />
+                                       </HBox.margin>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </VBox>
+                        <VBox prefHeight="646.0" prefWidth="895.0" style="-fx-background-color: #FFFFFF;">
+                           <children>
+                              <TableView prefHeight="646.0" prefWidth="895.0">
+                                 <columns>
+                                    <TableColumn prefWidth="100.0" text="Column X" />
+                                    <TableColumn prefWidth="100.0" text="Column X" />
+                                    <TableColumn prefWidth="100.0" text="Column X" />
+                                    <TableColumn prefWidth="100.0" text="Column X" />
+                                    <TableColumn prefWidth="100.0" text="Column X" />
+                                    <TableColumn prefWidth="100.0" text="Column X" />
+                                    <TableColumn prefWidth="100.0" text="Column X" />
+                                    <TableColumn prefWidth="153.0" text="Column X" />
+                                 </columns>
+                              </TableView>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" />
+                     </padding>
+                  </VBox>
                </children>
-            </VBox>
+               <padding>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </padding>
+            </HBox>
          </children>
       </AnchorPane>
    </children>
    <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" />
+      <Insets bottom="20.0" left="15.0" right="15.0" top="20.0" />
    </padding>
 </StackPane>

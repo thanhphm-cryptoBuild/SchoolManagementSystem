@@ -1,3 +1,26 @@
 .title_label {
     -fx-text-fill: #1A3395;
 }
+
+.button_calendar {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 5px;
+    -fx-border-color: #A3B5ED;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-border-radius: 5px;
+}
+
+.button_children_calendar {
+    -fx-cursor: hand;
+    -fx-background-color: transparent;
+}
+
+.button_children_calendar:hover {
+    -fx-background-radius: 5px;
+    -fx-border-color: #A3B5ED;
+    -fx-border-width: 1px;
+    -fx-border-style: solid;
+    -fx-border-radius: 5px;
+    -fx-background-color: linear-gradient(to right, #5852FF, #B438FF);
+}

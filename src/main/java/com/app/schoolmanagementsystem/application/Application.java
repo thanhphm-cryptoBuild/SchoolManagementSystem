@@ -17,7 +17,6 @@ public class Application extends javafx.application.Application {
         stage.setTitle("School Management System");
         stage.setScene(scene);
         stage.centerOnScreen();
-
         stage.show();
 
     }

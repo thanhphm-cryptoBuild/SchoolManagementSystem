@@ -1,4 +1,4 @@
-.button {
+.button_subject {
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 5px;
     -fx-border-color: #A3B5ED;
@@ -21,37 +21,21 @@
     -fx-background-color: linear-gradient(to right, #5852FF, #B438FF);
 }
 
-.search {
+.search_subject {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #A3B5ED;
     -fx-border-radius: 20px;
     -fx-background-radius: 20px;
 }
 
-
-.search_field {
+.search_field_subject {
     -fx-border: 0 0 0 1px;
     -fx-background-color: #FFFFFF;
     -fx-background-radius: 0 20px 20px 0;
     -fx-border-radius: 0 20px 20px 0 ;
 }
 
-.select_box {
-    -fx-cursor: hand;
-    -fx-background-color: #F5F5F5;
-}
-
-.select_box:hover {
-    -fx-background-color: #00FFFF;
-}
-
-.block_search {
-    -fx-border-width: 0 1px 0 0;
-    -fx-border-style: solid;
-    -fx-border-color: #A3B5ED;
-}
-
-.search_icon_field {
+.search_icon_field_subject {
     -fx-background-color: transparent;
     -fx-cursor: hand;
     -fx-background-color: #F4F4F4;
@@ -59,10 +43,46 @@
     -fx-border-radius: 20px 0 0 20px;
 }
 
+.search_icon_field_subject:hover {
+    -fx-background-color: #00FFFF;
+}
+
+.select_box_subject {
+    -fx-cursor: hand;
+    -fx-background-color: #F5F5F5;
+}
+
+.select_box_subject:hover {
+    -fx-background-color: #00FFFF;
+}
+
+.block_search_subject {
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-style: solid;
+    -fx-border-color: #A3B5ED;
+}
+
 .search_icon_field:hover {
     -fx-background-color: #00FFFF;
 }
 
-.block {
-    -fx-background-color: #6F6F6F;
+.button_form_add {
+    -fx-cursor: hand;
+    -fx-background-color: #6243FF;
 }
+
+.button_form_add:hover {
+    -fx-background-color: linear-gradient(to top, #1A3395, #6243FF);
+}
+
+.reset_form_add {
+    -fx-cursor: hand;
+    -fx-background-color: #AB8905;
+}
+
+.reset_form_add:hover {
+    -fx-background-color: linear-gradient(to top, #AB8905, #C9AA00);
+}
+
+
+
