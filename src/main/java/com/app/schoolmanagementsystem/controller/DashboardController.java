@@ -5,6 +5,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
+import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -28,10 +29,22 @@ public class DashboardController implements Initializable {
     @FXML
     private NumberAxis y;
 
+    @FXML
+    private Label label_totalStaff;
+
+    private com.app.schoolmanagementsystem.model.StaffModel staffModel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
+        staffModel = new com.app.schoolmanagementsystem.model.StaffModel();
+        updateTotalStaff();
+    }
+
+    private void updateTotalStaff() {
+        int totalStaff = staffModel.countActiveStaff();
+        label_totalStaff.setText(String.valueOf(totalStaff));
     }
 
 

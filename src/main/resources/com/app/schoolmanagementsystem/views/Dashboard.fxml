@@ -369,7 +369,7 @@
                                           <Insets left="10.0" />
                                        </HBox.margin>
                                     </ImageView>
-                                    <Label text="Admin Master ">
+                                    <Label fx:id="roleLabel" text="Admin Master ">
                                        <HBox.margin>
                                           <Insets left="5.0" />
                                        </HBox.margin>
@@ -385,7 +385,7 @@
                            <children>
                               <HBox alignment="CENTER" prefHeight="60.0" prefWidth="120.0">
                                  <children>
-                                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="avatar">
+                                    <ImageView fx:id="img_avatar" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" styleClass="avatar">
                                        <image>
                                           <Image url="@../images/avatar-ex.jpg" />
                                        </image>
@@ -433,7 +433,7 @@
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
                                     </Label>
-                                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView fx:id="img_logout" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handle_Logout" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/logout%20(2).png" />
                                        </image>
