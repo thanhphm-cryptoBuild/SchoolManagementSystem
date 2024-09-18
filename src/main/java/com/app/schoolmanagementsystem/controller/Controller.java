@@ -1,5 +1,7 @@
 package com.app.schoolmanagementsystem.controller;
 
+import com.app.schoolmanagementsystem.application.Application;
+import com.app.schoolmanagementsystem.entities.Staff;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,9 +11,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -107,13 +111,20 @@ public class Controller implements Initializable {
     @FXML
     private StackPane stackLoadPage;
 
-    @FXML
-    private Label roleLabel; // Thêm fx:id cho Label
-    private String roleName;
 
     private boolean isDropdownOpen = false;
 
     private boolean isSideBarOpen = false;
+
+    @FXML
+    private Label roleLabel; // Thêm fx:id cho Label
+    private String roleName;
+
+    @FXML
+    private ImageView img_avatar;
+
+    @FXML ImageView img_logout;
+
 
 
     @Override
@@ -136,12 +147,14 @@ public class Controller implements Initializable {
         } catch(Exception e) {
             e.printStackTrace();
         }
+
     }
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
         roleLabel.setText(roleName);
     }
+
 
     private void loadPage(String page) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource(page));
@@ -385,6 +398,19 @@ public class Controller implements Initializable {
         loadPage("/com/app/schoolmanagementsystem/views/PageStudent.fxml");
     }
 
+    @FXML
+    void handle_Logout(MouseEvent event) throws IOException {
+        // Tải trang đăng nhập
+        Parent loginPage = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/SignIn.fxml"));
+
+        // Lấy cửa sổ hiện tại
+        Stage currentStage = (Stage) ((ImageView) event.getSource()).getScene().getWindow();
+
+        // Đặt trang đăng nhập làm trang chính
+        Scene scene = new Scene(loginPage);
+        currentStage.setScene(scene);
+        currentStage.show();
+    }
 
 
 }

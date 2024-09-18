@@ -9,6 +9,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -32,12 +33,25 @@ public class DashboardController implements Initializable {
     @FXML
     private Label studentCountLabel;
 
+    @FXML
+    private Label label_totalStaff;
+
+    private com.app.schoolmanagementsystem.model.StaffModel staffModel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
         loadStudentCount();// khởi chạy thêm hàm đếm student
+        staffModel = new com.app.schoolmanagementsystem.model.StaffModel();
+        updateTotalStaff();
     }
+
+    private void updateTotalStaff() {
+        int totalStaff = staffModel.countActiveStaff();
+        label_totalStaff.setText(String.valueOf(totalStaff));
+    }
+
 
     void loadDataPieChart() {
         int maleStudents = ConnectDB.countStudentsByGender(true);
@@ -115,6 +129,6 @@ public class DashboardController implements Initializable {
     //chạy hàm đếm student
     private void loadStudentCount() {
         int studentCount = ConnectDB.countStudents();
-        studentCountLabel.setText(String.valueOf(studentCount)); 
+        studentCountLabel.setText(String.valueOf(studentCount));
     }
 }
