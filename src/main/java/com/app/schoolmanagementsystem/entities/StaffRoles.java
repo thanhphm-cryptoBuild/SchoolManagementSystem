@@ -18,11 +18,12 @@ public class StaffRoles {
         this.RoleName = roleName;
     }
 
-    public StaffRoles(String roleName) {
-        RoleName = roleName;
-    }
 
     public StaffRoles() {
+    }
+
+    public StaffRoles(String roleName) {
+        this.RoleName = roleName;
     }
 
     public int getStaffRoleID() {

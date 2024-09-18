@@ -209,4 +209,15 @@ public class Staff {
     public void setResetCodeUsed(boolean resetCodeUsed) {
         isResetCodeUsed = resetCodeUsed;
     }
+
+    // Phương thức để lấy đường dẫn đầy đủ của hình ảnh
+    // Phương thức để kiểm tra nếu đường dẫn là URL
+    public boolean isExternalAvatar() {
+        return avatar.startsWith("http://") || avatar.startsWith("https://");
+    }
+
+    // Phương thức để lấy đường dẫn đầy đủ của hình ảnh
+    public String getFullAvatarPath() {
+        return avatar.startsWith("http://") || avatar.startsWith("https://") ? avatar : "file:" + avatar;
+    }
 }

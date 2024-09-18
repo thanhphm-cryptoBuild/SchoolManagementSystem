@@ -177,7 +177,7 @@ import java.io.InputStream;
         public void initialize(URL location, ResourceBundle resources) {
             // Initialize choice boxes with roles, genders, salaries, education backgrounds, and experiences
             // Đường dẫn đến hình ảnh trong thư mục resources
-            String path = "add.png";
+            String path = "avatar-ex.jpg";
             InputStream imageStream = getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/" + path);
 
             if (imageStream != null) {
@@ -185,13 +185,13 @@ import java.io.InputStream;
                 profileImageView.setImage(image);
             } else {
                 // Sử dụng hình ảnh mặc định nếu không tìm thấy hình ảnh
-                Image defaultImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/add.png"));
+                Image defaultImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/avatar-ex.jpg"));
                 profileImageView.setImage(defaultImage);
             }
             roleChoiceBox.getItems().addAll("Admin Master", "Manager", "Teacher");
             genderChoiceBox.getItems().addAll("Male", "Female");
             salaryChoiceBox.getItems().addAll("50000", "60000", "70000", "80000");
-            educationChoiceBox.getItems().addAll("High School", "Associate Degree", "Bachelor's Degree", "Master's Degree", "PhD");
+            educationChoiceBox.getItems().addAll("High School", "Associate Degree", "Bachelor's Degree", "Master's Degree");
             experienceChoiceBox.getItems().addAll("0-1 years", "1-3 years", "3-5 years", "5-10 years", "10+ years");
             relationshipChoiceBox1.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
             relationshipChoiceBox2.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
@@ -237,9 +237,14 @@ import java.io.InputStream;
         String experience = experienceChoiceBox.getValue();
         LocalDate dob = dobDatePicker.getValue();
         LocalDate hireDate = hireDatePicker.getValue();
-        String avatar = profileImageView.getImage() != null
-                    ? new File(profileImageView.getImage().getUrl()).getName()
-                    : ""; // Lấy tên hình ảnh từ profileImageView nếu có
+        String avatar = "";
+            if (profileImageView.getImage() != null && profileImageView.getImage().getUrl() != null) {
+                avatar = new File(profileImageView.getImage().getUrl()).getName();
+            } else {
+                System.out.println("No profile image selected.");
+                // Hoặc hiển thị thông báo trong giao diện người dùng:
+                // showAlert("No profile image selected.");
+            }
 
         boolean hasError = false;
         boolean isValid = true;
@@ -580,7 +585,7 @@ import java.io.InputStream;
         if (isAdded) {
             showConfirmation("Thêm nhân viên thành công!");
         } else {
-            showError("Có lỗi xảy ra, vui lòng thử lại.");
+            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể thêm nhân viên: " );
         }
     }
 
@@ -675,22 +680,52 @@ import java.io.InputStream;
         @FXML
         private void handleChooseFileButtonAction() {
             FileChooser fileChooser = new FileChooser();
-            File file = fileChooser.showOpenDialog(null);
+            fileChooser.setTitle("Choose Profile Image");
+            fileChooser.getExtensionFilters().addAll(
+                    new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+            );
+            File selectedFile = fileChooser.showOpenDialog(null);
 
-            if (file != null) {
-                String imageName = file.getName();
-                try {
-                    // Hiển thị hình ảnh đã chọn
-                    profileImageView.setImage(new Image(file.toURI().toString()));
+            if (selectedFile != null) {
+                // Kiểm tra tính hợp lệ của hình ảnh
+                if (isValidImage(selectedFile)) {
+                    try {
+                        // Hiển thị hình ảnh đã chọn
+                        Image profileImage = new Image(selectedFile.toURI().toString());
+                        profileImageView.setImage(profileImage);
 
-                    // Lưu hình ảnh vào thư mục resources
-                    saveImageToResources(new FileInputStream(file), imageName);
+                        // Lưu hình ảnh vào thư mục resources
+                        String imageName = selectedFile.getName();
+                        saveImageToResources(new FileInputStream(selectedFile), imageName);
 
-                    // Cập nhật tên hình ảnh vào cơ sở dữ liệu nếu cần
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showError("Có lỗi xảy ra khi lưu hình ảnh.");
+                        // Cập nhật tên hình ảnh vào cơ sở dữ liệu nếu cần
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        showError("Có lỗi xảy ra khi lưu hình ảnh.");
+                    }
+                } else {
+                    // Hiển thị thông báo lỗi nếu hình ảnh không hợp lệ
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Image");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Hình ảnh của bạn phải có tỷ lệ 2x3, 3x4 hoặc 4x6.");
+                    alert.showAndWait();
                 }
+            }
+        }
+        private boolean isValidImage(File file) {
+            try {
+                Image image = new Image(file.toURI().toString());
+                double width = image.getWidth();
+                double height = image.getHeight();
+
+                // Kiểm tra tỷ lệ khung hình (2x3, 3x4 hoặc 4x6)
+                double aspectRatio = width / height;
+                return (Math.abs(aspectRatio - (2.0 / 3.0)) < 0.1 ||  // Tỷ lệ 2:3
+                        Math.abs(aspectRatio - (3.0 / 4.0)) < 0.1 ||  // Tỷ lệ 3:4
+                        Math.abs(aspectRatio - (4.0 / 6.0)) < 0.1);   // Tỷ lệ 4:6
+            } catch (Exception e) {
+                return false;
             }
         }
 

@@ -176,9 +176,9 @@ public class StaffController implements Initializable {
         reloadButton.setOnMouseClicked(event -> reloadPage());
 
         // Cấu hình ChoiceBox cho Gender và ID
-        ObservableList<String> searchOptions = FXCollections.observableArrayList("Seclect", "Gender", "ID");
+        ObservableList<String> searchOptions = FXCollections.observableArrayList("Equal", "Gender", "ID");
         selectBox.setItems(searchOptions);
-        selectBox.setValue(""); // Đặt giá trị mặc định là "" (không chọn gì)
+        selectBox.setValue("Equal"); // Đặt giá trị mặc định là "" (không chọn gì)
 
         // Tạo sự kiện khi người dùng nhập vào ô tìm kiếm
         searchField.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
@@ -340,7 +340,17 @@ public class StaffController implements Initializable {
 
                         // Add event handlers for clicks
                         detailImageView.setOnMouseClicked(e -> showDetails(getIndex()));
-                        editImageView.setOnMouseClicked(e -> editStaff(getIndex()));
+
+                        editImageView.setOnMouseClicked(e -> {
+                            Staff staff = getTableRow() != null ? getTableRow().getItem() : null;
+                            if (staff != null) {
+                                System.out.println("Editing staff with ID: " + staff.getStaffID());
+                                editStaff(staff.getStaffID()); // Chuyển ID nhân viên để chỉnh sửa
+                            } else {
+                                System.err.println("No staff data available.");
+                            }
+                        });
+
                         deleteImageView.setOnMouseClicked(e -> deleteStaff(getIndex()));
 
                         // Add mouse enter and exit handlers to change cursor
@@ -369,6 +379,9 @@ public class StaffController implements Initializable {
         });
     }
 
+
+
+
     private void updateActionColumn() {
         actionColumn.setCellFactory(new Callback<>() {
             @Override
@@ -393,7 +406,12 @@ public class StaffController implements Initializable {
 
                         // Add event handlers for clicks
                         detailImageView.setOnMouseClicked(e -> showDetails(getIndex()));
-                        editImageView.setOnMouseClicked(e -> editStaff(getIndex()));
+                        editImageView.setOnMouseClicked(e -> {
+                            Staff staff = getTableRow().getItem();
+                            if (staff != null) {
+                                editStaff(staff.getStaffID()); // Gọi phương thức editStaff với ID của nhân viên
+                            }
+                        });
                         deleteImageView.setOnMouseClicked(e -> deleteStaff(getIndex()));
 
                         // Add mouse enter and exit handlers to change cursor
@@ -433,17 +451,69 @@ public class StaffController implements Initializable {
         resetSearchFields();
     }
 
-    private void editStaff(int index) {
-        Staff staff = staffTableView.getItems().get(index);
-        // Implement edit logic here
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Edit Staff");
-        alert.setHeaderText("Edit Staff ID: " + staff.getStaffID());
-        alert.setContentText("Edit functionality is not implemented yet.");
-        alert.showAndWait();
 
-        resetSearchFields();
+    // Cập nhật phương thức editStaff để nhận đối tượng Staff
+    private void editStaff(int staffId) {
+        System.out.println("Attempting to edit staff with ID: " + staffId); // Log ID nhân viên
+
+        try {
+            // Truy xuất thông tin nhân viên dựa trên ID từ dịch vụ hoặc lớp xử lý dữ liệu
+            Staff staff = staffModel.getStaffByID(staffId);
+
+            if (staff == null) {
+                System.err.println("Staff with ID " + staffId + " not found."); // Log lỗi nếu không tìm thấy nhân viên
+                throw new IllegalArgumentException("Staff with ID " + staffId + " not found.");
+            }
+
+            System.out.println("Editing staff: " + staff); // Log thông tin nhân viên
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageEditStaff.fxml"));
+            StackPane pageEditStaff = loader.load();
+
+            EditStaffController editStaffController = loader.getController();
+            editStaffController.setStaffData(staff); // Gửi dữ liệu nhân viên vào controller
+            editStaffController.setPageStaff(pageStaff);
+            editStaffController.setBGPageStaff(moveBG);
+
+            pageEditStaff.setTranslateX(2000);
+            pageEditStaff.setTranslateY(6);
+
+            pageStaff.getChildren().add(pageEditStaff);
+
+            GaussianBlur gaussianBlur = new GaussianBlur(10);
+            moveBG.setEffect(gaussianBlur);
+
+            TranslateTransition translateTransition = new TranslateTransition();
+            translateTransition.setDuration(Duration.seconds(0.2));
+            translateTransition.setNode(pageEditStaff);
+            translateTransition.setFromX(2000);
+            translateTransition.setToY(6);
+            translateTransition.setToX(115);
+
+            translateTransition.play();
+        } catch (IOException e) {
+            e.printStackTrace(); // In chi tiết lỗi ra console
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Failed to load PageEditStaff.fxml");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+            resetSearchFields();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace(); // In chi tiết lỗi ra console
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText("Staff Not Found");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+        }
     }
+
+
+
+
+
+
 
     private void deleteStaff(int index) {
         Staff staff = staffTableView.getItems().get(index);

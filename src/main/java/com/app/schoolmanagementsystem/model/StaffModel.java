@@ -15,6 +15,43 @@ import java.util.List;
 
 public class StaffModel {
 
+    private Staff staff;
+    private Connection connection; // Thêm thuộc tính Connection
+
+    // Constructor
+    public StaffModel(Staff staff, Connection connection) {
+        this.staff = staff; // Khởi tạo staff
+        this.connection = connection; // Khởi tạo Connection
+    }
+
+    public StaffModel() {
+    }
+
+    // Phương thức tìm kiếm vai trò theo tên
+    public StaffRoles findRoleByName(String roleName) {
+        StaffRoles staffRole = null;
+        String query = "SELECT * FROM staff_roles WHERE RoleName = ?";
+
+        try (Connection conn = ConnectDB.connection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setString(1, roleName);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                staffRole = new StaffRoles(
+                        rs.getInt("StaffRoleID"),
+                        rs.getString("RoleName")
+                );
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return staffRole;
+    }
+
     // Phương thức đếm số lượng nhân viên trạng thái active
     public int countActiveStaff() {
         int count = 0;
@@ -36,6 +73,9 @@ public class StaffModel {
 
         return count;
     }
+
+    // Phương thức tìm vai trò theo tên
+
 
     // Phương thức lấy danh sách tất cả nhân viên trạng thái active
     public List<Staff> getActiveStaff() {
@@ -728,9 +768,44 @@ public class StaffModel {
         return staffList;
     }
 
+    public String getRoleName() {
+        String roleName = null;
+        String query = "SELECT RoleName FROM StaffRoles WHERE StaffID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, staff.getStaffID()); // Sử dụng ID của Staff
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    roleName = rs.getString("RoleName");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return roleName;
+    }
 
-
-
+    public List<StaffFamily> getFamilyMembers(int staffID) {
+        List<StaffFamily> familyMembers = new ArrayList<>();
+        String query = "SELECT * FROM StaffFamily WHERE StaffID = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, staffID);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    StaffFamily member = new StaffFamily(
+                            rs.getInt("FamilyID"),                  // familyID
+                            rs.getInt("StaffID"),                   // staffID
+                            rs.getString("FamilyMemberName"),       // familyMemberName
+                            rs.getString("RelationshipType"),       // relationshipType
+                            rs.getString("ContactNumber")           // contactNumber
+                    );
+                    familyMembers.add(member);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return familyMembers;
+    }
 
 
 
