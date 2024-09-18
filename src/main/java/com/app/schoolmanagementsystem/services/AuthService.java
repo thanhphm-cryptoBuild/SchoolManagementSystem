@@ -44,9 +44,8 @@ public class AuthService {
                     return false;
                 }
 
-                // Compare user password with hashed password
-                return BCrypt.checkpw(password, storedPassword);
-//                return storedPassword.equals(password);
+                // So sánh trực tiếp mật khẩu người dùng nhập vào với mật khẩu lưu trữ
+                return storedPassword.equals(password);
             }
             return false;
         } catch (SQLException e) {
@@ -168,13 +167,10 @@ public class AuthService {
                         long minutesElapsed = ChronoUnit.MINUTES.between(creationTime, now);
 
                         if (minutesElapsed <= 1) { // 60 seconds = 1 minute
-                            // Hash new password before updating
-                            String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-
                             // Update password and reset reset code status
                             String updateQuery = "UPDATE Staffs SET Password = ?, ResetCode = NULL, ResetCodeCreationTime = NULL, IsResetCodeUsed = TRUE WHERE StaffID = ?";
                             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                            updateStmt.setString(1, hashedNewPassword);
+                            updateStmt.setString(1, newPassword);
                             updateStmt.setInt(2, staffID);
                             int rowsUpdated = updateStmt.executeUpdate();
 

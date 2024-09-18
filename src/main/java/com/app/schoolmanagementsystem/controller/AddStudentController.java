@@ -386,17 +386,16 @@ public class AddStudentController implements Initializable {
 
     private void loadClassNames() {
         try (Connection connection = ConnectDB.connection()) {
-            String query = "SELECT classID, className, year, section, teacherID FROM classes";
+            String query = "SELECT classID, className, section, staffID FROM classes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 int classID = resultSet.getInt("classID");
                 String className = resultSet.getString("className");
-                int year = resultSet.getInt("year");
                 String section = resultSet.getString("section");
-                int teacherID = resultSet.getInt("teacherID");
-                classNameField.getItems().add(new ClassModel(classID, className, year, section, teacherID));
+                int staffID = resultSet.getInt("staffID");
+                classNameField.getItems().add(new ClassModel(classID, className, section, staffID));
             }
         } catch (SQLException e) {
             e.printStackTrace();

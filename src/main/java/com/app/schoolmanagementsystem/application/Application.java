@@ -11,7 +11,7 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/SignIn.fxml"));
+        FXMLLoader fxmlLoader =  new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/SignIn.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 750, 550);
         stage.setResizable(false);
         stage.setTitle("School Management System");

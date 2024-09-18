@@ -182,7 +182,7 @@ public class EditStudentController implements Initializable {
     private ClassModel getClassModelById(int classID) {
         // Implement method to get ClassModel by classID
         // This is a placeholder implementation
-        return new ClassModel(classID, "ClassName", 2023, "A", 1);
+        return new ClassModel(classID, "ClassName",  "A", 1);
     }
 
     @FXML
@@ -403,17 +403,16 @@ public class EditStudentController implements Initializable {
 
     private void loadClassNames() {
         try (Connection connection = ConnectDB.connection()) {
-            String query = "SELECT classID, className, year, section, teacherID FROM classes";
+            String query = "SELECT * FROM classes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 int classID = resultSet.getInt("classID");
                 String className = resultSet.getString("className");
-                int year = resultSet.getInt("year");
                 String section = resultSet.getString("section");
-                int teacherID = resultSet.getInt("teacherID");
-                classNameField.getItems().add(new ClassModel(classID, className, year, section, teacherID));
+                int staffID = resultSet.getInt("staffID");
+                classNameField.getItems().add(new ClassModel(classID, className, section, staffID));
             }
         } catch (SQLException e) {
             e.printStackTrace();

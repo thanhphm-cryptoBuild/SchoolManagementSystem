@@ -145,6 +145,8 @@ import java.io.InputStream;
 
         private StaffModel staffService;
 
+        private String avatarPath = "default_avatar.png"; // Default avatar
+
         public AddStaffController() {
             staffService = new StaffModel(); // Initialize your service here
         }
@@ -687,66 +689,32 @@ import java.io.InputStream;
             File selectedFile = fileChooser.showOpenDialog(null);
 
             if (selectedFile != null) {
-                // Kiểm tra tính hợp lệ của hình ảnh
+                // Validate the image before setting it
                 if (isValidImage(selectedFile)) {
-                    try {
-                        // Hiển thị hình ảnh đã chọn
-                        Image profileImage = new Image(selectedFile.toURI().toString());
-                        profileImageView.setImage(profileImage);
-
-                        // Lưu hình ảnh vào thư mục resources
-                        String imageName = selectedFile.getName();
-                        saveImageToResources(new FileInputStream(selectedFile), imageName);
-
-                        // Cập nhật tên hình ảnh vào cơ sở dữ liệu nếu cần
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        showError("Có lỗi xảy ra khi lưu hình ảnh.");
-                    }
+                    // Set the image directly without resizing
+                    Image profileImage = new Image(selectedFile.toURI().toString());
+                    profileImageView.setImage(profileImage);
+                    avatarPath = selectedFile.toURI().toString();
                 } else {
-                    // Hiển thị thông báo lỗi nếu hình ảnh không hợp lệ
+                    // Show error message if the image is not valid
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Invalid Image");
                     alert.setHeaderText(null);
-                    alert.setContentText("Hình ảnh của bạn phải có tỷ lệ 2x3, 3x4 hoặc 4x6.");
+                    alert.setContentText("Your image must be 2x3, 3x4, or 4x6 ratio.");
                     alert.showAndWait();
                 }
             }
         }
+
         private boolean isValidImage(File file) {
             try {
                 Image image = new Image(file.toURI().toString());
-                double width = image.getWidth();
-                double height = image.getHeight();
-
-                // Kiểm tra tỷ lệ khung hình (2x3, 3x4 hoặc 4x6)
-                double aspectRatio = width / height;
-                return (Math.abs(aspectRatio - (2.0 / 3.0)) < 0.1 ||  // Tỷ lệ 2:3
-                        Math.abs(aspectRatio - (3.0 / 4.0)) < 0.1 ||  // Tỷ lệ 3:4
-                        Math.abs(aspectRatio - (4.0 / 6.0)) < 0.1);   // Tỷ lệ 4:6
+                double aspectRatio = image.getWidth() / image.getHeight();
+                return (aspectRatio >= 0.67 && aspectRatio <= 0.75) || // Acceptable range for 2x3
+                       (aspectRatio >= 0.75 && aspectRatio <= 0.85) || // Acceptable range for 3x4
+                       (aspectRatio >= 0.5 && aspectRatio <= 0.75);   // Acceptable range for 4x6
             } catch (Exception e) {
-                return false;
-            }
-        }
-
-        private void saveImageToResources(InputStream inputStream, String imageName) throws IOException {
-            // Đường dẫn đến thư mục lưu trữ hình ảnh trong thư mục resources
-            String path = "src/main/resources/com/app/schoolmanagementsystem/images/" + imageName;
-            File file = new File(path);
-
-            // Tạo thư mục nếu chưa tồn tại
-            File parentDir = file.getParentFile();
-            if (!parentDir.exists()) {
-                parentDir.mkdirs();
-            }
-
-            // Lưu hình ảnh vào thư mục
-            try (FileOutputStream outputStream = new FileOutputStream(file)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, bytesRead);
-                }
+                return false; // Return false if any error occurs
             }
         }
 
