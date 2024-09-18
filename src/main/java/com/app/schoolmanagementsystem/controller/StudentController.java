@@ -311,7 +311,7 @@ public class StudentController implements Initializable {
         String className = "";
         String query = "SELECT ClassName FROM classes WHERE ClassID = " + classID;
 
-        try (Connection conn = ConnectDB.getConnection();
+        try (Connection conn = ConnectDB.connection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
@@ -328,7 +328,7 @@ public class StudentController implements Initializable {
     private void deleteStudent(StudentModel student) {
         String query = "UPDATE students SET Status = 'inactive' WHERE StudentID = " + student.getStudentID();
 
-        try (Connection conn = ConnectDB.getConnection();
+        try (Connection conn = ConnectDB.connection();
              Statement stmt = conn.createStatement()) {
             int result = stmt.executeUpdate(query);
             if (result > 0) {
@@ -380,7 +380,7 @@ public class StudentController implements Initializable {
         studentData.clear();
         String query = "SELECT * FROM students WHERE Status = 'active'";
 
-        try (Connection conn = ConnectDB.getConnection();
+        try (Connection conn = ConnectDB.connection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
