@@ -17,9 +17,7 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import javafx.collections.FXCollections?>
 
-<?import java.lang.String?>
 <StackPane fx:id="pageCalendar" stylesheets="@../css/pageCalendar.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.CalendarController">
    <children>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308">
@@ -92,34 +90,21 @@
                                                 <VBox prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                    <children>
                                                       <Label text="Class Name" />
-                                                      <ChoiceBox fx:id="classNameChoiceBox" prefHeight="35.0" prefWidth="250.0" />
+                                                      <ChoiceBox fx:id="classChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                       <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                    </children>
                                                 </VBox>
                                                 <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                    <children>
                                                       <Label text="Time" />
-                                                      <ChoiceBox fx:id="timeChoiceBox" prefHeight="35.0" prefWidth="250.0">
-                                                         <items>
-                                                            <FXCollections fx:factory="observableArrayList">
-                                                               <String fx:value="7:00-8:00" />
-                                                               <String fx:value="8:00-9:00" />
-                                                               <String fx:value="9:00-10:00" />
-                                                               <String fx:value="10:00-11:00" />
-                                                               <String fx:value="13:00-14:00" />
-                                                               <String fx:value="14:00-15:00" />
-                                                               <String fx:value="15:00-16:00" />
-                                                               <String fx:value="16:00-17:00" />
-                                                            </FXCollections>
-                                                         </items>
-                                                      </ChoiceBox>
+                                                      <ChoiceBox fx:id="timeChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                       <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                    </children>
                                                 </VBox>
                                                 <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                    <children>
                                                       <Label text="Date" />
-                                                      <DatePicker fx:id="datePickerControl" prefHeight="35.0" prefWidth="250.0" />
+                                                      <DatePicker fx:id="datePickerField" prefHeight="35.0" prefWidth="250.0" />
                                                       <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                    </children>
                                                 </VBox>
@@ -140,12 +125,12 @@
                                              <children>
                                                 <VBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
                                                    <children>
-                                                      <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Add" onAction="#handleAddButtonAction" />
+                                                      <Button fx:id="addButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Add" />
                                                    </children>
                                                 </VBox>
                                                 <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
                                                    <children>
-                                                      <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Reset" />
+                                                      <Button fx:id="resetButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Reset" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -196,13 +181,16 @@
                                  <children>
                                     <VBox prefHeight="200.0" prefWidth="348.0">
                                        <children>
-                                          <ChoiceBox prefHeight="32.0" prefWidth="121.0" />
+                                          <ChoiceBox fx:id="filterClassChoiceBox" prefHeight="32.0" prefWidth="121.0" />
                                        </children>
                                     </VBox>
-                                    <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="359.0" />
+                                    <VBox alignment="TOP_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="34.0" prefWidth="359.0">
+                                       <children>
+                                       </children>
+                                    </VBox>
                                     <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="110.0" styleClass="button_calendar">
                                        <children>
-                                          <StackPane prefHeight="35.0" prefWidth="110.0" styleClass="button_children_calendar">
+                                          <StackPane fx:id="refreshButton" onMouseClicked="#refreshTable" prefHeight="35.0" prefWidth="110.0" styleClass="button_children_calendar">
                                              <children>
                                                 <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
@@ -222,14 +210,16 @@
                         </VBox>
                         <VBox prefHeight="646.0" prefWidth="746.0" style="-fx-background-color: #FFFFFF;">
                            <children>
-                              <TableView fx:id="calendarTable" prefHeight="646.0" prefWidth="746.0">
-                                <columns>
-                                  <TableColumn fx:id="timeColumn" prefWidth="120.0" text="Time" />
-                                    <TableColumn fx:id="classNameColumn" prefWidth="90.0" text="Class Name" />
-                                    <TableColumn fx:id="teacherColumn" prefWidth="200.0" text="Teacher" />
+                              <TableView fx:id="timetableTableView" prefHeight="646.0" prefWidth="746.0">
+                                 <columns>
+                                    <TableColumn fx:id="teacherColumn" prefWidth="120.0" text="Teacher" />
+                                    <TableColumn fx:id="classNameColumn" prefWidth="60.0" text="Class Name" />
                                     <TableColumn fx:id="subjectColumn" prefWidth="90.0" text="Subject" />
-                                    <TableColumn fx:id="descriptionColumn" prefWidth="202.0" text="Description" />
-                                </columns>
+                                    <TableColumn fx:id="timeColumn" prefWidth="120.0" text="Time" />
+                                    <TableColumn fx:id="dateColumn" prefWidth="120.0" text="Date" /> 
+                                    <TableColumn fx:id="descriptionColumn" prefWidth="136.0" text="Description" />
+                                    <TableColumn fx:id="actionColumn" prefWidth="60.0" text="Action" />
+                                 </columns>
                               </TableView>
                            </children>
                         </VBox>
