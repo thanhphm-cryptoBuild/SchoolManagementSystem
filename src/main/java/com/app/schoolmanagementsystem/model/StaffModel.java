@@ -55,7 +55,7 @@ public class StaffModel {
     // Phương thức đếm số lượng nhân viên trạng thái active
     public int countActiveStaff() {
         int count = 0;
-        String query = "SELECT COUNT(*) AS totalActiveStaff FROM Staffs WHERE Status = ?";
+        String query = "SELECT COUNT(*) AS totalActiveStaff FROM Staff WHERE Status = ?";
 
         try (Connection conn = ConnectDB.connection();
              PreparedStatement preparedStatement = conn.prepareStatement(query)) {
@@ -81,7 +81,7 @@ public class StaffModel {
     public List<Staff> getActiveStaff() {
         List<Staff> staffList = new ArrayList<>();
         String query = "SELECT StaffID, FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed " +
-                "FROM Staffs WHERE Status = 'active'";
+                "FROM Staff WHERE Status = 'active'";
 
         try (Connection conn = ConnectDB.connection();
              PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -276,7 +276,7 @@ public class StaffModel {
             return false;
         }
 
-        String insertStaffQuery = "INSERT INTO Staffs (FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed) " +
+        String insertStaffQuery = "INSERT INTO Staff (FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 'active', ?, ?, ?)";
 
         String insertStaffRoleQuery = "INSERT INTO StaffRoles (StaffID, RoleName) VALUES (?, ?)";
@@ -367,7 +367,7 @@ public class StaffModel {
 
     // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
     private boolean isEmailExists(String email, Connection conn) throws SQLException {
-        String query = "SELECT COUNT(*) FROM Staffs WHERE Email = ?";
+        String query = "SELECT COUNT(*) FROM Staff WHERE Email = ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
@@ -567,7 +567,7 @@ public class StaffModel {
             return false;
         }
 
-        String updateStaffQuery = "UPDATE Staffs SET FirstName = ?, LastName = ?, DateOfBirth = ?, Gender = ?, Address = ?, PhoneNumber = ?, Email = ?, Password = ?, HireDate = ?, Salary = ?, EducationBackground = ?, Experience = ?, Avatar = ?, Status = 'active', ResetCode = ?, ResetCodeCreationTime = ?, IsResetCodeUsed = ? WHERE StaffID = ?";
+        String updateStaffQuery = "UPDATE Staff SET FirstName = ?, LastName = ?, DateOfBirth = ?, Gender = ?, Address = ?, PhoneNumber = ?, Email = ?, Password = ?, HireDate = ?, Salary = ?, EducationBackground = ?, Experience = ?, Avatar = ?, Status = 'active', ResetCode = ?, ResetCodeCreationTime = ?, IsResetCodeUsed = ? WHERE StaffID = ?";
 
         String updateStaffRoleQuery = "UPDATE StaffRoles SET RoleName = ? WHERE StaffID = ?";
 
@@ -641,7 +641,7 @@ public class StaffModel {
 
     // Phương thức xóa nhân viên (thay vì xóa thực tế, cập nhật trạng thái)
     public boolean deleteStaff(int staffID) {
-        String query = "UPDATE Staffs SET Status = 'inactive' WHERE StaffID = ?";
+        String query = "UPDATE Staff SET Status = 'inactive' WHERE StaffID = ?";
 
         try (Connection conn = ConnectDB.connection();
              PreparedStatement preparedStatement = conn.prepareStatement(query)) {
@@ -660,7 +660,7 @@ public class StaffModel {
     public Staff getStaffByID(int staffID) {
         Staff staff = null;
         String query = "SELECT StaffID, FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed " +
-                "FROM Staffs WHERE StaffID = ?";
+                "FROM Staff WHERE StaffID = ?";
 
         try (Connection conn = ConnectDB.connection();
              PreparedStatement preparedStatement = conn.prepareStatement(query)) {
@@ -699,7 +699,7 @@ public class StaffModel {
 
     public List<Staff> searchStaff(String firstName, String email, Byte gender, Integer id) {
         List<Staff> staffList = new ArrayList<>();
-        StringBuilder query = new StringBuilder("SELECT StaffID, FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed FROM Staffs WHERE Status = 'active'");
+        StringBuilder query = new StringBuilder("SELECT StaffID, FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed FROM Staff WHERE Status = 'active'");
 
         // Danh sách tham số cho PreparedStatement
         List<Object> parameters = new ArrayList<>();

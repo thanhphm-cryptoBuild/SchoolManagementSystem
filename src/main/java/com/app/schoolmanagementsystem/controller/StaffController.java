@@ -257,8 +257,8 @@ public class StaffController implements Initializable {
 
     private void loadStaffDataByLogic(String firstName, String email, Byte gender, Integer id) {
         staffList.clear(); // Xóa dữ liệu cũ
-        List<Staff> staffs = staffModel.searchStaff(firstName, email, gender, id); // Gọi phương thức tìm kiếm trong StaffModel
-        staffList.addAll(staffs); // Thêm kết quả tìm kiếm vào ObservableList
+        List<Staff> staff = staffModel.searchStaff(firstName, email, gender, id); // Gọi phương thức tìm kiếm trong StaffModel
+        staffList.addAll(staff); // Thêm kết quả tìm kiếm vào ObservableList
         staffTableView.setItems(staffList); // Cập nhật TableView
     }
 
