@@ -6,13 +6,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableView;
-import javafx.scene.control.ChoiceBox;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
 import java.time.LocalDate;
 import javafx.scene.Node;
 import javafx.scene.control.*;
@@ -101,15 +95,15 @@ public class CalendarController implements Initializable {
         addButton.setOnAction(event -> insertTimetable());
         resetButton.setOnAction(event -> resetForm());
         
-        // Cấu hình cột TableView
+        // Chỉnh sửa cột
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
         classNameColumn.setCellValueFactory(new PropertyValueFactory<>("className"));
         teacherColumn.setCellValueFactory(new PropertyValueFactory<>("teacher"));
         subjectColumn.setCellValueFactory(new PropertyValueFactory<>("subject"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date")); // Cập nhật cột Date
+        dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        // Căn chỉnh cột trừ cột Action
+        // Căn giữa cột
         centerAlignColumn(timeColumn);
         centerAlignColumn(classNameColumn);
         centerAlignColumn(teacherColumn);
@@ -122,7 +116,7 @@ public class CalendarController implements Initializable {
             private final Button deleteButton = new Button();
 
             {
-                // Nút xóa
+                // Cấu hình nút xóa
                 Image deleteImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png")));
                 ImageView deleteImageView = new ImageView(deleteImage);
                 deleteImageView.setFitHeight(20);
@@ -131,15 +125,15 @@ public class CalendarController implements Initializable {
                 deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 deleteButton.setOnAction(event -> {
                     Timetable timetable = getTableView().getItems().get(getIndex());
-                    // Hiển thị hộp thoại xác nhận
+                    // Hộp thoại xác nhận
                     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
-                    confirmationAlert.setTitle("Delete Confirmation");
+                    confirmationAlert.setTitle("Xác nhận xóa");
                     confirmationAlert.setHeaderText(null);
                     confirmationAlert.setContentText("Are you sure you want to delete this timetable entry?");
                     Optional<ButtonType> result = confirmationAlert.showAndWait();
                     if (result.isPresent() && result.get() == ButtonType.OK) {
                         deleteTimetable(timetable);
-                        resetFilterClassChoiceBox(); // Đặt lại filterClassChoiceBox sau khi xóa
+                        resetFilterClassChoiceBox(); // Đặt lại bộ lọc sau khi xóa
                     }
                 });
             }
@@ -155,16 +149,16 @@ public class CalendarController implements Initializable {
             }
         });
 
-        // Đổ dữ liệu vào table
-        loadTimetableData();
+        // **Add** the following line to apply filters based on the current selections (e.g., selected date)
+        applyFilters();
 
-        // Search
+        // Bộ lọc tìm kiếm
         filterClassChoiceBox.setOnAction(event -> applyFilters());
 
-        // Nút refresh
+        // Hành động nút Refresh
         refreshButton.setOnMouseClicked(event -> {
             refreshTable();
-            resetFilterClassChoiceBox(); // Đặt lại filterClassChoiceBox sau khi làm mới
+            resetFilterClassChoiceBox(); // Đặt lại bộ lọc sau khi làm mới
         });
     }
 
@@ -175,7 +169,7 @@ public class CalendarController implements Initializable {
     @FXML
     public void refreshTable() {
         loadTimetableData();
-        resetFilterClassChoiceBox(); // Đặt lại filterClassChoiceBox sau khi làm mới
+        resetFilterClassChoiceBox(); // Đặt lại bộ lọc sau khi làm mới
     }
 
     void calendarPicker() {
@@ -188,11 +182,14 @@ public class CalendarController implements Initializable {
         datePickerContent.setStyle("-fx-pref-width: 500px; -fx-pref-height: 500px;");
         datePicker.getChildren().add(datePickerContent);
 
+        // Đặt datePickerField thành ngày hôm nay
+        datePickerField.setValue(LocalDate.now());
+
         datePickerControl.setOnAction(event -> {
             LocalDate selectedDate = datePickerControl.getValue();
             updateShowDate(selectedDate);
-            datePickerField.setValue(selectedDate); // Cập nhật giá trị của datePickerField
-            applyFilters(); // Áp dụng bộ lọc tìm kiếm
+            datePickerField.setValue(selectedDate); // Cập nhật giá trị datePickerField
+            applyFilters(); // Áp dụng bộ lọc tìm kiếm dựa trên ngày được chọn
         });
     }
 
@@ -208,14 +205,16 @@ public class CalendarController implements Initializable {
 
     private void populateChoiceBoxes() {
         ObservableList<String> timeOptions = FXCollections.observableArrayList(
-                "7:00-8:00", "8:00-9:00", "9:00-10:00", "10:00-11:00", "11:00-12:00",
+                "7:00-8:00", "8:00-9:00", "9:00-10:00", "10:00-11:00",
                 "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00"
         );
         timeChoiceBox.setItems(timeOptions);
+        timeChoiceBox.setValue("Select time"); 
+
 
         try (Connection connection = ConnectDB.connection()) {
-            populateChoiceBox(connection, "SELECT CONCAT(FirstName, ' ', LastName) AS FullName FROM staffs", teacherChoiceBox);
-            populateChoiceBox(connection, "SELECT SubjectName FROM subjects", subjectChoiceBox);
+            populateChoiceBoxWithSelect(connection, "SELECT CONCAT(FirstName, ' ', LastName) AS FullName FROM staffs", teacherChoiceBox, "Select teacher");
+            populateChoiceBoxWithSelect(connection, "SELECT SubjectName FROM subjects", subjectChoiceBox, "Select subject");
             populateChoiceBoxWithSelect(connection, "SELECT ClassName FROM classes", classChoiceBox, "Select class");
             populateChoiceBoxWithSelect(connection, "SELECT ClassName FROM classes", filterClassChoiceBox, "Select class");
         } catch (SQLException e) {
@@ -224,28 +223,19 @@ public class CalendarController implements Initializable {
     }
 
     /**
-     * Phương thức thêm "Select class" vào ChoiceBox và sau đó thêm các giá trị từ ResultSet
+     * Phương thức thêm "Select class" vào choicebox sau đó đặt lại giá trị
      */
     private void populateChoiceBoxWithSelect(Connection connection, String query, ChoiceBox<String> choiceBox, String selectOption) throws SQLException {
         choiceBox.getItems().add(selectOption); // Thêm lựa chọn mặc định
         try (Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(query)) {
             while (resultSet.next()) {
-                choiceBox.getItems().add(resultSet.getString(1)); // Sử dụng chỉ số cột chính xác
+                choiceBox.getItems().add(resultSet.getString(1)); // Sử dụng chỉ số cột đúng
             }
         }
         choiceBox.setValue(selectOption); // Đặt giá trị mặc định
     }
 
-    private void populateChoiceBox(Connection connection, String query, ChoiceBox<String> choiceBox) throws SQLException {
-        try (Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(query)) {
-            while (resultSet.next()) {
-                // Đảm bảo truy vấn trả về đúng số cột
-                choiceBox.getItems().add(resultSet.getString(1)); // Sử dụng chỉ số cột chính xác
-            }
-        }
-    }
 
     private void insertTimetable() {
         String teacher = teacherChoiceBox.getValue();
@@ -262,13 +252,13 @@ public class CalendarController implements Initializable {
         }
 
         try (Connection connection = ConnectDB.connection()) {
-            // Kiểm tra trùng lặp thời gian cho giáo viên
+            // Kiểm tra xung đột thời gian giáo viên
             if (isTeacherTimeConflict(connection, teacher, date, time)) {
                 showAlert(Alert.AlertType.ERROR, "Time Conflict", "The teacher is already scheduled to teach another class at this time");
                 return;
             }
 
-            // Kiểm tra trùng lặp thời gian cho lớp học
+            // Kiểm tra xung đột thời gian lớp
             if (isClassTimeConflict(connection, className, date, time)) {
                 showAlert(Alert.AlertType.ERROR, "Time Conflict", "The class already has another teacher scheduled at this time");
                 return;
@@ -288,7 +278,7 @@ public class CalendarController implements Initializable {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Timetable added successfully");
                 resetForm();
                 loadTimetableData(); 
-                resetFilterClassChoiceBox(); // Đặt lại filterClassChoiceBox sau khi thêm mới
+                resetFilterClassChoiceBox(); // Đặt lại bộ lọc sau khi thêm mới
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -415,37 +405,47 @@ public class CalendarController implements Initializable {
         String selectedClass = filterClassChoiceBox.getValue();
         LocalDate selectedDate = datePickerField.getValue();
 
+        if (selectedDate == null) {
+            // Nếu không có ngày nào được chọn, mặc định là ngày hôm nay
+            selectedDate = LocalDate.now();
+            datePickerField.setValue(selectedDate);
+        }
+
         ObservableList<Timetable> filteredList = FXCollections.observableArrayList();
 
         try (Connection connection = ConnectDB.connection()) {
-            StringBuilder queryBuilder = new StringBuilder("SELECT t.TimetableID, t.Time, c.ClassName, CONCAT(s.FirstName, ' ', s.LastName) AS Teacher, sub.SubjectName, t.Description, t.Date " +
-                                                           "FROM timetable t " +
-                                                           "JOIN classes c ON t.ClassID = c.ClassID " +
-                                                           "JOIN staffs s ON t.StaffID = s.StaffID " +
-                                                           "JOIN subjects sub ON t.SubjectID = sub.SubjectID " +
-                                                           "WHERE 1=1");
+            StringBuilder queryBuilder = new StringBuilder(
+                "SELECT t.TimetableID, t.Time, c.ClassName, CONCAT(s.FirstName, ' ', s.LastName) AS Teacher, sub.SubjectName, t.Description, t.Date " +
+                "FROM timetable t " +
+                "JOIN classes c ON t.ClassID = c.ClassID " +
+                "JOIN staffs s ON t.StaffID = s.StaffID " +
+                "JOIN subjects sub ON t.SubjectID = sub.SubjectID " +
+                "WHERE t.Date = ?"
+            );
 
             if (selectedClass != null && !selectedClass.equals("Select class")) {
-                queryBuilder.append(" AND c.ClassName = '").append(selectedClass).append("'");
+                queryBuilder.append(" AND c.ClassName = ?");
             }
 
-            if (selectedDate != null) {
-                queryBuilder.append(" AND t.Date = '").append(Date.valueOf(selectedDate)).append("'");
-            }
+            try (PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString())) {
+                preparedStatement.setDate(1, Date.valueOf(selectedDate));
+                if (selectedClass != null && !selectedClass.equals("Select class")) {
+                    preparedStatement.setString(2, selectedClass);
+                }
 
-            try (Statement statement = connection.createStatement();
-                 ResultSet resultSet = statement.executeQuery(queryBuilder.toString())) {
-                while (resultSet.next()) {
-                    Timetable timetable = new Timetable(
+                try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                    while (resultSet.next()) {
+                        Timetable timetable = new Timetable(
                             resultSet.getInt("TimetableID"),
                             resultSet.getString("Time"),
                             resultSet.getString("ClassName"),
                             resultSet.getString("Teacher"),
                             resultSet.getString("SubjectName"),
                             resultSet.getString("Description"),
-                            resultSet.getDate("Date").toLocalDate() 
-                    );
-                    filteredList.add(timetable);
+                            resultSet.getDate("Date").toLocalDate()
+                        );
+                        filteredList.add(timetable);
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -456,21 +456,21 @@ public class CalendarController implements Initializable {
     }
 
     private void resetForm() {
-        teacherChoiceBox.setValue(null);
-        subjectChoiceBox.setValue(null);
-        classChoiceBox.setValue("Select class"); // Đặt lại giá trị mặc định
-        timeChoiceBox.setValue(null);
-        datePickerField.setValue(null);
+        teacherChoiceBox.setValue("Select teacher");
+        subjectChoiceBox.setValue("Select subject");
+        classChoiceBox.setValue("Select class"); 
+        timeChoiceBox.setValue("Select time");
+        datePickerField.setValue(LocalDate.now()); // Đặt lại ngày hôm nay
         descriptionField.clear();
-        resetFilterClassChoiceBox(); // Đặt lại filterClassChoiceBox
+        resetFilterClassChoiceBox(); // Đặt lại bộ lọc
     }
 
     /**
-     * Phương thức đặt lại filterClassChoiceBox về "Select class"
+     * Phương thức đặt lại filterClassChoiceBox thành "Select class"
      */
     private void resetFilterClassChoiceBox() {
         filterClassChoiceBox.setValue("Select class");
-        applyFilters(); // Áp dụng lại bộ lọc nếu cần
+        applyFilters(); // Áp dụng bộ lọc lại nếu cần
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
@@ -491,7 +491,7 @@ public class CalendarController implements Initializable {
             if (result > 0) {
                 showAlert(Alert.AlertType.INFORMATION, "Success", "Timetable entry has been deleted.");
                 loadTimetableData(); // Làm mới dữ liệu sau khi xóa
-                resetFilterClassChoiceBox(); // Đặt lại filterClassChoiceBox sau khi xóa
+                resetFilterClassChoiceBox(); // Đặt lại bộ lọc sau khi xóa
             } else {
                 showAlert(Alert.AlertType.ERROR, "Error", "Unable to delete timetable entry.");
             }
