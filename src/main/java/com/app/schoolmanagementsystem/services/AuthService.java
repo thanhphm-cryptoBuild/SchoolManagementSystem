@@ -32,7 +32,7 @@ public class AuthService {
         }
 
         try (Connection conn = ConnectDB.connection()) {
-            String query = "SELECT Password, Status FROM Staffs WHERE Email = ?";
+            String query = "SELECT Password, Status FROM Staff WHERE Email = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
@@ -65,7 +65,7 @@ public class AuthService {
 
         try (Connection conn = ConnectDB.connection()) {
             // Kiểm tra xem email có tồn tại trong cơ sở dữ liệu không
-            String query = "SELECT StaffID FROM Staffs WHERE Email = ?";
+            String query = "SELECT StaffID FROM Staff WHERE Email = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
@@ -76,7 +76,7 @@ public class AuthService {
                 LocalDateTime creationTime = LocalDateTime.now();
 
                 // Cập nhật mã khôi phục vào cơ sở dữ liệu
-                String updateQuery = "UPDATE Staffs SET ResetCode = ?, ResetCodeCreationTime = ?, IsResetCodeUsed = FALSE WHERE StaffID = ?";
+                String updateQuery = "UPDATE Staff SET ResetCode = ?, ResetCodeCreationTime = ?, IsResetCodeUsed = FALSE WHERE StaffID = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
                 updateStmt.setString(1, resetCode);
                 updateStmt.setObject(2, creationTime);
@@ -103,7 +103,7 @@ public class AuthService {
 
     public boolean validateResetCode(int staffID, String resetCode) throws SQLException {
         try (Connection conn = ConnectDB.connection()) {
-            String query = "SELECT ResetCode, ResetCodeCreationTime, IsResetCodeUsed FROM Staffs WHERE StaffID = ?";
+            String query = "SELECT ResetCode, ResetCodeCreationTime, IsResetCodeUsed FROM Staff WHERE StaffID = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, staffID);
             ResultSet rs = stmt.executeQuery();
@@ -150,7 +150,7 @@ public class AuthService {
         }
 
         try (Connection conn = ConnectDB.connection()) {
-            String query = "SELECT ResetCode, ResetCodeCreationTime, IsResetCodeUsed FROM Staffs WHERE StaffID = ?";
+            String query = "SELECT ResetCode, ResetCodeCreationTime, IsResetCodeUsed FROM Staff WHERE StaffID = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, staffID);
             ResultSet rs = stmt.executeQuery();
@@ -168,7 +168,7 @@ public class AuthService {
 
                         if (minutesElapsed <= 1) { // 60 seconds = 1 minute
                             // Update password and reset reset code status
-                            String updateQuery = "UPDATE Staffs SET Password = ?, ResetCode = NULL, ResetCodeCreationTime = NULL, IsResetCodeUsed = TRUE WHERE StaffID = ?";
+                            String updateQuery = "UPDATE Staff SET Password = ?, ResetCode = NULL, ResetCodeCreationTime = NULL, IsResetCodeUsed = TRUE WHERE StaffID = ?";
                             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
                             updateStmt.setString(1, newPassword);
                             updateStmt.setInt(2, staffID);
@@ -204,7 +204,7 @@ public class AuthService {
         }
 
         try (Connection conn = ConnectDB.connection()) {
-            String query = "SELECT sr.RoleName FROM Staffs s " +
+            String query = "SELECT sr.RoleName FROM Staff s " +
                     "JOIN StaffRoles sr ON s.StaffID = sr.StaffID " +
                     "WHERE s.Email = ? AND sr.RoleName = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -247,7 +247,7 @@ public class AuthService {
         }
 
         try (Connection conn = ConnectDB.connection()) {
-            String query = "SELECT sr.RoleName FROM Staffs s " +
+            String query = "SELECT sr.RoleName FROM Staff s " +
                     "JOIN StaffRoles sr ON s.StaffID = sr.StaffID " +
                     "WHERE s.Email = ?";
             PreparedStatement stmt = conn.prepareStatement(query);

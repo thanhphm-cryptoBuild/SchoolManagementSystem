@@ -213,7 +213,7 @@ public class CalendarController implements Initializable {
 
 
         try (Connection connection = ConnectDB.connection()) {
-            populateChoiceBoxWithSelect(connection, "SELECT CONCAT(FirstName, ' ', LastName) AS FullName FROM staffs", teacherChoiceBox, "Select teacher");
+            populateChoiceBoxWithSelect(connection, "SELECT CONCAT(FirstName, ' ', LastName) AS FullName FROM staff", teacherChoiceBox, "Select teacher");
             populateChoiceBoxWithSelect(connection, "SELECT SubjectName FROM subjects", subjectChoiceBox, "Select subject");
             populateChoiceBoxWithSelect(connection, "SELECT ClassName FROM classes", classChoiceBox, "Select class");
             populateChoiceBoxWithSelect(connection, "SELECT ClassName FROM classes", filterClassChoiceBox, "Select class");
@@ -288,7 +288,7 @@ public class CalendarController implements Initializable {
 
     private boolean isTeacherTimeConflict(Connection connection, String teacher, LocalDate date, String time) throws SQLException {
         String query = "SELECT COUNT(*) FROM timetable t " +
-                       "JOIN staffs s ON t.StaffID = s.StaffID " +
+                       "JOIN staff s ON t.StaffID = s.StaffID " +
                        "WHERE CONCAT(s.FirstName, ' ', s.LastName) = ? AND t.Date = ? AND t.Time = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, teacher);
@@ -358,7 +358,7 @@ public class CalendarController implements Initializable {
     }
 
     private int getStaffID(Connection connection, String staffName) throws SQLException {
-        String query = "SELECT StaffID FROM staffs WHERE CONCAT(FirstName, ' ', LastName) = ?";
+        String query = "SELECT StaffID FROM staff WHERE CONCAT(FirstName, ' ', LastName) = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, staffName);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -377,7 +377,7 @@ public class CalendarController implements Initializable {
             String query = "SELECT t.TimetableID, t.Time, c.ClassName, CONCAT(s.FirstName, ' ', s.LastName) AS Teacher, sub.SubjectName, t.Description, t.Date " +
                            "FROM timetable t " +
                            "JOIN classes c ON t.ClassID = c.ClassID " +
-                           "JOIN staffs s ON t.StaffID = s.StaffID " +
+                           "JOIN staff s ON t.StaffID = s.StaffID " +
                            "JOIN subjects sub ON t.SubjectID = sub.SubjectID";
             try (Statement statement = connection.createStatement();
                  ResultSet resultSet = statement.executeQuery(query)) {
@@ -418,7 +418,7 @@ public class CalendarController implements Initializable {
                 "SELECT t.TimetableID, t.Time, c.ClassName, CONCAT(s.FirstName, ' ', s.LastName) AS Teacher, sub.SubjectName, t.Description, t.Date " +
                 "FROM timetable t " +
                 "JOIN classes c ON t.ClassID = c.ClassID " +
-                "JOIN staffs s ON t.StaffID = s.StaffID " +
+                "JOIN Staff s ON t.StaffID = s.StaffID " +
                 "JOIN subjects sub ON t.SubjectID = sub.SubjectID " +
                 "WHERE t.Date = ?"
             );

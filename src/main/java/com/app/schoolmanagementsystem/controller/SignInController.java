@@ -336,7 +336,7 @@ public class SignInController implements Initializable {
 
     public void setResetCodeUsed(int staffID) throws SQLException {
         try (Connection conn = ConnectDB.connection()) {
-            String query = "UPDATE Staffs SET IsResetCodeUsed = true WHERE StaffID = ?";
+            String query = "UPDATE Staff SET IsResetCodeUsed = true WHERE StaffID = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, staffID);
             stmt.executeUpdate();
@@ -347,7 +347,7 @@ public class SignInController implements Initializable {
 
     private int getStaffIDByResetCode(String code) throws SQLException {
         try (Connection conn = ConnectDB.connection()) {
-            String query = "SELECT StaffID FROM Staffs WHERE ResetCode = ?";
+            String query = "SELECT StaffID FROM Staff WHERE ResetCode = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, code);
             ResultSet rs = stmt.executeQuery();
