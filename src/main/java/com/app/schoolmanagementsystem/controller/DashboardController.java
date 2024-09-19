@@ -52,14 +52,17 @@ public class DashboardController implements Initializable {
         label_totalStaff.setText(String.valueOf(totalStaff));
     }
 
-
     void loadDataPieChart() {
         int maleStudents = ConnectDB.countStudentsByGender(true);
         int femaleStudents = ConnectDB.countStudentsByGender(false);
+        int maleStaff = ConnectDB.countStaffByGender(true);
+        int femaleStaff = ConnectDB.countStaffByGender(false);
 
         ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
                 new PieChart.Data("Male Student", maleStudents),
-                new PieChart.Data("Female Student", femaleStudents)
+                new PieChart.Data("Female Student", femaleStudents),
+                new PieChart.Data("Male Staff", maleStaff),
+                new PieChart.Data("Female Staff", femaleStaff)
         );
 
         PieChart pieChart = new PieChart(list);

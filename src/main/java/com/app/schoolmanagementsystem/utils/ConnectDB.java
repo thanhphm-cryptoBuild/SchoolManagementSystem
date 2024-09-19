@@ -52,4 +52,17 @@ public class ConnectDB {
         }
         return 0;
     }
+    public static int countStaffByGender(boolean isMale) {
+        String query = "SELECT COUNT(*) AS total FROM staff WHERE Status = 'active' AND Gender = " + (isMale ? 1 : 0);
+        try (Connection conn = connection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 }

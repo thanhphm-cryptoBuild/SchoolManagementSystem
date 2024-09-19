@@ -16,8 +16,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-
 import java.net.URL;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
@@ -245,9 +243,29 @@ public class CalendarController implements Initializable {
         LocalDate date = datePickerField.getValue();
         String description = descriptionField.getText();
 
-        // Kiểm tra các trường bắt buộc
-        if (teacher == null || subject == null || className == null || time == null || date == null || description.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please fill all the fields");
+        // Kiểm tra các trường bắt buộc và thông báo lỗi cụ thể
+        if (teacher == null || teacher.equals("Select teacher")) {
+            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a teacher");
+            return;
+        }
+        if (subject == null || subject.equals("Select subject")) {
+            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a subject");
+            return;
+        }
+        if (className == null || className.equals("Select class")) {
+            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a class");
+            return;
+        }
+        if (time == null || time.equals("Select time")) {
+            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a time");
+            return;
+        }
+        if (date == null) {
+            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a date");
+            return;
+        }
+        if (description.isEmpty()) {
+            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter a description");
             return;
         }
 
