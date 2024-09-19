@@ -277,7 +277,7 @@ public class AddStudentController implements Initializable {
                 String status = "active"; // Default status
 
                 // Kết nối và lưu dữ liệu vào database
-                try (Connection connection = ConnectDB.getConnection()) {
+                try (Connection connection = ConnectDB.connection()) {
                     // Lấy ID tiếp theo cho sinh viên
                     String getMaxStudentIdQuery = "SELECT COALESCE(MAX(StudentID), 0) + 1 AS nextID FROM students";
                     PreparedStatement getMaxStudentIdStatement = connection.prepareStatement(getMaxStudentIdQuery);
@@ -343,7 +343,7 @@ public class AddStudentController implements Initializable {
     }
 
     private boolean isEmailExists(String email) {
-        try (Connection connection = ConnectDB.getConnection()) {
+        try (Connection connection = ConnectDB.connection()) {
             String query = "SELECT COUNT(*) FROM students WHERE email = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, email);
@@ -385,7 +385,7 @@ public class AddStudentController implements Initializable {
     }
 
     private void loadClassNames() {
-        try (Connection connection = ConnectDB.getConnection()) {
+        try (Connection connection = ConnectDB.connection()) {
             String query = "SELECT classID, className, year, section, teacherID FROM classes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();

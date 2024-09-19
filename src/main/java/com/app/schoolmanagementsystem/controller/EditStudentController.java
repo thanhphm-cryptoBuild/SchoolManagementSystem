@@ -150,7 +150,7 @@ public class EditStudentController implements Initializable {
 
     private void loadStudentFamilyData(int studentID) {
         String query = "SELECT * FROM studentfamily WHERE StudentID = ?";
-        try (Connection connection = ConnectDB.getConnection();
+        try (Connection connection = ConnectDB.connection();
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, studentID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -319,7 +319,7 @@ public class EditStudentController implements Initializable {
             String reasonForLeaving = reasonForLeavingField.getText();
 
             // Connect and update data in the database
-            try (Connection connection = ConnectDB.getConnection()) {
+            try (Connection connection = ConnectDB.connection()) {
                 // Update student information
                 String studentQuery = "UPDATE students SET lastName = ?, firstName = ?, email = ?, dateOfBirth = ?, phoneNumber = ?, gender = ?, address = ?, classID = ?, enrollmentDate = ?, previousSchool = ?, reasonForLeaving = ?, avatar = ? WHERE StudentID = ?";
                 PreparedStatement studentPreparedStatement = connection.prepareStatement(studentQuery);
@@ -353,7 +353,7 @@ public class EditStudentController implements Initializable {
     }
 
     private boolean isEmailExists(String email, int currentStudentId) {
-        try (Connection connection = ConnectDB.getConnection()) {
+        try (Connection connection = ConnectDB.connection()) {
             String query = "SELECT COUNT(*) FROM students WHERE email = ? AND StudentID != ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, email);
@@ -396,7 +396,7 @@ public class EditStudentController implements Initializable {
     }
 
     private void loadClassNames() {
-        try (Connection connection = ConnectDB.getConnection()) {
+        try (Connection connection = ConnectDB.connection()) {
             String query = "SELECT classID, className, year, section, teacherID FROM classes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();

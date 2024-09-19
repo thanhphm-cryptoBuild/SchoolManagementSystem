@@ -2,6 +2,7 @@
 
 <?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -128,12 +129,12 @@
                                                       <Font name="Sitka Text Bold" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField prefHeight="45.0" prefWidth="240.0" promptText="Email">
+                                                <TextField fx:id="emailField" prefHeight="45.0" prefWidth="240.0" promptText="Email">
                                                    <font>
                                                       <Font name="Sitka Text" size="14.0" />
                                                    </font>
                                                 </TextField>
-                                                <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
+                                                <Label fx:id="emailError" prefHeight="20.0" prefWidth="260.0" text="Error Validate" textFill="RED" visible="false" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -147,23 +148,34 @@
                                                       <Font name="Sitka Text Bold" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <PasswordField prefHeight="45.0" prefWidth="260.0" promptText="Password">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="14.0" />
-                                                   </font>
-                                                </PasswordField>
-                                                <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
+                                                <!-- StackPane để xếp chồng PasswordField và TextField -->
+                                                <StackPane>
+                                                   <children>
+                                                      <!-- PasswordField -->
+                                                      <PasswordField fx:id="passwordField" prefHeight="45.0" prefWidth="245.0" promptText="Password" visible="true" />
+
+                                                      <!-- TextField hiển thị mật khẩu khi không ẩn -->
+                                                      <TextField fx:id="passwordVisibleField" prefHeight="45.0" prefWidth="245.0" promptText="Password" visible="false" />
+                                                   </children>
+                                                </StackPane>
+                                                <Label fx:id="passwordError" prefHeight="20.0" prefWidth="260.0" text="Error Validate" textFill="RED" visible="false" />
                                              </children>
                                           </VBox>
-                                          <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="277.0" layoutY="29.0" pickOnBounds="true" preserveRatio="true" styleClass="cursor">
+                                          <ImageView fx:id="eyeCloseImageView" fitHeight="30.0" fitWidth="30.0" layoutX="277.0" layoutY="29.0" onMouseClicked="#handleEyeCloseClick" pickOnBounds="true" preserveRatio="true" styleClass="cursor" visible="false">
                                              <image>
                                                 <Image url="@../images/hide.png" />
                                              </image>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
                                           </ImageView>
-                                          <ImageView disable="true" fitHeight="29.0" fitWidth="24.0" layoutX="280.0" layoutY="32.0" pickOnBounds="true" preserveRatio="true" styleClass="cursor" visible="false">
+                                          <ImageView fx:id="eyeOpenImageView" fitHeight="29.0" fitWidth="24.0" layoutX="280.0" layoutY="32.0" onMouseClicked="#handleEyeOpenClick" pickOnBounds="true" preserveRatio="true" styleClass="cursor">
                                              <image>
                                                 <Image url="@../images/visual.png" />
                                              </image>
+                                             <cursor>
+                                                <Cursor fx:constant="HAND" />
+                                             </cursor>
                                           </ImageView>
                                        </children>
                                     </Pane>
@@ -179,6 +191,9 @@
                                                       <String fx:value="text_forgot" />
                                                       <String fx:value="cursor" />
                                                    </styleClass>
+                                                   <cursor>
+                                                      <Cursor fx:constant="HAND" />
+                                                   </cursor>
                                                 </Label>
                                              </children>
                                           </VBox>
@@ -227,7 +242,7 @@
                      <children>
                         <AnchorPane prefHeight="494.0" prefWidth="375.0">
                            <children>
-                              <StackPane fx:id="forgotPWPane" prefHeight="494.0" prefWidth="375.0" visible="false">
+                              <StackPane fx:id="forgotPWPane" prefHeight="494.0" prefWidth="375.0">
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="394.0" prefWidth="375.0" spacing="10.0">
                                        <children>
@@ -252,12 +267,12 @@
                                                             <Font name="Sitka Text Bold" size="16.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField prefHeight="45.0" prefWidth="240.0" promptText="Email">
+                                                      <TextField fx:id="emailSendField" prefHeight="45.0" prefWidth="240.0" promptText="Email">
                                                          <font>
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </TextField>
-                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
+                                                      <Label fx:id="emailSendError" prefHeight="20.0" prefWidth="260.0" text="Error Validate" textFill="RED" visible="false" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -303,12 +318,12 @@
                                                             <Font name="Sitka Text Bold" size="16.0" />
                                                          </font>
                                                       </Label>
-                                                      <PasswordField prefHeight="45.0" prefWidth="240.0" promptText="New Password">
+                                                      <PasswordField fx:id="newPassField" prefHeight="45.0" prefWidth="240.0" promptText="New Password">
                                                          <font>
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </PasswordField>
-                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
+                                                      <Label fx:id="newPassError" prefHeight="20.0" prefWidth="260.0" text="Error Validate" textFill="RED" visible="false" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -322,12 +337,12 @@
                                                             <Font name="Sitka Text Bold" size="16.0" />
                                                          </font>
                                                       </Label>
-                                                      <PasswordField prefHeight="45.0" prefWidth="240.0" promptText="New Password">
+                                                      <PasswordField fx:id="confirmPassField" prefHeight="45.0" prefWidth="240.0" promptText="Confirm Password">
                                                          <font>
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </PasswordField>
-                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
+                                                      <Label fx:id="confirmPassError" prefHeight="20.0" prefWidth="260.0" text="Error Validate" textFill="RED" visible="false" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -341,19 +356,19 @@
                                                             <Font name="Sitka Text Bold" size="16.0" />
                                                          </font>
                                                       </Label>
-                                                      <TextField prefHeight="45.0" prefWidth="240.0" promptText="Code">
+                                                      <TextField fx:id="codeField" prefHeight="45.0" prefWidth="240.0" promptText="Code">
                                                          <font>
                                                             <Font name="Sitka Text" size="14.0" />
                                                          </font>
                                                       </TextField>
-                                                      <Label prefHeight="20.0" prefWidth="260.0" text="Error Validate" />
+                                                      <Label fx:id="codeError" prefHeight="20.0" prefWidth="260.0" text="Error Validate" textFill="RED" visible="false" />
                                                    </children>
                                                 </VBox>
                                              </children>
                                           </Pane>
                                           <Pane layoutX="10.0" layoutY="282.0">
                                              <children>
-                                                <Button layoutX="58.0" mnemonicParsing="false" onMouseClicked="#submitFormForgotChange" prefHeight="45.0" prefWidth="260.0" styleClass="cursor" text="Submit" textFill="WHITE">
+                                                <Button fx:id="btn" layoutX="58.0" mnemonicParsing="false" onMouseClicked="#submitFormForgotChange" prefHeight="45.0" prefWidth="260.0" styleClass="cursor" text="Submit" textFill="WHITE">
                                                    <font>
                                                       <Font name="Sitka Text Bold" size="20.0" />
                                                    </font>

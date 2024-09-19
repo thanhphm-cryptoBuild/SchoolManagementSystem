@@ -1,8 +1,11 @@
 module com.app.schoolmanagementsystem {
     requires javafx.controls;
     requires javafx.fxml;
-    requires java.sql;requires javafx.base;
+    requires java.sql;
+    requires javafx.base;
     requires javafx.graphics;
+    requires jbcrypt;
+    requires java.mail;
 
 
     opens com.app.schoolmanagementsystem.model to javafx.base;
