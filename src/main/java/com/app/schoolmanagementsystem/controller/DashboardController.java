@@ -36,7 +36,6 @@ public class DashboardController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
-        loadStudentCount();// khởi chạy thêm hàm đếm student
     }
 
     void loadDataPieChart() {
@@ -113,8 +112,8 @@ public class DashboardController implements Initializable {
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }
     //chạy hàm đếm student
-    private void loadStudentCount() {
-        int studentCount = ConnectDB.countStudents();
-        studentCountLabel.setText(String.valueOf(studentCount));
-    }
+//    private void loadStudentCount() {
+//        int studentCount = ConnectDB.countStudents();
+//        studentCountLabel.setText(String.valueOf(studentCount));
+//    }
 }
