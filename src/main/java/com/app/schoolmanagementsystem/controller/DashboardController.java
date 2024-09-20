@@ -9,7 +9,6 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,36 +32,20 @@ public class DashboardController implements Initializable {
     @FXML
     private Label studentCountLabel;
 
-    @FXML
-    private Label label_totalStaff;
-
-    private com.app.schoolmanagementsystem.model.StaffModel staffModel;
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
         loadStudentCount();// khởi chạy thêm hàm đếm student
-        staffModel = new com.app.schoolmanagementsystem.model.StaffModel();
-        updateTotalStaff();
-    }
-
-    private void updateTotalStaff() {
-        int totalStaff = staffModel.countActiveStaff();
-        label_totalStaff.setText(String.valueOf(totalStaff));
     }
 
     void loadDataPieChart() {
         int maleStudents = ConnectDB.countStudentsByGender(true);
         int femaleStudents = ConnectDB.countStudentsByGender(false);
-        int maleStaff = ConnectDB.countStaffByGender(true);
-        int femaleStaff = ConnectDB.countStaffByGender(false);
 
         ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
                 new PieChart.Data("Male Student", maleStudents),
-                new PieChart.Data("Female Student", femaleStudents),
-                new PieChart.Data("Male Staff", maleStaff),
-                new PieChart.Data("Female Staff", femaleStaff)
+                new PieChart.Data("Female Student", femaleStudents)
         );
 
         PieChart pieChart = new PieChart(list);

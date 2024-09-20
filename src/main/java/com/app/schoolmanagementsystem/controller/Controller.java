@@ -111,7 +111,6 @@ public class Controller implements Initializable {
     @FXML
     private StackPane stackLoadPage;
 
-
     private boolean isDropdownOpen = false;
 
     private boolean isSideBarOpen = false;
@@ -147,6 +146,7 @@ public class Controller implements Initializable {
         } catch(Exception e) {
             e.printStackTrace();
         }
+
 
     }
 
@@ -353,7 +353,6 @@ public class Controller implements Initializable {
     void buttonAdvanced(MouseEvent event) throws IOException {
         loadPage("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml");
     }
-
 
 
     @FXML
