@@ -222,4 +222,9 @@ public class Staff {
     public void setResetCodeUsed(boolean resetCodeUsed) {
         isResetCodeUsed = resetCodeUsed;
     }
+    @Override
+    public String toString() {
+        return firstName + " " + lastName + " (" + positionName + ")";
+    }
+
 }

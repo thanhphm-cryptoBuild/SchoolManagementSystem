@@ -99,7 +99,7 @@ public class AddStudentController implements Initializable {
     @FXML
     private ImageView avatarImageView;
 
-    private String avatarPath = "default_avatar.png"; // Default avatar
+    private String avatarPath = "useravatar.png"; // Default avatar
 
     public void setPageStudent(StackPane pageStudent) {
         this.pageStudent = pageStudent;
@@ -144,7 +144,7 @@ public class AddStudentController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
-                alert.setContentText("Your image must be 2x3, 3x4, or 4x6 ratio.");
+                alert.setContentText("Your image must be 2x3, 3x4 or 4x6 ratio.");
                 alert.showAndWait();
             }
         }
@@ -374,8 +374,8 @@ public class AddStudentController implements Initializable {
         motherPhoneNumberField.clear();
         previousSchoolField.clear();
         reasonForLeavingField.clear();
-        avatarImageView.setImage(new Image("default_avatar.png"));
-        avatarPath = "default_avatar.png";
+        avatarImageView.setImage(new Image("useravatar.png"));
+        avatarPath = "useravatar.png";
     }
 
     @Override

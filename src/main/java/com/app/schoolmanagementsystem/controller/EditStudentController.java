@@ -107,7 +107,7 @@ public class EditStudentController implements Initializable {
     @FXML
     private Label studentIdValueLabel; // New Label to display Student ID
 
-    private String avatarPath = "default_avatar.png"; // Default avatar
+    private String avatarPath = "useravatar.png"; // Default avatar
     private StudentModel student;
     private StudentFamilyModel studentFamily;
 
@@ -140,7 +140,7 @@ public class EditStudentController implements Initializable {
             avatarImageView.setImage(avatarImage);
         } catch (IllegalArgumentException e) {
             // Nếu không tìm thấy hình ảnh, sử dụng hình ảnh mặc định
-            avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png"));
+            avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png"));
         }
 
         // Lấy thông tin gia đình từ cơ sở dữ liệu
@@ -391,8 +391,8 @@ public class EditStudentController implements Initializable {
         motherPhoneNumberField.clear();
         previousSchoolField.clear();
         reasonForLeavingField.clear();
-        avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png"));
-        avatarPath = "file:src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png";
+        avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png"));
+        avatarPath = "file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png";
     }
 
     @Override
