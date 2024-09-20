@@ -1,6 +1,7 @@
 package com.app.schoolmanagementsystem.entities;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Staff {
@@ -14,6 +15,8 @@ public class Staff {
     private String email;
     private String password; // Mật khẩu có thể được mã hóa
     private Date hireDate;
+    private String positionName;
+
     private double salary;
     private String educationBackground;
     private String experience;
@@ -23,7 +26,11 @@ public class Staff {
     private LocalDateTime resetCodeCreationTime;
     private boolean isResetCodeUsed;
 
-    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, double salary, String educationBackground, String experience, String avatar, String status, String resetCode, LocalDateTime resetCodeCreationTime, boolean isResetCodeUsed) {
+
+    public Staff() {
+    }
+
+    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, String positionName, double salary, String educationBackground, String experience, String avatar, String status, String resetCode, LocalDateTime resetCodeCreationTime, boolean isResetCodeUsed) {
         this.staffID = staffID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -34,6 +41,7 @@ public class Staff {
         this.email = email;
         this.password = password;
         this.hireDate = hireDate;
+        this.positionName = positionName;
         this.salary = salary;
         this.educationBackground = educationBackground;
         this.experience = experience;
@@ -44,7 +52,7 @@ public class Staff {
         this.isResetCodeUsed = isResetCodeUsed;
     }
 
-    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, double salary, String educationBackground, String experience, String avatar, String status) {
+    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, String positionName, double salary, String educationBackground, String experience, String avatar, String status) {
         this.staffID = staffID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -55,14 +63,12 @@ public class Staff {
         this.email = email;
         this.password = password;
         this.hireDate = hireDate;
+        this.positionName = positionName;
         this.salary = salary;
         this.educationBackground = educationBackground;
         this.experience = experience;
         this.avatar = avatar;
         this.status = status;
-    }
-
-    public Staff() {
     }
 
     public int getStaffID() {
@@ -145,6 +151,14 @@ public class Staff {
         this.hireDate = hireDate;
     }
 
+    public String getPositionName() {
+        return positionName;
+    }
+
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
+    }
+
     public double getSalary() {
         return salary;
     }
@@ -207,16 +221,5 @@ public class Staff {
 
     public void setResetCodeUsed(boolean resetCodeUsed) {
         isResetCodeUsed = resetCodeUsed;
-    }
-
-    // Phương thức để lấy đường dẫn đầy đủ của hình ảnh
-    // Phương thức để kiểm tra nếu đường dẫn là URL
-    public boolean isExternalAvatar() {
-        return avatar.startsWith("http://") || avatar.startsWith("https://");
-    }
-
-    // Phương thức để lấy đường dẫn đầy đủ của hình ảnh
-    public String getFullAvatarPath() {
-        return avatar.startsWith("http://") || avatar.startsWith("https://") ? avatar : "file:" + avatar;
     }
 }

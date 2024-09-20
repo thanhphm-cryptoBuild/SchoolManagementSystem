@@ -2,6 +2,8 @@ package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.services.AuthService;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -20,19 +22,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
-import java.sql.Blob;
 import java.sql.Date;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -72,6 +69,8 @@ public class StaffController implements Initializable {
     private TableColumn<Staff, String> statusColumn;
     @FXML
     private TableColumn<Staff, Void> actionColumn;
+    @FXML
+    private TableColumn<Staff, String> positionNameColumn;
 
     @FXML
     private AnchorPane moveBG;
@@ -95,9 +94,11 @@ public class StaffController implements Initializable {
     private StaffModel staffModel = new StaffModel();
     private ObservableList<Staff> staffList = FXCollections.observableArrayList();
 
-    // Add default avatar and avatar cache
-    private Image defaultAvatar;
-    private final Map<String, Image> avatarCache = new HashMap<>();
+    @FXML
+    private Label label_StaffID;
+
+    private Integer IDStaff;
+
 
 
     @FXML
@@ -107,7 +108,7 @@ public class StaffController implements Initializable {
             StackPane pageAddStaff = loader.load();
 
             AddStaffController addStaffController = loader.getController();
-            addStaffController.setPageStaff(pageAddStaff);
+            addStaffController.setPageStaff(pageStaff);
             addStaffController.setBGPageStaff(moveBG);
 
             pageAddStaff.setTranslateX(2000);
@@ -138,10 +139,7 @@ public class StaffController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Initialize default avatar
-        defaultAvatar = new Image(Objects.requireNonNull(getClass().getResource("/com/app/schoolmanagementsystem/images/default_avatar.png")).toExternalForm());
-
-        // Configure columns
+        // Cấu hình các cột
         staffIDColumn.setCellValueFactory(new PropertyValueFactory<>("staffID"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -155,13 +153,18 @@ public class StaffController implements Initializable {
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         hireDateColumn.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
+
+        positionNameColumn.setCellValueFactory(new PropertyValueFactory<>("positionName"));
+
         salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
         educationBackgroundColumn.setCellValueFactory(new PropertyValueFactory<>("educationBackground"));
         experienceColumn.setCellValueFactory(new PropertyValueFactory<>("experience"));
+        // Cấu hình cột avatar
         avatarColumn.setCellValueFactory(new PropertyValueFactory<>("avatar"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Configure column alignment
+
+        // Cấu hình căn chỉnh cột
         configureColumnAlignment(staffIDColumn);
         configureColumnAlignment(firstNameColumn);
         configureColumnAlignment(lastNameColumn);
@@ -171,34 +174,39 @@ public class StaffController implements Initializable {
         configureColumnAlignment(phoneNumberColumn);
         configureColumnAlignment(emailColumn);
         configureColumnAlignment(hireDateColumn);
+        configureColumnAlignment(positionNameColumn);
         configureColumnAlignment(salaryColumn);
         configureColumnAlignment(educationBackgroundColumn);
         configureColumnAlignment(experienceColumn);
         configureColumnAlignment(avatarColumn);
         configureColumnAlignment(statusColumn);
 
-        // Configure action column
+
+
+        // Cấu hình cột hành động
         configureActionColumn();
-        // Configure avatar column
+        // Cấu hình cột avatar
         configureAvatarColumn();
 
         reloadButton.setOnMouseClicked(event -> reloadPage());
 
-        // Configure ChoiceBox for Gender and ID
+        // Cấu hình ChoiceBox cho Gender và ID
         ObservableList<String> searchOptions = FXCollections.observableArrayList("Equal", "Gender", "ID");
         selectBox.setItems(searchOptions);
         selectBox.setValue("Equal"); // Đặt giá trị mặc định là "" (không chọn gì)
 
-        // Add search listeners
+        // Tạo sự kiện khi người dùng nhập vào ô tìm kiếm
         searchField.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
         selectBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> searchStaff());
         extraSearchField.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
 
-        // Initialize StaffModel
+        // Khởi tạo StaffModel
         staffModel = new StaffModel();
 
-        // Load initial data
+        // Tải dữ liệu ban đầu
         loadStaffDataByLogic(null, null, null, null);
+
+        // Tải dữ liệu nhân viên
         loadStaffData();
     }
 
@@ -257,46 +265,51 @@ public class StaffController implements Initializable {
 
     private void loadStaffDataByLogic(String firstName, String email, Byte gender, Integer id) {
         staffList.clear(); // Xóa dữ liệu cũ
-        List<Staff> staff = staffModel.searchStaff(firstName, email, gender, id); // Gọi phương thức tìm kiếm trong StaffModel
-        staffList.addAll(staff); // Thêm kết quả tìm kiếm vào ObservableList
+        List<Staff> staffs = staffModel.searchStaff(firstName, email, gender, id); // Gọi phương thức tìm kiếm trong StaffModel
+        staffList.addAll(staffs); // Thêm kết quả tìm kiếm vào ObservableList
         staffTableView.setItems(staffList); // Cập nhật TableView
     }
 
     private void configureAvatarColumn() {
         avatarColumn.setCellFactory(column -> new TableCell<Staff, String>() {
             private final ImageView imageView = new ImageView();
+            private final Rectangle clip = new Rectangle();
+
+            {
+                imageView.setFitHeight(24); // Điều chỉnh kích thước hình ảnh nếu cần
+                imageView.setFitWidth(24);
+                imageView.setPreserveRatio(true);
+
+                // Tạo hình dạng bo tròn cho hình ảnh
+                clip.setArcWidth(24); // Đặt kích thước bo tròn (thay đổi nếu cần)
+                clip.setArcHeight(24); // Đặt kích thước bo tròn (thay đổi nếu cần)
+                imageView.setClip(clip);
+            }
 
             @Override
-            protected void updateItem(String avatarPath, boolean empty) {
-                super.updateItem(avatarPath, empty);
-                if (empty || avatarPath == null || avatarPath.isEmpty()) {
-                    imageView.setImage(defaultAvatar);
+            protected void updateItem(String imageName, boolean empty) {
+                super.updateItem(imageName, empty);
+                if (empty || imageName == null || imageName.isEmpty()) {
+                    setGraphic(null); // Không hiển thị gì nếu không có hình ảnh
                 } else {
-                    // Get the current Staff object
-                    Staff staff = getTableView().getItems().get(getIndex());
-                    String fullAvatarPath = staff.getAvatar();
+                    try {
+                        // Nạp hình ảnh từ thư mục resources
+                        Image image = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/" + imageName));
+                        imageView.setImage(image);
 
-                    Image avatarImage = avatarCache.get(fullAvatarPath);
-                    if (avatarImage == null) {
-                        try {
-                            avatarImage = new Image(staff.isExternalAvatar() ? fullAvatarPath : getClass().getResource(fullAvatarPath).toExternalForm());
-                            avatarCache.put(fullAvatarPath, avatarImage);
-                        } catch (Exception e) {
-                            avatarImage = defaultAvatar;
-                        }
+                        // Đặt kích thước hình dạng bo tròn
+                        clip.setWidth(imageView.getFitWidth());
+                        clip.setHeight(imageView.getFitHeight());
+
+                        setGraphic(imageView);
+                        setAlignment(Pos.CENTER);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        setGraphic(null); // Xử lý lỗi nếu không thể nạp hình ảnh
                     }
-                    imageView.setImage(avatarImage);
                 }
-                imageView.setFitHeight(32); // Set fixed height for the avatar
-                imageView.setFitWidth(32); // Set fixed width for the avatar
-                imageView.setPreserveRatio(true); // Maintain aspect ratio
-
-                // Clip the image to a circle
-                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
-                setGraphic(empty ? null : imageView);
             }
         });
-        avatarColumn.setStyle("-fx-alignment: CENTER;"); // Center align Avatar column
     }
 
 
@@ -317,6 +330,7 @@ public class StaffController implements Initializable {
             }
         });
     }
+
 
     private void configureActionColumn() {
         actionColumn.setCellFactory(new Callback<>() {
@@ -442,6 +456,49 @@ public class StaffController implements Initializable {
         });
     }
 
+//    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
+//
+//    public void loginUser(String email, String password) {
+//        if (authService.login(email, password)) {
+//            // Lưu vai trò vào UserSession thay vì biến cục bộ
+//            String roleName = authService.getRoleName(email);
+//            UserSession.setCurrentRoleName(roleName); // Sử dụng UserSession để lưu vai trò
+//            System.out.println("Logged in with role: " + roleName);
+//        } else {
+//            System.out.println("Login failed.");
+//        }
+//    }
+//
+//    // Phương thức để lấy roleName hiện tại
+//    public String getCurrentRoleName() {
+//        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
+//    }
+//
+//    // Các phương thức khác liên quan đến phân quyền
+//    private boolean canPerformAction(int staffID) {
+//        String staffRoleName = getStaffRoleNameByStaffID(staffID);
+//        String userRoleName = getCurrentRoleName();
+//
+//        // Console log roleName của người dùng và nhân viên
+//        System.out.println("User roleName: " + userRoleName);
+//        System.out.println("Staff roleName: " + staffRoleName);
+//
+//        // Phân quyền dựa trên vai trò của người dùng đăng nhập và vai trò của nhân viên
+//        if ("Admin Master".equals(userRoleName)) {
+//            return true;
+//        } else if ("Manager".equals(userRoleName) && "Teacher".equals(staffRoleName)) {
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    // Phương thức lấy vai trò (RoleName) của nhân viên dựa trên StaffID
+//    private String getStaffRoleNameByStaffID(int staffID) {
+//        return staffModel.getRoleByStaffID(staffID); // Gọi phương thức từ StaffModel
+//    }
+
+
+
     private void showDetails(int index) {
         Staff staff = staffTableView.getItems().get(index);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -530,6 +587,7 @@ public class StaffController implements Initializable {
         }
 
     }
+
 
     private void loadStaffData() {
         // Create a new list from the model

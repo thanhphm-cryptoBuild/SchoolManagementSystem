@@ -106,7 +106,7 @@
                                              <cursor>
                                                 <Cursor fx:constant="HAND" />
                                              </cursor></ChoiceBox>
-                                          <Label fx:id="roleErrorLabel" text="Error 2" visible="false" />
+                                          <Label fx:id="roleErrorLabel" text="Error 2" textFill="RED" visible="false" />
                                        </children>
                                     </VBox>
                                     <VBox layoutX="10.0" layoutY="80.0" prefHeight="85.0" prefWidth="220.0" spacing="5.0">
@@ -235,6 +235,13 @@
                                     <Label fx:id="experienceErrorLabel" layoutX="10.0" layoutY="176.0" text="Error 2" textFill="RED" visible="false" />
                                  </children>
                               </VBox>
+                              <VBox prefHeight="85.0" prefWidth="375.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Position Name" />
+                                    <TextField fx:id="positionNameField" prefHeight="35.0" prefWidth="325.0" promptText="Position Name" />
+                                    <Label fx:id="positionNameErrorLabel" text="Error 2" textFill="RED" visible="false" />
+                                 </children>
+                              </VBox>
                               <VBox layoutX="405.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Family Member Name 1 " />
@@ -242,13 +249,14 @@
                                     <Label fx:id="familyMemberName1ErrorLabel" text="Error 2" textFill="RED" visible="false" />
                                  </children>
                               </VBox>
-                              <VBox layoutX="672.0" layoutY="10.0" prefHeight="85.0" prefWidth="375.0" spacing="5.0">
+                              <VBox prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Relation 1" />
                                     <ChoiceBox fx:id="relationshipChoiceBox1" prefHeight="35.0" prefWidth="325.0">
                                        <cursor>
                                           <Cursor fx:constant="HAND" />
-                                       </cursor></ChoiceBox>
+                                       </cursor>
+                                    </ChoiceBox>
                                     <Label fx:id="relationship1ErrorLabel" text="Error 2" textFill="RED" visible="false" />
                                  </children>
                               </VBox>

@@ -4,6 +4,7 @@ import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.entities.StaffFamily;
 import com.app.schoolmanagementsystem.entities.StaffRoles;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.utils.PasswordUtil;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -81,6 +82,8 @@ public class EditStaffController implements Initializable {
     private ChoiceBox<String> relationshipChoiceBox1;
     @FXML
     private ChoiceBox<String> relationshipChoiceBox2;
+    @FXML
+    private TextField positionNameField;
 
     @FXML
     private TextField familyMemberNameField1;
@@ -134,6 +137,8 @@ public class EditStaffController implements Initializable {
     private Label contactNumber2ErrorLabel;
     @FXML
     private Label chooseFileErrorLabel;
+    @FXML
+    private Label positionNameErrorLabel;
 
     @FXML
     private Button chooseFileButton;
@@ -143,6 +148,9 @@ public class EditStaffController implements Initializable {
 
     @FXML
     private Button cancelButton;
+
+    @FXML
+    private Label label_StaffID;
 
     @FXML
     private ImageView profileImageView;
@@ -202,6 +210,11 @@ public class EditStaffController implements Initializable {
             emailField.setText(currentStaff.getEmail());
             phoneNumberField.setText(currentStaff.getPhoneNumber());
             addressField.setText(currentStaff.getAddress());
+            positionNameField.setText(currentStaff.getPositionName());
+
+            // Cập nhật label_StaffID với ID của nhân viên
+            label_StaffID.setText(String.valueOf(currentStaff.getStaffID()));
+
 
 
             String gender = currentStaff.getGender() == 1 ? "Male" : "Female";
@@ -211,14 +224,14 @@ public class EditStaffController implements Initializable {
 
             salaryChoiceBox.setValue(String.valueOf(currentStaff.getSalary()));
             ObservableList<String> salaryOptions = FXCollections.observableArrayList(
-                    "30000", "40000", "50000", "60000" // Thay thế bằng các giá trị thực tế
+                    "5000", "6000", "7000", "8000" // Thay thế bằng các giá trị thực tế
             );
             salaryChoiceBox.setItems(salaryOptions);
 
             educationChoiceBox.setValue(currentStaff.getEducationBackground());
             // Các tùy chọn cho Education Background
             ObservableList<String> educationOptions = FXCollections.observableArrayList(
-                    "High School", "Associate Degree", "Bachelor's Degree", "Master's Degree" // Thay thế bằng các giá trị thực tế
+                    "Intermediate", "College", "University", "Master's", "Ph.D." // Thay thế bằng các giá trị thực tế
             );
             educationChoiceBox.setItems(educationOptions);
 
@@ -268,6 +281,7 @@ public class EditStaffController implements Initializable {
             // Lấy và hiển thị thông tin gia đình
             loadFamilyData(currentStaff.getStaffID());
 
+
         }
     }
 
@@ -280,7 +294,7 @@ public class EditStaffController implements Initializable {
 
         // Đảm bảo rằng các ChoiceBox đã được cấu hình với các giá trị tùy chọn
         ObservableList<String> relationshipOptions = FXCollections.observableArrayList(
-                "Parent", "Sibling", "Spouse", "Child", "Other" // Thay thế bằng các mối quan hệ thực tế
+                "Father", "Mother", "Sibling", "Spouse", "Child" // Thay thế bằng các mối quan hệ thực tế
         );
 
         // Giữ lại dữ liệu cũ và chỉ cập nhật khi có thông tin mới
@@ -318,7 +332,7 @@ public class EditStaffController implements Initializable {
         // Xóa thông báo lỗi hiện tại
         clearErrorMessages();
 
-        // Giả sử bạn đã có staffId của nhân viên hiện tại
+        //  staffId của nhân viên hiện tại
         int staffId = currentStaff.getStaffID(); // Lấy ID của nhân viên hiện tại
 
         // Lấy nhân viên từ cơ sở dữ liệu
@@ -326,6 +340,9 @@ public class EditStaffController implements Initializable {
 
         // Lấy avatar cũ từ cơ sở dữ liệu
         String oldAvatar = staffFromDatabase.getAvatar();
+
+        String oldEmail = staffFromDatabase.getEmail();
+        String oldPassword = staffFromDatabase.getPassword();
 
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
@@ -337,6 +354,7 @@ public class EditStaffController implements Initializable {
         String role = roleChoiceBox.getValue();
         String gender = genderChoiceBox.getValue();
         String salary = salaryChoiceBox.getValue();
+        String position = positionNameField.getText();
         String educationBackground = educationChoiceBox.getValue();
         String experience = experienceChoiceBox.getValue();
         LocalDate dob = dobDatePicker.getValue();
@@ -356,12 +374,12 @@ public class EditStaffController implements Initializable {
 
         // Validate tên
         if (firstName.isEmpty()) {
-            firstNameErrorLabel.setText("Tên không được để trống.");
+            firstNameErrorLabel.setText("Name cannot be blank.");
             firstNameErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
         } else if (!Character.isUpperCase(firstName.charAt(0))) {
-            firstNameErrorLabel.setText("Tên phải bắt đầu bằng chữ cái hoa.");
+            firstNameErrorLabel.setText("Name must start with a capital letter.");
             firstNameErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -370,12 +388,12 @@ public class EditStaffController implements Initializable {
         }
 
         if (lastName.isEmpty()) {
-            lastNameErrorLabel.setText("Họ không được để trống.");
+            lastNameErrorLabel.setText("They cannot be left blank.");
             lastNameErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
         } else if (!Character.isUpperCase(lastName.charAt(0))) {
-            lastNameErrorLabel.setText("Họ phải bắt đầu bằng chữ cái hoa.");
+            lastNameErrorLabel.setText("Last name must start with a capital letter.");
             lastNameErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -385,7 +403,7 @@ public class EditStaffController implements Initializable {
 
         // Validate email
         if (email.isEmpty()) {
-            emailErrorLabel.setText("Email không được để trống.");
+            emailErrorLabel.setText("Email cannot be blank.");
             emailErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -403,14 +421,14 @@ public class EditStaffController implements Initializable {
 
         // Validate ngày sinh
         if (dob == null) {
-            dobErrorLabel.setText("Ngày sinh không được để trống.");
+            dobErrorLabel.setText("Date of birth cannot be left blank.");
             dobErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
         } else {
             LocalDate limitDate = LocalDate.of(2000, 1, 1);
             if (dob.isAfter(limitDate)) {
-                dobErrorLabel.setText("Ngày sinh phải trước năm 2010.");
+                dobErrorLabel.setText("Date of birth must be before 2010.");
                 dobErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -419,38 +437,15 @@ public class EditStaffController implements Initializable {
             }
         }
 
-        // Validate mật khẩu và xác nhận mật khẩu
-        if (password.isEmpty()) {
-            passwordErrorLabel.setText("Mật khẩu không được để trống.");
-            passwordErrorLabel.setVisible(true);
-            hasError = true;
-            isValid = false;
-        } else if (password.length() < 5) {
-            passwordErrorLabel.setText("Mật khẩu phải có ít nhất 5 ký tự.");
-            passwordErrorLabel.setVisible(true);
-            hasError = true;
-            isValid = false;
-        } else {
-            passwordErrorLabel.setVisible(false);
-        }
-
-        if (!password.equals(confirmPassword)) {
-            confirmPasswordErrorLabel.setText("Mật khẩu xác nhận không khớp.");
-            confirmPasswordErrorLabel.setVisible(true);
-            hasError = true;
-            isValid = false;
-        } else {
-            confirmPasswordErrorLabel.setVisible(false);
-        }
 
         // Validate số điện thoại
         if (phoneNumber.isEmpty()) {
-            phoneErrorLabel.setText("Số điện thoại không được để trống.");
+            phoneErrorLabel.setText("Phone number cannot be left blank.");
             phoneErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
         } else if (!phoneNumber.matches("\\d{10}")) {
-            phoneErrorLabel.setText("Số điện thoại phải là 10 chữ số.");
+            phoneErrorLabel.setText("Phone number must be 10 digits.");
             phoneErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -460,7 +455,7 @@ public class EditStaffController implements Initializable {
 
         // Validate địa chỉ
         if (address.isEmpty()) {
-            addressErrorLabel.setText("Địa chỉ không được để trống.");
+            addressErrorLabel.setText("Address cannot be left blank.");
             addressErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -470,7 +465,7 @@ public class EditStaffController implements Initializable {
 
         // Validate ngày tuyển dụng
         if (hireDate == null) {
-            hireDateErrorLabel.setText("Ngày tuyển dụng không được để trống.");
+            hireDateErrorLabel.setText("Recruitment date cannot be left blank.");
             hireDateErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -478,9 +473,18 @@ public class EditStaffController implements Initializable {
             hireDateErrorLabel.setVisible(false);
         }
 
+        if (position.isEmpty()) {
+            positionNameErrorLabel.setText("Position cannot be left blank.");
+            positionNameErrorLabel.setVisible(true);
+            hasError = true;
+            isValid = false;
+        } else {
+            positionNameErrorLabel.setVisible(false);
+        }
+
         // Validate vai trò
         if (role == null) {
-            roleErrorLabel.setText("Vai trò không được để trống.");
+            roleErrorLabel.setText("Role cannot be left empty.");
             roleErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -490,7 +494,7 @@ public class EditStaffController implements Initializable {
 
         // Validate giới tính
         if (gender == null) {
-            genderErrorLabel.setText("Giới tính không được để trống.");
+            genderErrorLabel.setText("Gender cannot be left blank.");
             genderErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -500,7 +504,7 @@ public class EditStaffController implements Initializable {
 
         // Validate lương
         if (salary == null) {
-            salaryErrorLabel.setText("Lương không được để trống.");
+            salaryErrorLabel.setText("Salary cannot be left blank.");
             salaryErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -510,7 +514,7 @@ public class EditStaffController implements Initializable {
 
         // Validate trình độ học vấn
         if (educationBackground == null) {
-            educationErrorLabel.setText("Trình độ học vấn không được để trống.");
+            educationErrorLabel.setText("Education level cannot be left blank.");
             educationErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -520,7 +524,7 @@ public class EditStaffController implements Initializable {
 
         // Validate kinh nghiệm
         if (experience == null) {
-            experienceErrorLabel.setText("Kinh nghiệm không được để trống.");
+            experienceErrorLabel.setText("Experience cannot be left blank.");
             experienceErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
@@ -550,7 +554,7 @@ public class EditStaffController implements Initializable {
 
             // Kiểm tra định dạng
             if (!validFormats.contains(fileExtension)) {
-                chooseFileErrorLabel.setText("Hình đại diện phải có định dạng: png, jpg, hoặc jpeg.");
+                chooseFileErrorLabel.setText("Avatar must be in format: png, jpg, hoặc jpeg.");
                 chooseFileErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -559,8 +563,45 @@ public class EditStaffController implements Initializable {
             }
         }
 
+        // Kiểm tra nếu mật khẩu mới được nhập
+        boolean isPasswordChanged = password != null && !password.trim().isEmpty();
+
+        if (isPasswordChanged) { // Nếu mật khẩu thay đổi
+            System.out.println("Mật khẩu mới: " + password);
+            if (password.length() < 5) {
+                passwordErrorLabel.setText("Password must be at least 5 characters.");
+                passwordErrorLabel.setVisible(true);
+                hasError = true;
+                isValid = false;
+            } else {
+                passwordErrorLabel.setVisible(false);
+            }
+
+            // Kiểm tra mật khẩu xác nhận chỉ nếu mật khẩu mới được nhập
+            if (!password.equals(confirmPassword)) {
+                confirmPasswordErrorLabel.setText("Confirmation password does not match.");
+                confirmPasswordErrorLabel.setVisible(true);
+                hasError = true;
+                isValid = false;
+            } else {
+                confirmPasswordErrorLabel.setVisible(false);
+            }
+
+            if (isValid) {
+                System.out.println("The new password has been validated.");
+
+            }
+
+        } else { // Nếu không thay đổi mật khẩu
+            // Log mật khẩu cũ
+            System.out.println("Mật khẩu cũ: " + oldPassword);
+
+            // Giữ mật khẩu cũ và không cần kiểm tra mật khẩu xác nhận
+            confirmPasswordErrorLabel.setVisible(false);
+        }
+
         if (!isValid) {
-            showError("Vui lòng kiểm tra và sửa các lỗi bên trên.");
+            showError("Please check and fix the errors above.");
             return; // Nếu có lỗi, không thực hiện cập nhật
 
         }
@@ -582,7 +623,7 @@ public class EditStaffController implements Initializable {
             hasFamilyMember = true;
 
             if (familyMemberName1.isEmpty()) {
-                familyMemberName1ErrorLabel.setText("Tên thành viên gia đình 1 không được để trống.");
+                familyMemberName1ErrorLabel.setText("Family member 1 name cannot be left blank.");
                 familyMemberName1ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -591,12 +632,12 @@ public class EditStaffController implements Initializable {
             }
 
             if (familyMemberContact1.isEmpty()) {
-                contactNumber1ErrorLabel.setText("Số liên lạc 1 không được để trống.");
+                contactNumber1ErrorLabel.setText("Contact 1 cannot be blank.");
                 contactNumber1ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
             } else if (!familyMemberContact1.matches("\\d{10}")) {
-                contactNumber1ErrorLabel.setText("Số liên lạc phải là số hợp lệ.");
+                contactNumber1ErrorLabel.setText("Contact number must be valid.");
                 contactNumber1ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -605,7 +646,7 @@ public class EditStaffController implements Initializable {
             }
 
             if (familyMemberRelationship1 == null) {
-                relationship1ErrorLabel.setText("Mối quan hệ 1 không được để trống.");
+                relationship1ErrorLabel.setText("Relationship 1 cannot be left blank.");
                 relationship1ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -619,7 +660,7 @@ public class EditStaffController implements Initializable {
             hasFamilyMember = true;
 
             if (familyMemberName2.isEmpty()) {
-                familyMemberName2ErrorLabel.setText("Tên thành viên gia đình 2 không được để trống.");
+                familyMemberName2ErrorLabel.setText("Family member 2 name cannot be left blank.");
                 familyMemberName2ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -628,12 +669,12 @@ public class EditStaffController implements Initializable {
             }
 
             if (familyMemberContact2.isEmpty()) {
-                contactNumber2ErrorLabel.setText("Số liên lạc 2 không được để trống.");
+                contactNumber2ErrorLabel.setText("Contact 2 cannot be blank.");
                 contactNumber2ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
             } else if (!familyMemberContact2.matches("\\d{10}")) {
-                contactNumber2ErrorLabel.setText("Số liên lạc phải là số hợp lệ.");
+                contactNumber2ErrorLabel.setText("Contact number must be valid.");
                 contactNumber2ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -642,7 +683,7 @@ public class EditStaffController implements Initializable {
             }
 
             if (familyMemberRelationship2 == null) {
-                relationship2ErrorLabel.setText("Mối quan hệ 2 không được để trống.");
+                relationship2ErrorLabel.setText("Relationship 2 cannot be left blank.");
                 relationship2ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -656,7 +697,7 @@ public class EditStaffController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi xác thực");
             alert.setHeaderText(null);
-            alert.setContentText("Vui lòng kiểm tra lại các thông tin đã nhập.");
+            alert.setContentText("Please double check the information entered.");
             alert.showAndWait();
         }
 
@@ -670,6 +711,7 @@ public class EditStaffController implements Initializable {
         currentStaff.setGender(gender.equals("Male") ? (byte) 1 : (byte) 0);
         currentStaff.setAvatar(avatarToSet);  // Gán tên hình ảnh cho currentStaff
         currentStaff.setPassword(password);
+        currentStaff.setPositionName(position);
 
         StaffRoles staffRole = new StaffRoles(role);
 
@@ -700,6 +742,8 @@ public class EditStaffController implements Initializable {
             showSuccess("Staff updated successfully.");
         } else {
             showError("Failed to update staff.");
+            emailErrorLabel.setText("Email already exists in the database.");
+            emailErrorLabel.setVisible(true);
         }
     }
 
@@ -765,6 +809,9 @@ public class EditStaffController implements Initializable {
         chooseFileErrorLabel.setVisible(false);
         chooseFileErrorLabel.setText("");
 
+        positionNameErrorLabel.setVisible(false);
+        positionNameErrorLabel.setText("");
+
     }
 
 
@@ -797,14 +844,14 @@ public class EditStaffController implements Initializable {
                     // Cập nhật tên hình ảnh vào cơ sở dữ liệu nếu cần
                 } catch (IOException e) {
                     e.printStackTrace();
-                    showError("Có lỗi xảy ra khi lưu hình ảnh.");
+                    showError("An error occurred while saving the image.");
                 }
             } else {
                 // Hiển thị thông báo lỗi nếu hình ảnh không hợp lệ
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
-                alert.setContentText("Hình ảnh của bạn phải có tỷ lệ 2x3, 3x4 hoặc 4x6.");
+                alert.setContentText("Your image must be 2x3, 3x4, or 4x6.");
                 alert.showAndWait();
             }
         }

@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane id="AnchorPane" fx:id="appDashBoard" prefHeight="768.0" prefWidth="1028.0" styleClass="parent" stylesheets="@../css/Dashboard.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.Controller">
-  <children>
+   <children>
       <AnchorPane prefWidth="1028.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <AnchorPane fx:id="anchorSideBar" layoutY="60.0" onMouseEntered="#anchorSideBarEntered" onMouseExited="#anchorSideBarExited" prefHeight="708.0" prefWidth="200.0" styleClass="sidebar" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="60.0">
@@ -230,7 +230,7 @@
                               <String fx:value="cursor" />
                            </styleClass>
                         </Pane>
-                        <Pane fx:id="navigateSideBar" layoutX="78.0" layoutY="609.0" prefHeight="40.0" prefWidth="40.0">
+                        <Pane fx:id="navigateSideBar" layoutX="81.0" layoutY="596.0" prefHeight="40.0" prefWidth="40.0">
                            <children>
                               <ImageView fx:id="open" fitHeight="40.0" fitWidth="40.0" layoutX="2.0" onMouseClicked="#openSideBar" pickOnBounds="true" preserveRatio="true" visible="false">
                                  <image>
@@ -344,7 +344,7 @@
                   </VBox>
                </children>
             </AnchorPane>
-          <AnchorPane fx:id="navbarMain" layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <AnchorPane fx:id="navbarMain" layoutX="-1.0" prefHeight="60.0" prefWidth="1028.0" styleClass="navbar" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Pane prefHeight="60.0" prefWidth="70.0" style="-fx-background-color: #C9AA00;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -443,16 +443,16 @@
                         </VBox>
                      </children>
                   </AnchorPane>
-                  <VBox alignment="CENTER" layoutX="70.0" prefHeight="60.0" prefWidth="325.0" spacing="10.0">
+                  <VBox alignment="CENTER" layoutX="70.0" prefHeight="60.0" prefWidth="300.0" spacing="10.0">
                      <children>
-                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="325.0" spacing="10.0">
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" spacing="10.0">
                            <children>
-                              <Label contentDisplay="CENTER" prefHeight="26.0" prefWidth="325.0" text="School Management System" textFill="#1a3395">
+                              <Label contentDisplay="CENTER" text="School Management System" textFill="#1a3395">
                                  <HBox.margin>
                                     <Insets left="10.0" />
                                  </HBox.margin>
                                  <font>
-                                    <Font name="Sitka Text Bold" size="22.0" />
+                                    <Font name="Sitka Text Bold" size="20.0" />
                                  </font>
                               </Label>
                            </children>
@@ -467,5 +467,5 @@
             <StackPane fx:id="stackLoadPage" layoutX="70.4" layoutY="60.0" prefHeight="708.0" prefWidth="958.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="70.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0" />
          </children>
       </AnchorPane>
-  </children>
+   </children>
 </AnchorPane>

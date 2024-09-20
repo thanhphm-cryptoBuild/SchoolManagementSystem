@@ -244,6 +244,13 @@
                               </VBox>
                               <VBox prefHeight="85.0" prefWidth="375.0" spacing="5.0">
                                  <children>
+                                    <Label text="Position Name" />
+                                    <TextField fx:id="positionNameField" prefHeight="35.0" prefWidth="325.0" promptText="Position Name" />
+                                    <Label fx:id="positionNameErrorLabel" text="Error 2" textFill="RED" visible="false" />
+                                 </children>
+                              </VBox>
+                              <VBox prefHeight="85.0" prefWidth="375.0" spacing="5.0">
+                                 <children>
                                     <Label text="Family Member Name 1 " />
                                     <TextField fx:id="familyMemberNameField1" prefHeight="35.0" prefWidth="325.0" promptText="Family Member Name 1 " />
                                     <Label fx:id="familyMemberName1ErrorLabel" text="Error 2" textFill="RED" visible="false" />
