@@ -13,7 +13,7 @@ public class Classes {
     public boolean saveClass(ClassModel newClass) {
         String sql = "INSERT INTO Classes (ClassName, Section, StaffID, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?)";
 
-        try (Connection conn = ConnectDB.getConnection()) {
+        try (Connection conn = ConnectDB.connection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, newClass.getClassName());
             stmt.setString(2, newClass.getSection());

@@ -15,7 +15,7 @@ public class SubjectModel {
         String sql = "SELECT SubjectID, SubjectName FROM subjects";
         List<Subject> subjectList = new ArrayList<>();
 
-        try (Connection conn = ConnectDB.getConnection()) {
+        try (Connection conn = ConnectDB.connection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
 

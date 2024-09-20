@@ -71,6 +71,14 @@ public class Staff {
         this.status = status;
     }
 
+    public Staff(int staffID, String firstName, String lastName, String phoneNumber, String positionName) {
+        this.staffID = staffID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.positionName = positionName;
+    }
+
     public int getStaffID() {
         return staffID;
     }
