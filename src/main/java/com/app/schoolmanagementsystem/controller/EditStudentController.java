@@ -6,7 +6,6 @@ import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -18,7 +17,6 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,7 +24,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -104,7 +101,7 @@ public class EditStudentController implements Initializable {
     @FXML
     private ImageView avatarImageView;
 
-    private String avatarPath = "default_avatar.png"; // Default avatar
+    private String avatarPath = "useravatar.png"; // Default avatar
     private StudentModel student;
     private StudentFamilyModel studentFamily;
 
@@ -137,7 +134,7 @@ public class EditStudentController implements Initializable {
             avatarImageView.setImage(avatarImage);
         } catch (IllegalArgumentException e) {
             // Nếu không tìm thấy hình ảnh, sử dụng hình ảnh mặc định
-            avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png"));
+            avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png"));
         }
 
         // Lấy thông tin gia đình từ cơ sở dữ liệu
@@ -176,7 +173,7 @@ public class EditStudentController implements Initializable {
     private ClassModel getClassModelById(int classID) {
         // Implement method to get ClassModel by classID
         // This is a placeholder implementation
-        return new ClassModel(classID, "ClassName", 2023, "A", 1);
+        return new ClassModel(classID, "ClassName", "A", 1);
     }
 
     @FXML
@@ -385,8 +382,8 @@ public class EditStudentController implements Initializable {
         motherPhoneNumberField.clear();
         previousSchoolField.clear();
         reasonForLeavingField.clear();
-        avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png"));
-        avatarPath = "file:src/main/resources/com/app/schoolmanagementsystem/images/default_avatar.png";
+        avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png"));
+        avatarPath = "file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png";
     }
 
     @Override
@@ -407,7 +404,7 @@ public class EditStudentController implements Initializable {
                 int year = resultSet.getInt("year");
                 String section = resultSet.getString("section");
                 int teacherID = resultSet.getInt("teacherID");
-                classNameField.getItems().add(new ClassModel(classID, className, year, section, teacherID));
+                classNameField.getItems().add(new ClassModel(classID, className, section, teacherID));
             }
         } catch (SQLException e) {
             e.printStackTrace();

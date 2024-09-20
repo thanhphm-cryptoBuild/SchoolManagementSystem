@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="formGradeStudent" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="add_student" stylesheets="@../css/pageAddStudent.css" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.schoolmanagementsystem.controller.GradeController">
+   <effect>
+      <DropShadow />
+   </effect>
+   <children>
+      <HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1100.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="900.0" prefWidth="54.0">
+               <children>
+                  <Pane onMouseClicked="#closeFormGradeStudent" prefHeight="900.0" prefWidth="70.0" styleClass="close">
+                     <children>
+                        <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="3.0" layoutY="331.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/right-arrow%20(1).png" />
+                           </image>
+                        </ImageView>
+                     </children>
+                  </Pane>
+               </children>
+            </VBox>
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="900.0" prefWidth="1100.0" spacing="20.0">
+               <children>
+                  <VBox alignment="TOP_CENTER" prefHeight="17.0" prefWidth="1073.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="67.0" prefWidth="800.0">
+                           <children>
+                              <Label prefHeight="26.0" prefWidth="195.0" styleClass="text_title" text="Grades Student">
+                                 <font>
+                                    <Font name="Sitka Text Bold" size="22.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="50.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </VBox>
+                  <Separator prefWidth="200.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                     <padding>
+                        <Insets left="50.0" right="50.0" />
+                     </padding>
+                  </Separator>
+                  <HBox prefHeight="797.0" prefWidth="1073.0">
+                     <children>
+                        <VBox alignment="TOP_CENTER" prefHeight="750.0" prefWidth="1134.0">
+                           <children>
+                              <VBox prefHeight="750.0" prefWidth="521.0">
+                                 <children>
+                                    <TableView fx:id="tableSubjectGrades" prefHeight="610.0" prefWidth="483.0">
+                                       <columns>
+                                          <TableColumn fx:id="collumSubject" prefWidth="190.0" text="Subject" />
+                                          <TableColumn fx:id="collumGrades" prefWidth="305.0" text="Grades" />
+                                       </columns>
+                                    </TableView>
+                                    <HBox prefHeight="120.0" prefWidth="480.0" styleClass="grades_table">
+                                       <children>
+                                          <Label alignment="CENTER" prefHeight="119.0" prefWidth="205.0" text="Total">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                             <styleClass>
+                                                <String fx:value="text_title" />
+                                                <String fx:value="grades_table_result" />
+                                             </styleClass>
+                                          </Label>
+                                          <Label alignment="CENTER" layoutX="10.0" layoutY="10.0" prefHeight="119.0" prefWidth="302.0" styleClass="text_title" text="0">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                           </children>
+                           <padding>
+                              <Insets right="20.0" />
+                           </padding>
+                        </VBox>
+                        <VBox alignment="TOP_CENTER" prefHeight="770.0" prefWidth="1100.0">
+                           <padding>
+                              <Insets left="20.0" />
+                           </padding>
+                           <children>
+                              <HBox alignment="CENTER_LEFT" prefHeight="226.0" prefWidth="459.0" spacing="10.0">
+                                 <children>
+                                    <VBox prefHeight="248.0" prefWidth="153.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="22.0" prefWidth="177.0" styleClass="text_title" text="ID">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label prefHeight="22.0" prefWidth="153.0" styleClass="text_title" text="Student Name">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="76.0" prefHeight="22.0" prefWidth="153.0" styleClass="text_title" text="Class Name">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="43.0" prefHeight="22.0" prefWidth="153.0" styleClass="text_title" text="Status">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="10.0" prefHeight="22.0" prefWidth="154.0" styleClass="text_title" text="Email">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="66.0" prefHeight="22.0" prefWidth="152.0" styleClass="text_title" text="Phone Number">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="94.0" prefHeight="22.0" styleClass="text_title" text="Acadamic School">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="10.0" layoutY="10.0" prefHeight="248.0" prefWidth="5.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="10.0" prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="66.0" prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="94.0" prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="76.0" prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="10.0" prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="10.0" layoutY="10.0" prefHeight="248.0" prefWidth="300.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="22.0" prefWidth="304.0" text="1">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label prefHeight="22.0" prefWidth="301.0" text="Truong Anh Le Van">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="43.0" prefHeight="22.0" prefWidth="301.0" text="10A">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="76.0" prefHeight="22.0" prefWidth="301.0" text="Active">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="10.0" prefHeight="22.0" prefWidth="306.0" text="anh@gmail.com">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <Label layoutX="10.0" layoutY="66.0" prefHeight="22.0" prefWidth="310.0" text="0123456789">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox prefHeight="22.0" prefWidth="200.0">
+                                             <children>
+                                                <Label prefHeight="22.0" prefWidth="105.0" text="01/12/2021">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label text="-">
+                                                   <font>
+                                                      <Font size="14.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="22.0" prefWidth="105.0" text="01/12/2022">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="14.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                              <Separator prefWidth="200.0">
+                                 <VBox.margin>
+                                    <Insets bottom="15.0" top="10.0" />
+                                 </VBox.margin>
+                              </Separator>
+                              <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="10.0" prefHeight="22.0" prefWidth="449.0" spacing="10.0">
+                                 <children>
+                                    <VBox prefHeight="248.0" prefWidth="153.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="22.0" prefWidth="177.0" styleClass="text_title" text="Result">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="10.0" layoutY="10.0" prefHeight="248.0" prefWidth="5.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="22.0" styleClass="text_title" text=":">
+                                             <font>
+                                                <Font name="Sitka Text" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                    <VBox layoutX="10.0" layoutY="10.0" prefHeight="248.0" prefWidth="300.0" spacing="10.0">
+                                       <children>
+                                          <Label prefHeight="22.0" prefWidth="304.0" text="Good" textFill="#ff0101">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="14.0" />
+                                             </font>
+                                          </Label>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
+                     <padding>
+                        <Insets bottom="20.0" left="50.0" right="50.0" />
+                     </padding>
+                  </HBox>
+               </children>
+               <padding>
+                  <Insets bottom="20.0" top="20.0" />
+               </padding>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</StackPane>

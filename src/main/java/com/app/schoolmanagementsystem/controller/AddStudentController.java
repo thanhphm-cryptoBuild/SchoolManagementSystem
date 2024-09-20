@@ -99,7 +99,7 @@ public class AddStudentController implements Initializable {
     @FXML
     private ImageView avatarImageView;
 
-    private String avatarPath = "default_avatar.png"; // Default avatar
+    private String avatarPath = "useravatar.png"; // Default avatar
 
     public void setPageStudent(StackPane pageStudent) {
         this.pageStudent = pageStudent;
@@ -144,7 +144,7 @@ public class AddStudentController implements Initializable {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
-                alert.setContentText("Your image must be 2x3, 3x4, or 4x6 ratio.");
+                alert.setContentText("Your image must be 2x3, 3x4 or 4x6 ratio.");
                 alert.showAndWait();
             }
         }
@@ -374,8 +374,8 @@ public class AddStudentController implements Initializable {
         motherPhoneNumberField.clear();
         previousSchoolField.clear();
         reasonForLeavingField.clear();
-        avatarImageView.setImage(new Image("default_avatar.png"));
-        avatarPath = "default_avatar.png";
+        avatarImageView.setImage(new Image("useravatar.png"));
+        avatarPath = "useravatar.png";
     }
 
     @Override
@@ -386,17 +386,16 @@ public class AddStudentController implements Initializable {
 
     private void loadClassNames() {
         try (Connection connection = ConnectDB.getConnection()) {
-            String query = "SELECT classID, className, year, section, teacherID FROM classes";
+            String query = "SELECT classID, className, section, staffID FROM classes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 int classID = resultSet.getInt("classID");
                 String className = resultSet.getString("className");
-                int year = resultSet.getInt("year");
                 String section = resultSet.getString("section");
-                int teacherID = resultSet.getInt("teacherID");
-                classNameField.getItems().add(new ClassModel(classID, className, year, section, teacherID));
+                int staffID = resultSet.getInt("staffID");
+                classNameField.getItems().add(new ClassModel(classID, className, section, staffID));
             }
         } catch (SQLException e) {
             e.printStackTrace();

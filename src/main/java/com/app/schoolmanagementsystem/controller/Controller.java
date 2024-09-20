@@ -60,9 +60,6 @@ public class Controller implements Initializable {
     private VBox iconStaffSB;
 
     @FXML
-    private VBox iconTeacherSB1;
-
-    @FXML
     private VBox iconStudentSB;
 
     @FXML
@@ -91,9 +88,6 @@ public class Controller implements Initializable {
 
     @FXML
     private VBox nameStaffSB;
-
-    @FXML
-    private VBox nameTeacherSB1;
 
     @FXML
     private VBox nameStudentSB;
@@ -287,7 +281,6 @@ public class Controller implements Initializable {
         nameClassSB.setVisible(false);
         nameStudentSB.setVisible(false);
         nameStaffSB.setVisible(false);
-        nameTeacherSB1.setVisible(false);
         nameSubjectSB.setVisible(false);
         nameAdvancedSB.setVisible(false);
         nameTuitionSB.setVisible(false);
@@ -299,7 +292,6 @@ public class Controller implements Initializable {
         iconClassSB.setTranslateX(130);
         iconStudentSB.setTranslateX(130);
         iconStaffSB.setTranslateX(130);
-        iconTeacherSB1.setTranslateX(130);
         iconSubjectSB.setTranslateX(130);
         iconAdvancedSB.setTranslateX(130);
         iconTuitionSB.setTranslateX(130);
@@ -314,7 +306,6 @@ public class Controller implements Initializable {
         nameClassSB.setVisible(true);
         nameStudentSB.setVisible(true);
         nameStaffSB.setVisible(true);
-        nameTeacherSB1.setVisible(true);
         nameSubjectSB.setVisible(true);
         nameAdvancedSB.setVisible(true);
         nameTuitionSB.setVisible(true);
@@ -326,7 +317,6 @@ public class Controller implements Initializable {
         iconClassSB.setTranslateX(0);
         iconStudentSB.setTranslateX(0);
         iconStaffSB.setTranslateX(0);
-        iconTeacherSB1.setTranslateX(0);
         iconSubjectSB.setTranslateX(0);
         iconAdvancedSB.setTranslateX(0);
         iconTuitionSB.setTranslateX(0);
@@ -374,11 +364,6 @@ public class Controller implements Initializable {
         loadPage("/com/app/schoolmanagementsystem/views/PageStaff.fxml");
     }
 
-
-    @FXML
-    void buttonTeacher(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageTeacher.fxml");
-    }
 
     @FXML
     void buttonStudent(MouseEvent event) throws IOException {

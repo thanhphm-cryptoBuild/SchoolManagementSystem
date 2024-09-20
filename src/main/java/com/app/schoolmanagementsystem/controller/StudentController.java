@@ -24,7 +24,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.animation.TranslateTransition;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.util.Duration;
 import javafx.scene.shape.Circle;
@@ -98,20 +97,18 @@ public class StudentController implements Initializable {
     private final ObservableList<StudentModel> studentData = FXCollections.observableArrayList();
 
     private boolean isSearchIconClicked = false;
-
-    // Thêm biến để lưu trữ ảnh mặc định và cache các ảnh đã tải
     private Image defaultAvatar;
     private final Map<String, Image> avatarCache = new HashMap<>();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Khởi tạo ảnh mặc định một lần
         defaultAvatar = new Image(Objects.requireNonNull(getClass().getResource("/com/app/schoolmanagementsystem/images/default_avatar.png")).toExternalForm());
         setupTableColumns();
         loadStudentData();
         setupSearchChoiceBox();
-        searchChoiceBox.getItems().add("Select"); // Add "Select" as the first item
-        searchChoiceBox.setValue("Select"); // Set default value to "Select"
+        searchChoiceBox.getItems().add("Filter"); // Add "Select" as the first item
+        searchChoiceBox.setValue("Filter"); // Set default value to "Select"
+
     }
 
     private void setupSearchChoiceBox() {
@@ -123,8 +120,12 @@ public class StudentController implements Initializable {
         isSearchIconClicked = true;
         if (searchField.getText().isEmpty() && filterField.getText().isEmpty()) {
             loadStudentData(); // Refresh the page if search fields are empty
+            searchChoiceBox.setValue("Filter");
             isSearchIconClicked = false; // Reset the flag after refresh
         } else {
+            if (!searchField.getText().isEmpty() && filterField.getText().isEmpty()) {
+                searchChoiceBox.setValue("Filter");
+            }
             onSearchKeyReleased();
         }
     }
@@ -163,7 +164,18 @@ public class StudentController implements Initializable {
         isSearchIconClicked = false; // Reset the flag after search
 
         // Reset ChoiceBox to "Select" after search
-        searchChoiceBox.setValue("Select");
+//        searchChoiceBox.setValue("Filter");
+
+    }
+
+    @FXML
+    void clearText(MouseEvent event) {
+        searchField.clear();
+    }
+
+    @FXML
+    void clearFilterText(MouseEvent event) {
+        filterField.clear();
     }
 
     private void setupTableColumns() {
@@ -219,6 +231,7 @@ public class StudentController implements Initializable {
         colAction.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button();
             private final Button editButton = new Button();
+            private final Button gradeButton = new Button();
 
             {
                 // Delete button
@@ -254,6 +267,18 @@ public class StudentController implements Initializable {
                     StudentModel student = getTableView().getItems().get(getIndex());
                     openEditStudentPage(student);
                 });
+
+                // Grade button
+                Image gradeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/score.png")));
+                ImageView gradeImageView = new ImageView(gradeImage);
+                gradeImageView.setFitHeight(20);
+                gradeImageView.setFitWidth(20);
+                gradeButton.setGraphic(gradeImageView);
+                gradeButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                gradeButton.setOnAction(event -> {
+//                    StudentModel student = getTableView().getItems().get(getIndex());
+                    openGradeStudentPage();
+                });
             }
 
             @Override
@@ -262,7 +287,7 @@ public class StudentController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    HBox actionButtons = new HBox(5, editButton, deleteButton);
+                    HBox actionButtons = new HBox(5, editButton, deleteButton, gradeButton);
                     setGraphic(actionButtons);
                 }
             }
@@ -358,6 +383,37 @@ public class StudentController implements Initializable {
         }
     }
 
+    private void openGradeStudentPage() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageGrade.fxml"));
+            StackPane pageGradeStudent = loader.load();
+
+            GradeController gradeController = loader.getController();
+            gradeController.setPageStudent(pageStudent);
+            gradeController.setBGPageStudent(moveBG);
+//            gradeController.setStudentData(student); // Pass student data to the controller
+
+            pageGradeStudent.setTranslateX(2000);
+            pageGradeStudent.setTranslateY(10);
+
+            pageStudent.getChildren().add(pageGradeStudent);
+
+            GaussianBlur gaussianBlur = new GaussianBlur(10);
+            moveBG.setEffect(gaussianBlur);
+
+            TranslateTransition translateTransition = new TranslateTransition();
+            translateTransition.setDuration(Duration.seconds(0.2));
+            translateTransition.setNode(pageGradeStudent);
+            translateTransition.setFromX(2000);
+            translateTransition.setToX(115);
+            translateTransition.setToY(6);
+            translateTransition.play();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to open the edit student page.");
+        }
+    }
+
     private void loadStudentData() {
         studentData.clear();
         String query = "SELECT * FROM students WHERE Status = 'active'";
@@ -421,7 +477,7 @@ public class StudentController implements Initializable {
     @FXML
     void refreshData(MouseEvent event) {
         loadStudentData();
-        showAlert(Alert.AlertType.INFORMATION, "Success", "Data has been refreshed.");
+//        showAlert(Alert.AlertType.INFORMATION, "Success", "Data has been refreshed.");
     }
 
     // Method to show alerts

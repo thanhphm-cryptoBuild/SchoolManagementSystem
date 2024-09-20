@@ -1,22 +1,51 @@
 package com.app.schoolmanagementsystem.model;
 
+import java.util.Date;
+
 public class ClassModel {
     private int classID;
     private String className;
-    private int year;
     private String section;
-    private int teacherID;
+    private int staffID;
+    private Date enrollmentDate;
+    private Date completeDate;
 
-    // Constructor mới
-    public ClassModel(int classID, String className, int year, String section, int teacherID) {
-        this.classID = classID;
-        this.className = className;
-        this.year = year;
-        this.section = section;
-        this.teacherID = teacherID;
+
+
+    public Date getEnrollmentDate() {
+        return enrollmentDate;
     }
 
-    // Getter và Setter
+    public void setEnrollmentDate(Date enrollmentDate) {
+        this.enrollmentDate = enrollmentDate;
+    }
+
+    public Date getCompleteDate() {
+        return completeDate;
+    }
+
+    public void setCompleteDate(Date completeDate) {
+        this.completeDate = completeDate;
+    }
+
+
+
+    public ClassModel(int classID, String className, String section, int staffID) {
+        this.classID = classID;
+        this.className = className;
+        this.section = section;
+        this.staffID = staffID;
+    }
+
+    public ClassModel(int classID, String className, String section, int staffID, Date enrollmentDate, Date completeDate) {
+        this.classID = classID;
+        this.className = className;
+        this.section = section;
+        this.staffID = staffID;
+        this.enrollmentDate = enrollmentDate;
+        this.completeDate =completeDate;
+    }
+
     public int getClassID() {
         return classID;
     }
@@ -33,14 +62,6 @@ public class ClassModel {
         this.className = className;
     }
 
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
     public String getSection() {
         return section;
     }
@@ -49,12 +70,12 @@ public class ClassModel {
         this.section = section;
     }
 
-    public int getTeacherID() {
-        return teacherID;
+    public int getStaffID() {
+        return staffID;
     }
 
-    public void setTeacherID(int teacherID) {
-        this.teacherID = teacherID;
+    public void setStaffID(int staffID) {
+        this.staffID = staffID;
     }
 
     @Override

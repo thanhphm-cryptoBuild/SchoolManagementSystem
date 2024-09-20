@@ -23,3 +23,15 @@
 .error-label {
     -fx-text-fill: red;
 }
+
+.grades_table {
+    -fx-border-width: 0 1px 1px 1px;
+    -fx-border-color: #C8C8C8;
+    -fx-border-style: solid;
+}
+
+.grades_table_result {
+    -fx-border-width: 0 1px 0 0;
+    -fx-border-color: #C8C8C8;
+    -fx-border-style: solid;
+}

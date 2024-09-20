@@ -26,7 +26,7 @@
                <children>
                   <VBox prefHeight="626.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="430.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
+                        <VBox alignment="CENTER" prefHeight="523.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
                                  <children>
@@ -53,39 +53,65 @@
                                                       <Font name="Sitka Text" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <ChoiceBox prefHeight="39.0" prefWidth="353.0" />
+                                                <ChoiceBox fx:id="selectSubject" prefHeight="39.0" prefWidth="315.0" />
                                                 <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                              </children>
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="200.0" spacing="20.0">
+                                    <HBox layoutX="10.0" layoutY="90.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
                                        <children>
-                                          <VBox prefHeight="120.0" prefWidth="250.0" spacing="5.0">
+                                          <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
                                              <children>
-                                                <Label text="Class Name">
+                                                <Label text="Teacher Name">
                                                    <font>
                                                       <Font name="Sitka Text" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <ChoiceBox prefHeight="40.0" prefWidth="250.0" />
+                                                <ChoiceBox fx:id="selectTeacherName" prefHeight="40.0" prefWidth="250.0" />
                                                 <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                              </children>
                                           </VBox>
-                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
+                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
                                              <children>
-                                                <Label text="Time">
+                                                <Label text="Teacher ID">
                                                    <font>
                                                       <Font name="Sitka Text" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <ChoiceBox prefHeight="40.0" prefWidth="250.0" />
+                                                <ChoiceBox fx:id="selectTeacherID" prefHeight="40.0" prefWidth="150.0" />
                                                 <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                              </children>
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="90.0" prefHeight="80.0" prefWidth="460.0">
+                                    <HBox layoutX="10.0" layoutY="95.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                       <children>
+                                          <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Class">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <ChoiceBox fx:id="selectClassNo" prefHeight="39.0" prefWidth="326.0" />
+                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                             </children>
+                                          </VBox>
+                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                             <children>
+                                                <Label text="Section">
+                                                   <font>
+                                                      <Font name="Sitka Text" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <ChoiceBox fx:id="selectSectionClass" prefHeight="39.0" prefWidth="326.0" />
+                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox layoutX="10.0" layoutY="154.0" prefHeight="80.0" prefWidth="460.0">
                                        <children>
                                           <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
                                              <children>
@@ -94,7 +120,7 @@
                                                       <Font name="Sitka Text" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField prefHeight="40.0" prefWidth="250.0" />
+                                                <TextField fx:id="textDescription" prefHeight="40.0" prefWidth="250.0" />
                                                 <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                              </children>
                                           </VBox>
@@ -104,7 +130,7 @@
                                        <children>
                                           <VBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
                                              <children>
-                                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="250.0" styleClass="button_form_add" text="Add" textFill="WHITE">
+                                                <Button mnemonicParsing="false" onMouseClicked="#addFormSubject" prefHeight="40.0" prefWidth="250.0" styleClass="button_form_add" text="Add" textFill="WHITE">
                                                    <font>
                                                       <Font name="Sitka Text Bold" size="14.0" />
                                                    </font>
@@ -113,7 +139,7 @@
                                           </VBox>
                                           <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
                                              <children>
-                                                <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="250.0" styleClass="reset_form_add" text="Reset" textFill="WHITE">
+                                                <Button mnemonicParsing="false" onMouseClicked="#resetFormSubject" prefHeight="40.0" prefWidth="250.0" styleClass="reset_form_add" text="Reset" textFill="WHITE">
                                                    <font>
                                                       <Font name="Sitka Text Bold" size="14.0" />
                                                    </font>
