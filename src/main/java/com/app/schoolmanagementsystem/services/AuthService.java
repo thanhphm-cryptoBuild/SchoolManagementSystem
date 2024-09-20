@@ -54,6 +54,7 @@ public class AuthService {
 
                 // Compare user password with hashed password
                 return BCrypt.checkpw(password, storedPassword);
+//                return storedPassword.equals(password);
             }
             return false;
         } catch (SQLException e) {

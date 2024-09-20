@@ -1,9 +1,9 @@
 package com.app.schoolmanagementsystem.controller;
 
-import com.app.schoolmanagementsystem.entities.Positions;
 import com.app.schoolmanagementsystem.entities.Staff;
-import com.app.schoolmanagementsystem.entities.StaffRoles;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.services.AuthService;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -28,9 +28,7 @@ import javafx.util.Duration;
 
 import java.io.*;
 import java.net.URL;
-import java.sql.Blob;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -72,7 +70,7 @@ public class StaffController implements Initializable {
     @FXML
     private TableColumn<Staff, Void> actionColumn;
     @FXML
-    private TableColumn<Staff, String> positionIDColumn;
+    private TableColumn<Staff, String> positionNameColumn;
 
     @FXML
     private AnchorPane moveBG;
@@ -95,6 +93,12 @@ public class StaffController implements Initializable {
 
     private StaffModel staffModel = new StaffModel();
     private ObservableList<Staff> staffList = FXCollections.observableArrayList();
+
+    @FXML
+    private Label label_StaffID;
+
+    private Integer IDStaff;
+
 
 
     @FXML
@@ -150,7 +154,7 @@ public class StaffController implements Initializable {
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         hireDateColumn.setCellValueFactory(new PropertyValueFactory<>("hireDate"));
 
-        positionIDColumn.setCellValueFactory(new PropertyValueFactory<>("positionID"));
+        positionNameColumn.setCellValueFactory(new PropertyValueFactory<>("positionName"));
 
         salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
         educationBackgroundColumn.setCellValueFactory(new PropertyValueFactory<>("educationBackground"));
@@ -170,7 +174,7 @@ public class StaffController implements Initializable {
         configureColumnAlignment(phoneNumberColumn);
         configureColumnAlignment(emailColumn);
         configureColumnAlignment(hireDateColumn);
-        configureColumnAlignment(positionIDColumn);
+        configureColumnAlignment(positionNameColumn);
         configureColumnAlignment(salaryColumn);
         configureColumnAlignment(educationBackgroundColumn);
         configureColumnAlignment(experienceColumn);
@@ -452,6 +456,49 @@ public class StaffController implements Initializable {
         });
     }
 
+//    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
+//
+//    public void loginUser(String email, String password) {
+//        if (authService.login(email, password)) {
+//            // Lưu vai trò vào UserSession thay vì biến cục bộ
+//            String roleName = authService.getRoleName(email);
+//            UserSession.setCurrentRoleName(roleName); // Sử dụng UserSession để lưu vai trò
+//            System.out.println("Logged in with role: " + roleName);
+//        } else {
+//            System.out.println("Login failed.");
+//        }
+//    }
+//
+//    // Phương thức để lấy roleName hiện tại
+//    public String getCurrentRoleName() {
+//        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
+//    }
+//
+//    // Các phương thức khác liên quan đến phân quyền
+//    private boolean canPerformAction(int staffID) {
+//        String staffRoleName = getStaffRoleNameByStaffID(staffID);
+//        String userRoleName = getCurrentRoleName();
+//
+//        // Console log roleName của người dùng và nhân viên
+//        System.out.println("User roleName: " + userRoleName);
+//        System.out.println("Staff roleName: " + staffRoleName);
+//
+//        // Phân quyền dựa trên vai trò của người dùng đăng nhập và vai trò của nhân viên
+//        if ("Admin Master".equals(userRoleName)) {
+//            return true;
+//        } else if ("Manager".equals(userRoleName) && "Teacher".equals(staffRoleName)) {
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    // Phương thức lấy vai trò (RoleName) của nhân viên dựa trên StaffID
+//    private String getStaffRoleNameByStaffID(int staffID) {
+//        return staffModel.getRoleByStaffID(staffID); // Gọi phương thức từ StaffModel
+//    }
+
+
+
     private void showDetails(int index) {
         Staff staff = staffTableView.getItems().get(index);
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -540,6 +587,7 @@ public class StaffController implements Initializable {
         }
 
     }
+
 
     private void loadStaffData() {
         // Create a new list from the model

@@ -110,7 +110,7 @@
                                     <TableColumn fx:id="phoneNumberColumn" prefWidth="100.0" text="Phone" />
                                     <TableColumn fx:id="emailColumn" prefWidth="120.0" text="Email" />
                                     <TableColumn fx:id="hireDateColumn" prefWidth="120.0" text="Hire Date" />
-                                    <TableColumn fx:id="positionIDColumn" prefWidth="75.0" text="Position ID" />
+                                    <TableColumn fx:id="positionNameColumn" prefWidth="75.0" text="Position Name" />
                                     <TableColumn fx:id="salaryColumn" prefWidth="75.0" text="Salary" />
                                     <TableColumn fx:id="educationBackgroundColumn" prefWidth="140.0" text="Education Background" />
                                     <TableColumn fx:id="experienceColumn" prefWidth="75.0" text="Experience" />

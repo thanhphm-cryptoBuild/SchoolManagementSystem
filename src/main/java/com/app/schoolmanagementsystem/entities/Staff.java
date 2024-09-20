@@ -15,7 +15,7 @@ public class Staff {
     private String email;
     private String password; // Mật khẩu có thể được mã hóa
     private Date hireDate;
-    private int positionID;
+    private String positionName;
 
     private double salary;
     private String educationBackground;
@@ -30,7 +30,7 @@ public class Staff {
     public Staff() {
     }
 
-    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, int positionID, double salary, String educationBackground, String experience, String avatar, String status, String resetCode, LocalDateTime resetCodeCreationTime, boolean isResetCodeUsed) {
+    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, String positionName, double salary, String educationBackground, String experience, String avatar, String status, String resetCode, LocalDateTime resetCodeCreationTime, boolean isResetCodeUsed) {
         this.staffID = staffID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -41,7 +41,7 @@ public class Staff {
         this.email = email;
         this.password = password;
         this.hireDate = hireDate;
-        this.positionID = positionID;
+        this.positionName = positionName;
         this.salary = salary;
         this.educationBackground = educationBackground;
         this.experience = experience;
@@ -52,7 +52,7 @@ public class Staff {
         this.isResetCodeUsed = isResetCodeUsed;
     }
 
-    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, int positionID, double salary, String educationBackground, String experience, String avatar, String status) {
+    public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, String positionName, double salary, String educationBackground, String experience, String avatar, String status) {
         this.staffID = staffID;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -63,7 +63,7 @@ public class Staff {
         this.email = email;
         this.password = password;
         this.hireDate = hireDate;
-        this.positionID = positionID;
+        this.positionName = positionName;
         this.salary = salary;
         this.educationBackground = educationBackground;
         this.experience = experience;
@@ -151,12 +151,12 @@ public class Staff {
         this.hireDate = hireDate;
     }
 
-    public int getPositionID() {
-        return positionID;
+    public String getPositionName() {
+        return positionName;
     }
 
-    public void setPositionID(int positionID) {
-        this.positionID = positionID;
+    public void setPositionName(String positionName) {
+        this.positionName = positionName;
     }
 
     public double getSalary() {
@@ -221,16 +221,5 @@ public class Staff {
 
     public void setResetCodeUsed(boolean resetCodeUsed) {
         isResetCodeUsed = resetCodeUsed;
-    }
-
-    // Phương thức để lấy đường dẫn đầy đủ của hình ảnh
-    // Phương thức để kiểm tra nếu đường dẫn là URL
-    public boolean isExternalAvatar() {
-        return avatar.startsWith("http://") || avatar.startsWith("https://");
-    }
-
-    // Phương thức để lấy đường dẫn đầy đủ của hình ảnh
-    public String getFullAvatarPath() {
-        return avatar.startsWith("http://") || avatar.startsWith("https://") ? avatar : "file:" + avatar;
     }
 }
