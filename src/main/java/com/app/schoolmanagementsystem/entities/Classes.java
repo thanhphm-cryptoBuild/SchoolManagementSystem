@@ -4,22 +4,87 @@ import com.app.schoolmanagementsystem.model.ClassModel;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 
 import java.sql.*;
+import java.time.LocalDate;
 
 public class Classes {
-    public Classes(int classID, String className, String section, int staffID, java.time.LocalDate enrollmentDate, java.time.LocalDate completeDate) {
+    private int classID;
+    private String className;
+    private String section;
+    private int staffID;
+    private LocalDate enrollmentDate;
+    private LocalDate completeDate;
 
+    // Constructor
+    public Classes(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
+        this.classID = classID;
+        this.className = className;
+        this.section = section;
+        this.staffID = staffID;
+        this.enrollmentDate = enrollmentDate;
+        this.completeDate = completeDate;
     }
 
+    // Getters and Setters
+
+    public int getClassID() {
+        return classID;
+    }
+
+    public void setClassID(int classID) {
+        this.classID = classID;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    public int getStaffID() {
+        return staffID;
+    }
+
+    public void setStaffID(int staffID) {
+        this.staffID = staffID;
+    }
+
+    public LocalDate getEnrollmentDate() {
+        return enrollmentDate;
+    }
+
+    public void setEnrollmentDate(LocalDate enrollmentDate) {
+        this.enrollmentDate = enrollmentDate;
+    }
+
+    public LocalDate getCompleteDate() {
+        return completeDate;
+    }
+
+    public void setCompleteDate(LocalDate completeDate) {
+        this.completeDate = completeDate;
+    }
+
+    // Save Class to Database
     public boolean saveClass(ClassModel newClass) {
-        String sql = "INSERT INTO Classes (ClassName, Section, StaffID, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO classes (ClassName, Section, StaffID, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectDB.connection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, newClass.getClassName());
             stmt.setString(2, newClass.getSection());
             stmt.setInt(3, newClass.getStaffID());
-            stmt.setDate(4, new Date(newClass.getEnrollmentDate().getTime()));
-            stmt.setDate(5, new Date(newClass.getCompleteDate().getTime()));
+            stmt.setDate(4, new java.sql.Date(newClass.getEnrollmentDate().getTime()));
+            stmt.setDate(5, new java.sql.Date(newClass.getCompleteDate().getTime()));
 
             int rowsInserted = stmt.executeUpdate();
 

@@ -464,7 +464,6 @@ public class StudentController implements Initializable {
             GradeController gradeController = loader.getController();
             gradeController.setPageStudent(pageStudent);
             gradeController.setBGPageStudent(moveBG);
-            gradeController.setCurrentStudentID(student.getStudentID()); // Pass the selected student's ID
 
             pageGradeStudent.setTranslateX(2000);
             pageGradeStudent.setTranslateY(10);
