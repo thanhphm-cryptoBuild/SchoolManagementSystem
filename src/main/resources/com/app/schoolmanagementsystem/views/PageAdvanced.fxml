@@ -97,25 +97,14 @@
                               <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />
                               <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="140.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn fx:id="avatarColumn" text="Avatar" prefWidth="100"/>
+                                    <TableColumn fx:id="idColumn" text="ID" prefWidth="80"/>
+                                    <TableColumn fx:id="fullNameColumn" text="Full Name" prefWidth="150"/>
+                                    <TableColumn fx:id="genderColumn" text="Gender" prefWidth="80"/>
+                                    <TableColumn fx:id="phoneNumberColumn" text="Phone Number" prefWidth="120"/>
+                                    <TableColumn fx:id="emailColumn" text="Email" prefWidth="150"/>
+                                    <TableColumn fx:id="typeColumn" text="Type" prefWidth="80"/>
+                                    <TableColumn fx:id="statusColumn" text="Status" prefWidth="80"/>
                                  </columns>
                               </TableView>
                            </children>
