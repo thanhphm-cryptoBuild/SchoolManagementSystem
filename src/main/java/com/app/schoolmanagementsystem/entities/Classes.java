@@ -28,6 +28,10 @@ public class Classes {
 
     // Getters and Setters
 
+    public Classes() {
+        //TODO Auto-generated constructor stub
+    }
+
     public int getClassID() {
         return classID;
     }
@@ -85,8 +89,8 @@ public class Classes {
             stmt.setString(1, newClass.getClassName());
             stmt.setString(2, newClass.getSection());
             stmt.setInt(3, newClass.getStaffID());
-            stmt.setDate(4, new Date(newClass.getEnrollmentDate().getTime()));
-            stmt.setDate(5, new Date(newClass.getCompleteDate().getTime()));
+            stmt.setDate(4, java.sql.Date.valueOf(newClass.getEnrollmentDate()));
+            stmt.setDate(5, java.sql.Date.valueOf(newClass.getCompleteDate()));
 
             int rowsInserted = stmt.executeUpdate();
 
