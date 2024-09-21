@@ -53,11 +53,6 @@
 </dependency>
 
     <!-- Thêm thư viện ở đây (link chính thống của maven này https://mvnrepository.com/)-->
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.32</version> <!-- Đảm bảo rằng bạn đã thêm phiên bản mới nhất -->
-    </dependency>
 
     <dependency>
       <groupId>org.mindrot</groupId>

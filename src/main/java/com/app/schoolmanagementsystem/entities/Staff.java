@@ -70,6 +70,12 @@ public class Staff {
         this.avatar = avatar;
         this.status = status;
     }
+    public Staff(int staffID, String firstName, String lastName, String positionName) {
+        this.staffID = staffID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.positionName = positionName;
+    }
 
     public Staff(int staffID, String firstName, String lastName, String phoneNumber, String positionName) {
         this.staffID = staffID;
