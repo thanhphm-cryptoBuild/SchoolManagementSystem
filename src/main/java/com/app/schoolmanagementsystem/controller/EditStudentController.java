@@ -16,6 +16,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
+import javafx.util.StringConverter;
 
 import java.io.File;
 import java.io.IOException;
@@ -125,11 +126,14 @@ public class EditStudentController implements Initializable {
         firstNameField.setText(student.getFirstName());
         emailField.setText(student.getEmail());
         phoneNumberField.setText(student.getPhoneNumber());
-        dobField.setValue(student.getDateOfBirth() != null ? convertToLocalDateViaSqlDate(student.getDateOfBirth()) : null); // Chuyển đổi java.sql.Date sang java.time.LocalDate
+        dobField.setValue(student.getDateOfBirth() != null ? convertToLocalDateViaSqlDate(student.getDateOfBirth()) : null);
         genderField.setValue(student.getGender() ? "Male" : "Female");
         addressField.setText(student.getAddress());
-        classNameField.setValue(getClassModelById(student.getClassID()));
-        enrollmentDateField.setValue(student.getEnrollmentDate() != null ? convertToLocalDateViaSqlDate(student.getEnrollmentDate()) : null); // Chuyển đổi java.sql.Date sang java.time.LocalDate
+        
+        ClassModel studentClass = getClassModelById(student.getClassID());
+        classNameField.setValue(studentClass); // Chọn lớp hiện tại
+        
+        enrollmentDateField.setValue(student.getEnrollmentDate() != null ? convertToLocalDateViaSqlDate(student.getEnrollmentDate()) : null);
         previousSchoolField.setText(student.getPreviousSchool());
         reasonForLeavingField.setText(student.getReasonForLeaving());
         avatarPath = student.getAvatar();
@@ -180,9 +184,21 @@ public class EditStudentController implements Initializable {
     }
 
     private ClassModel getClassModelById(int classID) {
-        // Implement method to get ClassModel by classID
-        // This is a placeholder implementation
-        return new ClassModel(classID, "ClassName",  "A", 1);
+        String query = "SELECT * FROM classes WHERE classID = ?";
+        try (Connection connection = ConnectDB.connection();
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setInt(1, classID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                String className = resultSet.getString("className");
+                String section = resultSet.getString("section");
+                int staffID = resultSet.getInt("staffID");
+                return new ClassModel(classID, className, section, staffID);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy
     }
 
     @FXML
@@ -399,6 +415,47 @@ public class EditStudentController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         genderField.getItems().addAll("Male", "Female");
         loadClassNames();
+
+        // Thiết lập StringConverter cho classNameField
+        classNameField.setConverter(new StringConverter<ClassModel>() {
+            @Override
+            public String toString(ClassModel classModel) {
+                if (classModel == null) {
+                    return "";
+                }
+                return classModel.getClassName(); // Hiển thị tên lớp
+            }
+
+            @Override
+            public ClassModel fromString(String string) {
+                // Không cần thiết cho ChoiceBox hiển thị
+                return null;
+            }
+        });
+
+        // Set DatePicker constraints for Date of Birth
+        setDatePickerConstraints();
+    }
+
+    private void setDatePickerConstraints() {
+       
+        final LocalDate MAX_DATE = LocalDate.of(2011, 1, 1).minusDays(1);
+
+        // Apply DayCellFactory to disable dates after MAX_DATE
+        dobField.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (date.isAfter(MAX_DATE)) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;"); 
+                }
+            }
+        });
+
+        // Optionally, set the maximum date to MAX_DATE to prevent manual entry
+        dobField.setEditable(false);
     }
 
     private void loadClassNames() {

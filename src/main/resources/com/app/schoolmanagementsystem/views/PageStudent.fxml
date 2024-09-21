@@ -119,7 +119,8 @@
                                     <TableColumn fx:id="colAddress" prefWidth="150.0" text="Address" />
                                     <TableColumn fx:id="colPhoneNumber" prefWidth="100.0" text="Phone Number" />
                                     <TableColumn fx:id="colEmail" prefWidth="170.0" text="Email" />
-                                    <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Enrollment Date" />
+                                    <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Register Date" />
+                                    <TableColumn fx:id="colAcademicSchool" prefWidth="150.0" text="Academic School" />
                                     <TableColumn fx:id="colAction" prefWidth="130.0" text="Action" />
                                  </columns>
                               </TableView>

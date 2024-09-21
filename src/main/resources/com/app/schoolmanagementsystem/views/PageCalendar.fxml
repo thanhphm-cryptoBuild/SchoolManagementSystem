@@ -81,7 +81,7 @@
                                                       <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Teacher ID" />
-                                                            <ChoiceBox prefHeight="35.0" prefWidth="250.0" />
+                                                            <ChoiceBox fx:id="teacherIDChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
@@ -185,21 +185,21 @@
                                                       <VBox prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Teacher Name" />
-                                                            <ChoiceBox prefHeight="35.0" prefWidth="250.0" />
+                                                            <ChoiceBox fx:id="editTeacherChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
                                                       <VBox prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Teacher ID" />
-                                                            <ChoiceBox prefHeight="35.0" prefWidth="250.0" />
+                                                            <ChoiceBox fx:id="editTeacherIDChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
                                                       <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Subject" />
-                                                            <ChoiceBox prefHeight="35.0" prefWidth="250.0" />
+                                                            <ChoiceBox fx:id="editSubjectChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
@@ -210,21 +210,21 @@
                                                       <VBox prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Class Name" />
-                                                            <ChoiceBox prefHeight="35.0" prefWidth="250.0" />
+                                                            <ChoiceBox fx:id="editClassChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
                                                       <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Time" />
-                                                            <ChoiceBox prefHeight="35.0" prefWidth="250.0" />
+                                                            <ChoiceBox fx:id="editTimeChoiceBox" prefHeight="35.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
                                                       <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Date" />
-                                                            <DatePicker prefHeight="35.0" prefWidth="250.0" />
+                                                            <DatePicker fx:id="editDatePickerField" prefHeight="35.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
@@ -235,7 +235,7 @@
                                                       <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
                                                          <children>
                                                             <Label text="Description" />
-                                                            <TextField prefHeight="40.0" prefWidth="250.0" />
+                                                            <TextField fx:id="editDescriptionField" prefHeight="40.0" prefWidth="250.0" />
                                                             <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
                                                          </children>
                                                       </VBox>
@@ -245,12 +245,13 @@
                                                    <children>
                                                       <VBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
-                                                            <Button mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Update" />
+                                                            <Button fx:id="updateButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Update" />
                                                          </children>
                                                       </VBox>
+
                                                       <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
                                                          <children>
-                                                            <Button fx:id="cancleButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Cancle" />
+                                                            <Button fx:id="cancleButton" mnemonicParsing="false" prefHeight="35.0" prefWidth="250.0" text="Cancel" />
                                                          </children>
                                                       </VBox>
                                                    </children>

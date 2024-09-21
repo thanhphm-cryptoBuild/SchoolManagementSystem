@@ -382,6 +382,33 @@ public class AddStudentController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         genderField.getItems().addAll("Male", "Female");
         loadClassNames();
+
+        // Set DatePicker constraints for Date of Birth
+        setDatePickerConstraints();
+    }
+
+    private void setDatePickerConstraints() {
+        // Define the maximum selectable date as December 31, 2010
+        final LocalDate MAX_DATE = LocalDate.of(2011, 1, 1).minusDays(1);
+
+        // Set the default date to January 1, 2010
+        dobField.setValue(LocalDate.of(2010, 1, 1));
+
+        // Apply DayCellFactory to disable dates after MAX_DATE
+        dobField.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate date, boolean empty) {
+                super.updateItem(date, empty);
+
+                if (date.isAfter(MAX_DATE)) {
+                    setDisable(true);
+                    setStyle("-fx-background-color: #ffc0cb;"); // Optional: Highlight disabled dates
+                }
+            }
+        });
+
+        // Optionally, set the maximum date to MAX_DATE to prevent manual entry
+        dobField.setEditable(false);
     }
 
     private void loadClassNames() {

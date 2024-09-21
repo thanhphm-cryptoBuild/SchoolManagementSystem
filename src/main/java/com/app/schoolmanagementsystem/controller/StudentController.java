@@ -1,6 +1,7 @@
 package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.model.StudentModel;
+import com.app.schoolmanagementsystem.entities.Classes;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -34,6 +35,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Period;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -86,6 +90,9 @@ public class StudentController implements Initializable {
     private TableColumn<StudentModel, String> colAvatar;
 
     @FXML
+    private TableColumn<StudentModel, String> colAcademicSchool; // New Column
+
+    @FXML
     private TextField searchField;
 
     @FXML
@@ -106,9 +113,8 @@ public class StudentController implements Initializable {
         setupTableColumns();
         loadStudentData();
         setupSearchChoiceBox();
-        searchChoiceBox.getItems().add("Filter"); // Add "Select" as the first item
-        searchChoiceBox.setValue("Filter"); // Set default value to "Select"
-
+        searchChoiceBox.getItems().add("Filter"); // Add "Filter" as the first item
+        searchChoiceBox.setValue("Filter"); // Set default value to "Filter"
     }
 
     private void setupSearchChoiceBox() {
@@ -163,7 +169,7 @@ public class StudentController implements Initializable {
         studentTable.setItems(filteredData);
         isSearchIconClicked = false; // Reset the flag after search
 
-        // Reset ChoiceBox to "Select" after search
+        // Reset ChoiceBox to "Filter" after search
 //        searchChoiceBox.setValue("Filter");
 
     }
@@ -216,14 +222,14 @@ public class StudentController implements Initializable {
                 if (empty || avatarPath == null || avatarPath.isEmpty()) {
                     imageView.setImage(defaultAvatar);
                 } else {
-                    // Lấy đối tượng StudentModel hiện tại
+                    // Get the current StudentModel object
                     StudentModel student = getTableView().getItems().get(getIndex());
                     String fullAvatarPath = student.getFullAvatarPath();
 
                     Image avatarImage = avatarCache.get(fullAvatarPath);
                     if (avatarImage == null) {
                         try {
-                            avatarImage = new Image(student.isExternalAvatar() ? fullAvatarPath : getClass().getResource(fullAvatarPath).toExternalForm());
+                            avatarImage = new Image(student.isExternalAvatar() ? fullAvatarPath : Objects.requireNonNull(getClass().getResource(fullAvatarPath)).toExternalForm());
                             avatarCache.put(fullAvatarPath, avatarImage);
                         } catch (Exception e) {
                             avatarImage = defaultAvatar;
@@ -235,14 +241,28 @@ public class StudentController implements Initializable {
                 imageView.setFitWidth(32); // Set fixed width for the avatar
                 imageView.setPreserveRatio(true); // Maintain aspect ratio
 
-                // Cắt ảnh thành hình tròn
-                imageView.setClip(new Circle(12, 12, 12)); // Create a circular clip
+                // Clip the image into a circle
+                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
                 setGraphic(empty ? null : imageView);
             }
         });
 
         colAvatar.setCellValueFactory(new PropertyValueFactory<>("avatar"));
         colAvatar.setStyle("-fx-alignment: CENTER;"); // Center align Avatar column
+
+        // Configure Academic School column
+        colAcademicSchool.setCellValueFactory(cellData -> {
+            int classId = cellData.getValue().getClassID();
+            Classes cls = getClassById(classId);
+            if (cls != null && cls.getEnrollmentDate() != null && cls.getCompleteDate() != null) {
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                String dateRange = cls.getEnrollmentDate().format(formatter) + " -> " + cls.getCompleteDate().format(formatter);
+                return new SimpleStringProperty(dateRange);
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
+        });
+        colAcademicSchool.setStyle("-fx-alignment: CENTER;"); // Center align Academic School column
 
         // Configure Action column
         colAction.setCellFactory(param -> new TableCell<>() {
@@ -260,7 +280,7 @@ public class StudentController implements Initializable {
                 deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 deleteButton.setOnAction(event -> {
                     StudentModel student = getTableView().getItems().get(getIndex());
-                    
+
                     // Show confirmation dialog
                     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmationAlert.setTitle("Delete Confirmation");
@@ -293,8 +313,8 @@ public class StudentController implements Initializable {
                 gradeButton.setGraphic(gradeImageView);
                 gradeButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 gradeButton.setOnAction(event -> {
-//                    StudentModel student = getTableView().getItems().get(getIndex());
-                    openGradeStudentPage();
+                    StudentModel student = getTableView().getItems().get(getIndex());
+                    openGradeStudentPage(student);
                 });
             }
 
@@ -330,6 +350,41 @@ public class StudentController implements Initializable {
             return new SimpleStringProperty(className);
         });
         colClassName.setStyle("-fx-alignment: CENTER;"); // Center align ClassName column
+    }
+
+    /**
+     * Formats the Period into a readable string.
+     *
+     * @param period The Period to format.
+     * @return A string representation of the period.
+     */
+
+    /**
+     * Retrieves the Classes object by ClassID.
+     *
+     * @param classID The ClassID to search for.
+     * @return The Classes object if found, otherwise null.
+     */
+    private Classes getClassById(int classID) {
+        String query = "SELECT * FROM classes WHERE ClassID = " + classID;
+        try (Connection conn = ConnectDB.connection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            if (rs.next()) {
+                int id = rs.getInt("ClassID");
+                String className = rs.getString("ClassName");
+                String section = rs.getString("Section");
+                int staffID = rs.getInt("StaffID");
+                LocalDate enrollmentDate = rs.getDate("EnrollmentDate").toLocalDate();
+                LocalDate completeDate = rs.getDate("CompleteDate").toLocalDate();
+
+                return new Classes(id, className, section, staffID, enrollmentDate, completeDate);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     private String getClassNameById(int classID) {
@@ -401,7 +456,7 @@ public class StudentController implements Initializable {
         }
     }
 
-    private void openGradeStudentPage() {
+    private void openGradeStudentPage(StudentModel student) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageGrade.fxml"));
             StackPane pageGradeStudent = loader.load();
@@ -409,7 +464,7 @@ public class StudentController implements Initializable {
             GradeController gradeController = loader.getController();
             gradeController.setPageStudent(pageStudent);
             gradeController.setBGPageStudent(moveBG);
-//            gradeController.setStudentData(student); // Pass student data to the controller
+            gradeController.setCurrentStudentID(student.getStudentID()); // Pass the selected student's ID
 
             pageGradeStudent.setTranslateX(2000);
             pageGradeStudent.setTranslateY(10);
@@ -428,7 +483,7 @@ public class StudentController implements Initializable {
             translateTransition.play();
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Unable to open the edit student page.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Unable to open the grade student page.");
         }
     }
 
@@ -453,7 +508,7 @@ public class StudentController implements Initializable {
                         rs.getDate("EnrollmentDate"),
                         rs.getInt("ClassID"),
                         rs.getString("Status"),
-                        rs.getString("Avatar") // Thêm tham số avatar
+                        rs.getString("Avatar") // Added avatar parameter
                 );
                 studentData.add(student);
             }
@@ -505,5 +560,15 @@ public class StudentController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+
+    @FXML
+    private void onStudentSelected() {
+        StudentModel selectedStudent = studentTable.getSelectionModel().getSelectedItem();
+        if (selectedStudent != null) {
+            openGradeStudentPage(selectedStudent);
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Warning", "Please select a student.");
+        }
     }
 }

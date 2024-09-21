@@ -177,8 +177,8 @@
                               </VBox>
                               <VBox prefHeight="90.0" prefWidth="375.0" spacing="5.0">
                                  <children>
-                                    <Label text="Enrollment Date" />
-                                    <DatePicker fx:id="enrollmentDateField" prefHeight="35.0" prefWidth="325.0" promptText="Enrollment Date" />
+                                    <Label text="Register Date" />
+                                    <DatePicker fx:id="enrollmentDateField" prefHeight="35.0" prefWidth="325.0" promptText="Register Date" />
                                     <Label fx:id="enrollmentDateErrorLabel" styleClass="error-label" text="Error" visible="false" />
                                  </children>
                               </VBox>
