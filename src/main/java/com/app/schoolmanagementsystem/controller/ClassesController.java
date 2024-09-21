@@ -4,16 +4,15 @@ import com.app.schoolmanagementsystem.entities.Classes;
 import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.model.ClassModel;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 
@@ -39,6 +38,33 @@ public class ClassesController implements Initializable {
 
     @FXML
     private TextField sectionClass;
+
+    @FXML
+    private TableView<ClassModel> tableViewClass;
+
+    @FXML
+    private TableColumn<ClassModel, LocalDate> colCompleteDate;
+
+    @FXML
+    private TableColumn<ClassModel, LocalDate> colEnrollmentDate;
+
+    @FXML
+    private TableColumn<ClassModel, Void> colAction;
+
+    @FXML
+    private TableColumn<ClassModel, Integer> colClassID;
+
+    @FXML
+    private TableColumn<ClassModel, String> colClassName;
+
+    @FXML
+    private TableColumn<ClassModel, String> colPhoneNumberTeacher;
+
+    @FXML
+    private TableColumn<ClassModel, String> colSection;
+
+    @FXML
+    private TableColumn<ClassModel, String> colTeacherName;
 
     @FXML
     private ChoiceBox<Integer> selectTeacherID;
@@ -71,21 +97,32 @@ public class ClassesController implements Initializable {
         LocalDate enrollmentDate = enrollmentPicker.getValue();
         LocalDate completeDate = completePicker.getValue();
 
-        if (selectTeacherID.getValue() == null) {
-            System.out.println("No teacher ID selected.");
-            return;
-        }
-
         int staffID = selectTeacherID.getValue();
 
-        ClassModel newClass = new ClassModel(0, className, section, staffID, java.sql.Date.valueOf(enrollmentDate), java.sql.Date.valueOf(completeDate));
+        try {
+            ClassModel newClass = new ClassModel(0, className, section, staffID, enrollmentDate, completeDate);
 
-        Classes classes = new Classes(0, className, section, staffID, enrollmentDate, completeDate);
-        boolean isSaved = classes.saveClass(newClass);
+            Classes classes = new Classes(0, className, section, staffID, enrollmentDate, completeDate);
+            boolean isSaved = classes.saveClass(newClass);
 
-        if (isSaved) {
-            resetFormClass(null);
+            if (isSaved) {
+                showAlert(Alert.AlertType.INFORMATION, "Success", "Class added successfully");
+                loadClassesData();
+                resetFormClass(null);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Error", "Failed to add class");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "An error occurred while adding the class");
         }
+    }
+
+    private void loadClassesData() {
+        Classes classes = new Classes();
+        List<ClassModel> classesData = classes.getAllClasses();
+        ObservableList<ClassModel> classList = FXCollections.observableArrayList(classesData);
+        tableViewClass.setItems(classList);
     }
 
     @FXML
@@ -105,8 +142,7 @@ public class ClassesController implements Initializable {
         validateStartDate.setText("");
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    void populateChoiceBoxes() {
         StaffModel staffModel = new StaffModel();
         List<Staff> staffList = staffModel.selectName();
 
@@ -151,4 +187,36 @@ public class ClassesController implements Initializable {
         });
     }
 
+    void setupTable() {
+        colClassID.setCellValueFactory(new PropertyValueFactory<>("classID"));
+        colClassID.setStyle("-fx-alignment: CENTER;");
+        colClassName.setCellValueFactory(new PropertyValueFactory<>("className"));
+        colClassName.setStyle("-fx-alignment: CENTER;");
+        colSection.setCellValueFactory(new PropertyValueFactory<>("section"));
+        colSection.setStyle("-fx-alignment: CENTER;");
+        colTeacherName.setCellValueFactory(new PropertyValueFactory<>("teacherName"));
+        colTeacherName.setStyle("-fx-alignment: CENTER;");
+        colPhoneNumberTeacher.setCellValueFactory(new PropertyValueFactory<>("teacherPhoneNumber"));
+        colPhoneNumberTeacher.setStyle("-fx-alignment: CENTER;");
+        colEnrollmentDate.setCellValueFactory(new PropertyValueFactory<>("enrollmentDate"));
+        colEnrollmentDate.setStyle("-fx-alignment: CENTER;");
+        colCompleteDate.setCellValueFactory(new PropertyValueFactory<>("completeDate"));
+        colCompleteDate.setStyle("-fx-alignment: CENTER;");
+    }
+
+
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        setupTable();
+        populateChoiceBoxes();
+        loadClassesData();
+    }
 }

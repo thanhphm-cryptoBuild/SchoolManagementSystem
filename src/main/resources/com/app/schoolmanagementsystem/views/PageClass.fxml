@@ -55,7 +55,7 @@
                                                    </font>
                                                 </Label>
                                                 <TextField fx:id="classNo" prefHeight="40.0" prefWidth="250.0" promptText="Class " />
-                                                <Label fx:id="validateClass" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="310.0" visible="false" />
+                                                <Label fx:id="validateClass" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="310.0" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -68,7 +68,7 @@
                                              </font>
                                           </Label>
                                           <TextField fx:id="sectionClass" prefHeight="40.0" prefWidth="250.0" promptText="Section" />
-                                          <Label fx:id="validateSection" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="311.0" visible="false" />
+                                          <Label fx:id="validateSection" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="311.0" />
                                        </children>
                                     </VBox>
                                     <HBox spacing="20.0">
@@ -81,7 +81,7 @@
                                                    </font>
                                                 </Label>
                                                 <ChoiceBox fx:id="selectTeacherName" prefHeight="40.0" prefWidth="313.0" />
-                                                <Label fx:id="validateName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="150.0" visible="false" />
+                                                <Label fx:id="validateName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="150.0" />
                                              </children>
                                           </VBox>
                                           <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
@@ -92,7 +92,7 @@
                                                    </font>
                                                 </Label>
                                                 <ChoiceBox fx:id="selectTeacherID" prefHeight="40.0" prefWidth="313.0" />
-                                                <Label fx:id="validateID" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="150.0" visible="false" />
+                                                <Label fx:id="validateID" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="150.0" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -107,7 +107,7 @@
                                                    </font>
                                                 </Label>
                                                 <DatePicker fx:id="enrollmentPicker" prefHeight="40.0" prefWidth="250.0" promptText="Start Date" />
-                                                <Label fx:id="validateStartDate" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="148.0" visible="false" />
+                                                <Label fx:id="validateStartDate" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="148.0" />
                                              </children>
                                           </VBox>
                                           <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
@@ -118,7 +118,7 @@
                                                    </font>
                                                 </Label>
                                                 <DatePicker fx:id="completePicker" prefHeight="40.0" prefWidth="250.0" promptText="End Date" />
-                                                <Label fx:id="validateEndDate" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="146.0" visible="false" />
+                                                <Label fx:id="validateEndDate" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="146.0" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -231,15 +231,16 @@
                         </VBox>
                         <VBox prefHeight="646.0" prefWidth="895.0" style="-fx-background-color: #FFFFFF;">
                            <children>
-                              <TableView prefHeight="646.0" prefWidth="895.0">
+                              <TableView fx:id="tableViewClass" prefHeight="646.0" prefWidth="895.0">
                                  <columns>
-                                    <TableColumn prefWidth="60.0" text="Class ID" />
-                                    <TableColumn prefWidth="100.0" text="Class" />
-                                    <TableColumn prefWidth="100.0" text="Section" />
-                                    <TableColumn prefWidth="162.0" text="Homeroom Teacher" />
-                                    <TableColumn prefWidth="120.0" text="Phone" />
-                                    <TableColumn prefWidth="160.0" text="Academic Year" />
-                                    <TableColumn prefWidth="150.0" text="Action" />
+                                    <TableColumn fx:id="colClassID" prefWidth="65.0" text="Class ID" />
+                                    <TableColumn fx:id="colClassName" prefWidth="70.0" text="Class" />
+                                    <TableColumn fx:id="colSection" prefWidth="70.0" text="Section" />
+                                    <TableColumn fx:id="colTeacherName" prefWidth="162.0" text="Homeroom Teacher" />
+                                    <TableColumn fx:id="colPhoneNumberTeacher" prefWidth="120.0" text="Phone" />
+                                    <TableColumn fx:id="colEnrollmentDate" prefWidth="140.0" text="Enrollment Date" />
+                                    <TableColumn fx:id="colCompleteDate" prefWidth="140.0" text="Complete Date" />
+                                    <TableColumn fx:id="colAction" prefWidth="90.0" text="Action" />
                                  </columns>
                               </TableView>
                            </children>
