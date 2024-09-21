@@ -1,34 +1,27 @@
 package com.app.schoolmanagementsystem.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class ClassModel {
     private int classID;
     private String className;
     private String section;
     private int staffID;
-    private Date enrollmentDate;
-    private Date completeDate;
+    private LocalDate enrollmentDate;
+    private LocalDate completeDate;
+    private String teacherName;
+    private String teacherPhoneNumber;
 
-
-
-    public Date getEnrollmentDate() {
-        return enrollmentDate;
-    }
-
-    public void setEnrollmentDate(Date enrollmentDate) {
+    public ClassModel(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate, String teacherName, String teacherPhoneNumber) {
+        this.classID = classID;
+        this.className = className;
+        this.section = section;
+        this.staffID = staffID;
         this.enrollmentDate = enrollmentDate;
-    }
-
-    public Date getCompleteDate() {
-        return completeDate;
-    }
-
-    public void setCompleteDate(Date completeDate) {
         this.completeDate = completeDate;
+        this.teacherName = teacherName;
+        this.teacherPhoneNumber = teacherPhoneNumber;
     }
-
-
 
     public ClassModel(int classID, String className, String section, int staffID) {
         this.classID = classID;
@@ -37,13 +30,47 @@ public class ClassModel {
         this.staffID = staffID;
     }
 
-    public ClassModel(int classID, String className, String section, int staffID, Date enrollmentDate, Date completeDate) {
+    public ClassModel(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
         this.classID = classID;
         this.className = className;
         this.section = section;
         this.staffID = staffID;
         this.enrollmentDate = enrollmentDate;
-        this.completeDate =completeDate;
+        this.completeDate = completeDate;
+    }
+
+    // Getters and Setters
+
+    public String getTeacherName() {
+        return teacherName;
+    }
+
+    public void setTeacherName(String teacherName) {
+        this.teacherName = teacherName;
+    }
+
+    public String getTeacherPhoneNumber() {
+        return teacherPhoneNumber;
+    }
+
+    public void setTeacherPhoneNumber(String teacherPhoneNumber) {
+        this.teacherPhoneNumber = teacherPhoneNumber;
+    }
+
+    public LocalDate getEnrollmentDate() {
+        return enrollmentDate;
+    }
+
+    public void setEnrollmentDate(LocalDate enrollmentDate) {
+        this.enrollmentDate = enrollmentDate;
+    }
+
+    public LocalDate getCompleteDate() {
+        return completeDate;
+    }
+
+    public void setCompleteDate(LocalDate completeDate) {
+        this.completeDate = completeDate;
     }
 
     public int getClassID() {
@@ -76,6 +103,14 @@ public class ClassModel {
 
     public void setStaffID(int staffID) {
         this.staffID = staffID;
+    }
+
+    public String getAcademicYear() {
+        if (enrollmentDate != null && completeDate != null) {
+            return enrollmentDate.toString() + " - " + completeDate.toString();
+        } else {
+            return "";
+        }
     }
 
     @Override
