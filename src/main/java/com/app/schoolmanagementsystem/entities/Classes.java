@@ -5,6 +5,8 @@ import com.app.schoolmanagementsystem.utils.ConnectDB;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Classes {
     private int classID;
@@ -76,15 +78,15 @@ public class Classes {
 
     // Save Class to Database
     public boolean saveClass(ClassModel newClass) {
-        String sql = "INSERT INTO classes (ClassName, Section, StaffID, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Classes (ClassName, Section, StaffID, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectDB.connection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, newClass.getClassName());
             stmt.setString(2, newClass.getSection());
             stmt.setInt(3, newClass.getStaffID());
-            stmt.setDate(4, new java.sql.Date(newClass.getEnrollmentDate().getTime()));
-            stmt.setDate(5, new java.sql.Date(newClass.getCompleteDate().getTime()));
+            stmt.setDate(4, new Date(newClass.getEnrollmentDate().getTime()));
+            stmt.setDate(5, new Date(newClass.getCompleteDate().getTime()));
 
             int rowsInserted = stmt.executeUpdate();
 
@@ -93,5 +95,38 @@ public class Classes {
             e.printStackTrace();
             return false;
         }
+    }
+
+
+    public List<ClassModel> getAllClasses() {
+        List<ClassModel> classesList = new ArrayList<>();
+        String query = "SELECT c.ClassID, c.ClassName, c.Section, c.StaffID, c.EnrollmentDate, c.CompleteDate, " +
+                "CONCAT(s.FirstName, ' ', s.LastName) AS TeacherName, s.PhoneNumber AS TeacherPhoneNumber " +
+                "FROM Classes c " +
+                "JOIN Staff s ON c.StaffID = s.StaffID";
+
+        try (Connection connection = ConnectDB.connection();
+             Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+
+            while (rs.next()) {
+                ClassModel cls = new ClassModel(
+                        rs.getInt("ClassID"),
+                        rs.getString("ClassName"),
+                        rs.getString("Section"),
+                        rs.getInt("StaffID"),
+                        rs.getDate("EnrollmentDate").toLocalDate(),
+                        rs.getDate("CompleteDate").toLocalDate(),
+                        rs.getString("TeacherName"),
+                        rs.getString("TeacherPhoneNumber")
+                );
+                classesList.add(cls);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return classesList;
     }
 }
