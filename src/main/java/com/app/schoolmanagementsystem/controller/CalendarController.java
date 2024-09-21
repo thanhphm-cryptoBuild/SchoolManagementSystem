@@ -2,20 +2,26 @@ package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.entities.Timetable;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
+import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
 import java.time.LocalDate;
+
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.skin.DatePickerSkin;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.util.Duration;
+
 import java.net.URL;
 import java.sql.*;
 import java.time.format.DateTimeFormatter;
@@ -50,7 +56,16 @@ public class CalendarController implements Initializable {
     private TextField descriptionField;
 
     @FXML
+    private StackPane formAddCalendar;
+
+    @FXML
+    private VBox formEditCalendar;
+
+    @FXML
     private Button addButton;
+
+    @FXML
+    private Button cancleButton;
 
     @FXML
     private Button resetButton;
@@ -93,6 +108,7 @@ public class CalendarController implements Initializable {
         populateChoiceBoxes();
         addButton.setOnAction(event -> insertTimetable());
         resetButton.setOnAction(event -> resetForm());
+        cancleButton.setOnAction(event -> cancleFormEdit());
         
         // Chỉnh sửa cột
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
@@ -113,6 +129,7 @@ public class CalendarController implements Initializable {
         // Cấu hình cột Action
         actionColumn.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button();
+            private final Button editButton = new Button();
 
             {
                 // Cấu hình nút xóa
@@ -121,7 +138,7 @@ public class CalendarController implements Initializable {
                 deleteImageView.setFitHeight(20);
                 deleteImageView.setFitWidth(20);
                 deleteButton.setGraphic(deleteImageView);
-                deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
+                deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-border-color: #A3B5ED; -fx-border-radius: 5px; -fx-background-radius: 5px;");
                 deleteButton.setOnAction(event -> {
                     Timetable timetable = getTableView().getItems().get(getIndex());
                     // Hộp thoại xác nhận
@@ -135,6 +152,16 @@ public class CalendarController implements Initializable {
                         resetFilterClassChoiceBox(); // Đặt lại bộ lọc sau khi xóa
                     }
                 });
+
+                Image editImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/edit.png")));
+                ImageView editImageView = new ImageView(editImage);
+                editImageView.setFitHeight(20);
+                editImageView.setFitWidth(20);
+                editButton.setGraphic(editImageView);
+                editButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-border-color: #A3B5ED; -fx-border-radius: 5px; -fx-background-radius: 5px;");
+                editButton.setOnAction(event -> {
+                    openFormEdit();
+                });
             }
 
             @Override
@@ -143,9 +170,12 @@ public class CalendarController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(deleteButton);
+                    HBox actionButton = new HBox(5, editButton, deleteButton);
+                    actionButton.setPadding(new Insets(0,0,0,7));
+                    setGraphic(actionButton);
                 }
             }
+
         });
 
         // **Add** the following line to apply filters based on the current selections (e.g., selected date)
@@ -482,6 +512,41 @@ public class CalendarController implements Initializable {
         datePickerField.setValue(LocalDate.now()); // Đặt lại ngày hôm nay
         descriptionField.clear();
         resetFilterClassChoiceBox(); // Đặt lại bộ lọc
+    }
+
+    private void cancleFormEdit() {
+        formEditCalendar.setTranslateX(-50);
+        formEditCalendar.setVisible(false);
+        formAddCalendar.setVisible(true);
+
+        TranslateTransition cancleTransition = new TranslateTransition(Duration.seconds(0.2));
+        cancleTransition.setNode(formAddCalendar);
+        cancleTransition.setFromX(-50);
+        cancleTransition.setToX(0);
+        cancleTransition.play();
+
+        cancleTransition.setOnFinished(event -> {
+            formAddCalendar.setVisible(true);
+            formEditCalendar.setVisible(false);
+        });
+    }
+
+    private void openFormEdit() {
+        formEditCalendar.setTranslateX(50);
+        formEditCalendar.setVisible(true);
+        formAddCalendar.setVisible(false);
+//        resetForm();
+
+        TranslateTransition openTransition = new TranslateTransition(Duration.seconds(0.2));
+        openTransition.setNode(formEditCalendar);
+        openTransition.setFromX(50);
+        openTransition.setToX(0);
+        openTransition.play();
+
+        openTransition.setOnFinished(event -> {
+            formAddCalendar.setVisible(false);
+            formEditCalendar.setVisible(true);
+        });
     }
 
     /**
