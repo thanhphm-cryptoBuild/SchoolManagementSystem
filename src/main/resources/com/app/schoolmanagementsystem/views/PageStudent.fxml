@@ -42,7 +42,7 @@
                                  <children>
                                     <HBox alignment="CENTER" onMouseClicked="#onSearchIconClicked" prefHeight="20.0" prefWidth="150.0" styleClass="search_icon_field">
                                        <children>
-                                        <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
+                                        <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="20" wrappingWidth="25.723751068115234" />
                                        </children>
                                     </HBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />

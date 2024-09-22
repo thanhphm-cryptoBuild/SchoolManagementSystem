@@ -31,9 +31,9 @@
                               <Insets />
                            </HBox.margin>
                            <children>
-                              <Label prefHeight="26.0" prefWidth="182.0" styleClass="title_label" text="Staff Detail">
+                              <Label prefHeight="26.0" prefWidth="182.0" styleClass="title_label" text="All Staff List">
                                  <font>
-                                    <Font name="Sitka Text" size="18.0" />
+                                    <Font name="Sitka Text Bold" size="18.0" />
                                  </font>
                               </Label>
                            </children>
@@ -44,7 +44,7 @@
                                  <children>
                                     <VBox alignment="CENTER" prefHeight="38.0" prefWidth="150.0" styleClass="search_icon_field">
                                        <children>
-                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="25" wrappingWidth="25.723751068115234" />
+                                          <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="20" wrappingWidth="25.723751068115234" />
                                        </children>
                                     </VBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />

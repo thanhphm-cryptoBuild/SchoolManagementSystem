@@ -84,5 +84,19 @@
     -fx-background-color: linear-gradient(to top, #AB8905, #C9AA00);
 }
 
+.table-view {
+    -fx-font-family: "Sitka Text";
+    -fx-font-size: 12px; /* Bạn có thể điều chỉnh kích thước font nếu cần */
+}
+
+.table-row-cell {
+    -fx-min-height: 35px;
+    -fx-max-height: 35px;
+    -fx-pref-height: 35px;
+}
+
+.table-view .column-header-background {
+    -fx-pref-height: 35px;
+}
 
 

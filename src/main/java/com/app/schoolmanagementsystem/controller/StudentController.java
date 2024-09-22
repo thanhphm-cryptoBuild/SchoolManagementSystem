@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -234,7 +235,7 @@ public class StudentController implements Initializable {
                 imageView.setFitHeight(32); // Set fixed height for the avatar
                 imageView.setFitWidth(32); // Set fixed width for the avatar
                 imageView.setPreserveRatio(true); // Maintain aspect ratio
-
+                imageView.setSmooth(true);
                 // Cắt ảnh thành hình tròn
                 imageView.setClip(new Circle(12, 12, 12)); // Create a circular clip
                 setGraphic(empty ? null : imageView);
@@ -254,8 +255,8 @@ public class StudentController implements Initializable {
                 // Delete button
                 Image deleteImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png")));
                 ImageView deleteImageView = new ImageView(deleteImage);
-                deleteImageView.setFitHeight(20);
-                deleteImageView.setFitWidth(20);
+                deleteImageView.setFitHeight(16);
+                deleteImageView.setFitWidth(16);
                 deleteButton.setGraphic(deleteImageView);
                 deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 deleteButton.setOnAction(event -> {
@@ -276,8 +277,8 @@ public class StudentController implements Initializable {
                 // Edit button
                 Image gearImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/edit.png")));
                 ImageView gearImageView = new ImageView(gearImage);
-                gearImageView.setFitHeight(20);
-                gearImageView.setFitWidth(20);
+                gearImageView.setFitHeight(16);
+                gearImageView.setFitWidth(16);
                 editButton.setGraphic(gearImageView);
                 editButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 editButton.setOnAction(event -> {
@@ -288,8 +289,8 @@ public class StudentController implements Initializable {
                 // Grade button
                 Image gradeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/score.png")));
                 ImageView gradeImageView = new ImageView(gradeImage);
-                gradeImageView.setFitHeight(20);
-                gradeImageView.setFitWidth(20);
+                gradeImageView.setFitHeight(16);
+                gradeImageView.setFitWidth(16);
                 gradeButton.setGraphic(gradeImageView);
                 gradeButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand;");
                 gradeButton.setOnAction(event -> {
@@ -305,10 +306,13 @@ public class StudentController implements Initializable {
                     setGraphic(null);
                 } else {
                     HBox actionButtons = new HBox(5, editButton, deleteButton, gradeButton);
+                    actionButtons.setStyle("-fx-alignment: CENTER;");
                     setGraphic(actionButtons);
                 }
             }
         });
+
+        colAction.setStyle("-fx-alignment: CENTER;");
 
         // Configure Gender column
         colGender.setCellFactory(column -> new TableCell<StudentModel, Boolean>() {
