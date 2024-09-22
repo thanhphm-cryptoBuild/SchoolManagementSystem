@@ -102,7 +102,7 @@ public class CalendarController implements Initializable {
         populateChoiceBoxes();
         addButton.setOnAction(event -> insertTimetable());
         resetButton.setOnAction(event -> resetForm());
-        cancleButton.setOnAction(event -> cancleFormEdit());
+        // cancleButton.setOnAction(event -> cancleFormEdit());
 
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("time"));
         classNameColumn.setCellValueFactory(new PropertyValueFactory<>("className"));
@@ -150,8 +150,8 @@ public class CalendarController implements Initializable {
                 editButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-border-color: #A3B5ED; -fx-border-radius: 5px; -fx-background-radius: 5px;");
                 editButton.setOnAction(event -> {
                     selectedTimetable = getTableView().getItems().get(getIndex());
-                    populateEditForm(selectedTimetable);
-                    openFormEdit();
+                    // populateEditForm(selectedTimetable);
+                    // openFormEdit();
                 });
             }
 
@@ -161,8 +161,8 @@ public class CalendarController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    HBox actionButton = new HBox(5, editButton, deleteButton);
-                    actionButton.setPadding(new Insets(0, 0, 0, 7));
+                    HBox actionButton = new HBox(5,  deleteButton);
+                    actionButton.setPadding(new Insets(0, 0, 0, 0));
                     setGraphic(actionButton);
                 }
             }
@@ -184,16 +184,16 @@ public class CalendarController implements Initializable {
             }
         });
 
-        editTeacherChoiceBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
-            if (newValue != null && teacherMap.containsKey(newValue)) {
-                List<String> teacherIDs = teacherMap.get(newValue);
-                editTeacherIDChoiceBox.getItems().clear();
-                editTeacherIDChoiceBox.getItems().addAll(teacherIDs);
-                editTeacherIDChoiceBox.setValue(teacherIDs.get(0));
-            }
-        });
+        // editTeacherChoiceBox.getSelectionModel().selectedItemProperty().addListener((options, oldValue, newValue) -> {
+        //     if (newValue != null && teacherMap.containsKey(newValue)) {
+        //         List<String> teacherIDs = teacherMap.get(newValue);
+        //         editTeacherIDChoiceBox.getItems().clear();
+        //         editTeacherIDChoiceBox.getItems().addAll(teacherIDs);
+        //         editTeacherIDChoiceBox.setValue(teacherIDs.get(0));
+        //     }
+        // });
 
-        updateButton.setOnAction(event -> updateTimetable());
+        // updateButton.setOnAction(event -> updateTimetable());
     }
 
     private <T> void centerAlignColumn(TableColumn<T, String> column) {
@@ -240,8 +240,8 @@ public class CalendarController implements Initializable {
         );
         timeChoiceBox.setItems(timeOptions);
         timeChoiceBox.setValue("Select time");
-        editTimeChoiceBox.setItems(timeOptions);
-        editTimeChoiceBox.setValue("Select time");
+        // editTimeChoiceBox.setItems(timeOptions);
+        // editTimeChoiceBox.setValue("Select time");
 
         try (Connection connection = ConnectDB.connection()) {
             String query = "SELECT CONCAT(FirstName, ' ', LastName, ' (', PositionName, ')') AS FullName, StaffID FROM staff";
@@ -256,20 +256,20 @@ public class CalendarController implements Initializable {
 
             teacherChoiceBox.getItems().addAll(teacherMap.keySet());
             teacherChoiceBox.setValue("Select teacher");
-            editTeacherChoiceBox.getItems().addAll(teacherMap.keySet());
-            editTeacherChoiceBox.setValue("Select teacher");
+            // editTeacherChoiceBox.getItems().addAll(teacherMap.keySet());
+            // editTeacherChoiceBox.setValue("Select teacher");
 
             populateChoiceBoxWithSelect(connection, "SELECT SubjectName FROM subjects", subjectChoiceBox);
             subjectChoiceBox.setValue("Select subject");
-            populateChoiceBoxWithSelect(connection, "SELECT SubjectName FROM subjects", editSubjectChoiceBox);
-            editSubjectChoiceBox.setValue("Select subject");
+            // populateChoiceBoxWithSelect(connection, "SELECT SubjectName FROM subjects", editSubjectChoiceBox);
+            // editSubjectChoiceBox.setValue("Select subject");
 
-            populateChoiceBoxWithSelect(connection, "SELECT ClassName FROM classes", classChoiceBox);
+            populateChoiceBoxWithSelect(connection, "SELECT CONCAT(ClassName, Section) AS ClassSection FROM classes", classChoiceBox);
             classChoiceBox.setValue("Select class");
-            populateChoiceBoxWithSelect(connection, "SELECT ClassName FROM classes", editClassChoiceBox);
-            editClassChoiceBox.setValue("Select class");
+            // populateChoiceBoxWithSelect(connection, "SELECT CONCAT(ClassName, ' - ', Section) AS ClassSection FROM classes", editClassChoiceBox);
+            // editClassChoiceBox.setValue("Select class");
 
-            populateChoiceBoxWithSelect(connection, "SELECT ClassName FROM classes", filterClassChoiceBox);
+            populateChoiceBoxWithSelect(connection, "SELECT CONCAT(ClassName, Section) AS ClassSection FROM classes", filterClassChoiceBox);
             filterClassChoiceBox.setValue("Select class");
         } catch (SQLException e) {
             e.printStackTrace();
@@ -377,7 +377,7 @@ public class CalendarController implements Initializable {
     private boolean isClassTimeConflict(Connection connection, String className, LocalDate date, String time) throws SQLException {
         String query = "SELECT COUNT(*) FROM timetable t " +
                 "JOIN classes c ON t.ClassID = c.ClassID " +
-                "WHERE c.ClassName = ? AND t.Date = ? AND t.Time = ?";
+                "WHERE CONCAT(c.ClassName, c.Section) = ? AND t.Date = ? AND t.Time = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, className);
             preparedStatement.setDate(2, Date.valueOf(date));
@@ -403,7 +403,7 @@ public class CalendarController implements Initializable {
     }
 
     private int getClassID(Connection connection, String className) throws SQLException {
-        String query = "SELECT ClassID FROM classes WHERE ClassName = ?";
+        String query = "SELECT ClassID FROM classes WHERE CONCAT(ClassName, Section) = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, className);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -432,7 +432,7 @@ public class CalendarController implements Initializable {
         ObservableList<Timetable> timetableList = FXCollections.observableArrayList();
 
         try (Connection connection = ConnectDB.connection()) {
-            String query = "SELECT t.TimetableID, t.Time, c.ClassName, " +
+            String query = "SELECT t.TimetableID, t.Time, CONCAT(c.ClassName, c.Section) AS ClassSection, " +
                     "CASE " +
                     "    WHEN teacher_count.TeacherCount > 1 " +
                     "    THEN CONCAT(s.FirstName, ' ', s.LastName, ' (', s.StaffID, ')') " +
@@ -451,14 +451,14 @@ public class CalendarController implements Initializable {
                     "ON s.FirstName = teacher_count.FirstName " +
                     "AND s.LastName = teacher_count.LastName " +
                     "AND s.PositionName = teacher_count.PositionName " +
-                    "GROUP BY t.TimetableID, t.Time, c.ClassName, s.FirstName, s.LastName, s.PositionName, sub.SubjectName, t.Description, t.Date, teacher_count.TeacherCount";
+                    "GROUP BY t.TimetableID, t.Time, c.ClassName, c.Section, s.FirstName, s.LastName, s.PositionName, sub.SubjectName, t.Description, t.Date, teacher_count.TeacherCount";
                  try (Statement statement = connection.createStatement();
                       ResultSet resultSet = statement.executeQuery(query)) {
                      while (resultSet.next()) {
                          Timetable timetable = new Timetable(
                                  resultSet.getInt("TimetableID"),
                                  resultSet.getString("Time"),
-                                 resultSet.getString("ClassName"),
+                                 resultSet.getString("ClassSection"),
                                  resultSet.getString("Teacher"),
                                  resultSet.getString("SubjectName"),
                                  resultSet.getString("Description"),
@@ -487,7 +487,7 @@ public class CalendarController implements Initializable {
      
              try (Connection connection = ConnectDB.connection()) {
                  StringBuilder queryBuilder = new StringBuilder(
-                     "SELECT t.TimetableID, t.Time, c.ClassName, " +
+                     "SELECT t.TimetableID, t.Time, CONCAT(c.ClassName, c.Section) AS ClassSection, " +
                      "CASE " +
                      "    WHEN teacher_count.TeacherCount > 1 " +
                      "    THEN CONCAT(s.FirstName, ' ', s.LastName, ' (', s.StaffID, ')') " +
@@ -510,7 +510,7 @@ public class CalendarController implements Initializable {
                  );
      
                  if (selectedClass != null && !selectedClass.equals("Select class")) {
-                     queryBuilder.append(" AND c.ClassName = ?");
+                     queryBuilder.append(" AND CONCAT(c.ClassName, c.Section) = ?");
                  }
      
                  try (PreparedStatement preparedStatement = connection.prepareStatement(queryBuilder.toString())) {
@@ -524,7 +524,7 @@ public class CalendarController implements Initializable {
                              Timetable timetable = new Timetable(
                                  resultSet.getInt("TimetableID"),
                                  resultSet.getString("Time"),
-                                 resultSet.getString("ClassName"),
+                                 resultSet.getString("ClassSection"),
                                  resultSet.getString("Teacher"),
                                  resultSet.getString("SubjectName"),
                                  resultSet.getString("Description"),
@@ -552,39 +552,39 @@ public class CalendarController implements Initializable {
              resetFilterClassChoiceBox();
          }
      
-         private void cancleFormEdit() {
-             formEditCalendar.setTranslateX(-50);
-             formEditCalendar.setVisible(false);
-             formAddCalendar.setVisible(true);
+        //  private void cancleFormEdit() {
+        //      formEditCalendar.setTranslateX(-50);
+        //      formEditCalendar.setVisible(false);
+        //      formAddCalendar.setVisible(true);
      
-             TranslateTransition cancleTransition = new TranslateTransition(Duration.seconds(0.2));
-             cancleTransition.setNode(formAddCalendar);
-             cancleTransition.setFromX(-50);
-             cancleTransition.setToX(0);
-             cancleTransition.play();
+        //      TranslateTransition cancleTransition = new TranslateTransition(Duration.seconds(0.2));
+        //      cancleTransition.setNode(formAddCalendar);
+        //      cancleTransition.setFromX(-50);
+        //      cancleTransition.setToX(0);
+        //      cancleTransition.play();
      
-             cancleTransition.setOnFinished(event -> {
-                 formAddCalendar.setVisible(true);
-                 formEditCalendar.setVisible(false);
-             });
-         }
+        //      cancleTransition.setOnFinished(event -> {
+        //          formAddCalendar.setVisible(true);
+        //          formEditCalendar.setVisible(false);
+        //      });
+        //  }
      
-         private void openFormEdit() {
-             formEditCalendar.setTranslateX(50);
-             formEditCalendar.setVisible(true);
-             formAddCalendar.setVisible(false);
+        //  private void openFormEdit() {
+        //      formEditCalendar.setTranslateX(50);
+        //      formEditCalendar.setVisible(true);
+        //      formAddCalendar.setVisible(false);
      
-             TranslateTransition openTransition = new TranslateTransition(Duration.seconds(0.2));
-             openTransition.setNode(formEditCalendar);
-             openTransition.setFromX(50);
-             openTransition.setToX(0);
-             openTransition.play();
+        //      TranslateTransition openTransition = new TranslateTransition(Duration.seconds(0.2));
+        //      openTransition.setNode(formEditCalendar);
+        //      openTransition.setFromX(50);
+        //      openTransition.setToX(0);
+        //      openTransition.play();
      
-             openTransition.setOnFinished(event -> {
-                 formAddCalendar.setVisible(false);
-                 formEditCalendar.setVisible(true);
-             });
-         }
+        //      openTransition.setOnFinished(event -> {
+        //          formAddCalendar.setVisible(false);
+        //          formEditCalendar.setVisible(true);
+        //      });
+        //  }
      
          private void resetFilterClassChoiceBox() {
              filterClassChoiceBox.setValue("Select class");
@@ -619,92 +619,92 @@ public class CalendarController implements Initializable {
              }
          }
      
-         private void populateEditForm(Timetable timetable) {
-             editTeacherChoiceBox.setValue(timetable.getTeacher());
-             String teacherFullName = timetable.getTeacher();
-             if (teacherMap.containsKey(teacherFullName)) {
-                 List<String> teacherIDs = teacherMap.get(teacherFullName);
-                 if (!teacherIDs.isEmpty()) {
-                     editTeacherIDChoiceBox.getItems().clear();
-                     editTeacherIDChoiceBox.getItems().addAll(teacherIDs);
-                     editTeacherIDChoiceBox.setValue(teacherIDs.get(0));
-                 }
-             }
-             editSubjectChoiceBox.setValue(timetable.getSubject());
-             editClassChoiceBox.setValue(timetable.getClassName());
-             editTimeChoiceBox.setValue(timetable.getTime());
-             editDatePickerField.setValue(timetable.getDate());
-             editDescriptionField.setText(timetable.getDescription());
-         }
+        //  private void populateEditForm(Timetable timetable) {
+        //      editTeacherChoiceBox.setValue(timetable.getTeacher());
+        //      String teacherFullName = timetable.getTeacher();
+        //      if (teacherMap.containsKey(teacherFullName)) {
+        //          List<String> teacherIDs = teacherMap.get(teacherFullName);
+        //          if (!teacherIDs.isEmpty()) {
+        //              editTeacherIDChoiceBox.getItems().clear();
+        //              editTeacherIDChoiceBox.getItems().addAll(teacherIDs);
+        //              editTeacherIDChoiceBox.setValue(teacherIDs.get(0));
+        //          }
+        //      }
+        //      editSubjectChoiceBox.setValue(timetable.getSubject());
+        //      editClassChoiceBox.setValue(timetable.getClassName());
+        //      editTimeChoiceBox.setValue(timetable.getTime());
+        //      editDatePickerField.setValue(timetable.getDate());
+        //      editDescriptionField.setText(timetable.getDescription());
+        //  }
      
-         @FXML
-         private void updateTimetable() {
-             String teacherID = editTeacherIDChoiceBox.getValue();
-             String subject = editSubjectChoiceBox.getValue();
-             String className = editClassChoiceBox.getValue();
-             String time = editTimeChoiceBox.getValue();
-             LocalDate date = editDatePickerField.getValue();
-             String description = editDescriptionField.getText();
+        //  @FXML
+        //  private void updateTimetable() {
+        //      String teacherID = editTeacherIDChoiceBox.getValue();
+        //      String subject = editSubjectChoiceBox.getValue();
+        //      String className = editClassChoiceBox.getValue();
+        //      String time = editTimeChoiceBox.getValue();
+        //      LocalDate date = editDatePickerField.getValue();
+        //      String description = editDescriptionField.getText();
      
-             if (teacherID == null || teacherID.equals("Select teacher")) {
-                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a teacher");
-                 return;
-             }
-             if (subject == null || subject.equals("Select subject")) {
-                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a subject");
-                 return;
-             }
-             if (className == null || className.equals("Select class")) {
-                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a class");
-                 return;
-             }
-             if (time == null || time.equals("Select time")) {
-                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a time");
-                 return;
-             }
-             if (date == null) {
-                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a date");
-                 return;
-             }
-             if (description.isEmpty()) {
-                 showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter a description");
-                 return;
-             }
+        //      if (teacherID == null || teacherID.equals("Select teacher")) {
+        //          showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a teacher");
+        //          return;
+        //      }
+        //      if (subject == null || subject.equals("Select subject")) {
+        //          showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a subject");
+        //          return;
+        //      }
+        //      if (className == null || className.equals("Select class")) {
+        //          showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a class");
+        //          return;
+        //      }
+        //      if (time == null || time.equals("Select time")) {
+        //          showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a time");
+        //          return;
+        //      }
+        //      if (date == null) {
+        //          showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a date");
+        //          return;
+        //      }
+        //      if (description.isEmpty()) {
+        //          showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter a description");
+        //          return;
+        //      }
      
-             try (Connection connection = ConnectDB.connection()) {
-                 if (isTeacherTimeConflict(connection, teacherID, date, time)) {
-                     showAlert(Alert.AlertType.ERROR, "Time Conflict", "The teacher is already scheduled to teach another class at this time");
-                     return;
-                 }
+        //      try (Connection connection = ConnectDB.connection()) {
+        //          if (isTeacherTimeConflict(connection, teacherID, date, time)) {
+        //              showAlert(Alert.AlertType.ERROR, "Time Conflict", "The teacher is already scheduled to teach another class at this time");
+        //              return;
+        //          }
      
-                 if (isClassTimeConflict(connection, className, date, time)) {
-                     showAlert(Alert.AlertType.ERROR, "Time Conflict", "The class already has another teacher scheduled at this time");
-                     return;
-                 }
+        //          if (isClassTimeConflict(connection, className, date, time)) {
+        //              showAlert(Alert.AlertType.ERROR, "Time Conflict", "The class already has another teacher scheduled at this time");
+        //              return;
+        //          }
      
-                 String updateQuery = "UPDATE timetable SET ClassID = ?, SubjectID = ?, StaffID = ?, Date = ?, Time = ?, Description = ? WHERE TimetableID = ?";
-                 try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
-                     preparedStatement.setInt(1, getClassID(connection, className));
-                     preparedStatement.setInt(2, getSubjectID(connection, subject));
-                     preparedStatement.setInt(3, Integer.parseInt(teacherID));
-                     preparedStatement.setDate(4, Date.valueOf(date));
-                     preparedStatement.setString(5, time);
-                     preparedStatement.setString(6, description);
-                     preparedStatement.setInt(7, selectedTimetable.getTimetableID());
+        //          String updateQuery = "UPDATE timetable SET ClassID = ?, SubjectID = ?, StaffID = ?, Date = ?, Time = ?, Description = ? WHERE TimetableID = ?";
+        //          try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
+        //              preparedStatement.setInt(1, getClassID(connection, className));
+        //              preparedStatement.setInt(2, getSubjectID(connection, subject));
+        //              preparedStatement.setInt(3, Integer.parseInt(teacherID));
+        //              preparedStatement.setDate(4, Date.valueOf(date));
+        //              preparedStatement.setString(5, time);
+        //              preparedStatement.setString(6, description);
+        //              preparedStatement.setInt(7, selectedTimetable.getTimetableID());
      
-                     int rowsAffected = preparedStatement.executeUpdate();
-                     if (rowsAffected > 0) {
-                         showAlert(Alert.AlertType.INFORMATION, "Success", "Timetable updated successfully");
-                         resetForm();
-                         loadTimetableData();
-                         resetFilterClassChoiceBox();
-                     } else {
-                         showAlert(Alert.AlertType.ERROR, "Update Failed", "No rows were affected by the update operation");
-                     }
-                 }
-             } catch (SQLException e) {
-                 e.printStackTrace();
-                 showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to update timetable: " + e.getMessage());
-             }
-         }
+        //              int rowsAffected = preparedStatement.executeUpdate();
+        //              if (rowsAffected > 0) {
+        //                  showAlert(Alert.AlertType.INFORMATION, "Success", "Timetable updated successfully");
+        //                  resetForm();
+        //                  loadTimetableData();
+        //                  resetFilterClassChoiceBox();
+        //              } else {
+        //                  showAlert(Alert.AlertType.ERROR, "Update Failed", "No rows were affected by the update operation");
+        //              }
+        //          }
+        //      } catch (SQLException e) {
+        //          e.printStackTrace();
+        //          showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to update timetable: " + e.getMessage());
+        //      }
+        //  }
      }
