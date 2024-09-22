@@ -25,10 +25,20 @@ public class Staff {
     private String resetCode;
     private LocalDateTime resetCodeCreationTime;
     private boolean isResetCodeUsed;
+    private String otherField;
+
+    public String getOtherField() {
+        return otherField;
+    }
+
+    public void setOtherField(String otherField) {
+        this.otherField = otherField;
+    }
 
 
     public Staff() {
     }
+
 
     public Staff(int staffID, String firstName, String lastName, Date dateOfBirth, Byte gender, String address, String phoneNumber, String email, String password, Date hireDate, String positionName, double salary, String educationBackground, String experience, String avatar, String status, String resetCode, LocalDateTime resetCodeCreationTime, boolean isResetCodeUsed) {
         this.staffID = staffID;
@@ -83,6 +93,15 @@ public class Staff {
         this.lastName = lastName;
         this.phoneNumber = phoneNumber;
         this.positionName = positionName;
+    }
+
+    public Staff(int staffID, String firstName, String lastName, String phoneNumber, String positionName, String otherField) {
+        this.staffID = staffID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.positionName = positionName;
+        this.otherField = otherField;
     }
 
     public int getStaffID() {
@@ -236,8 +255,14 @@ public class Staff {
     public void setResetCodeUsed(boolean resetCodeUsed) {
         isResetCodeUsed = resetCodeUsed;
     }
+
     @Override
     public String toString() {
+
+        if (this.staffID == -1) {
+            return "Select Teacher";
+        }
+
         return firstName + " " + lastName + " (" + positionName + ")";
     }
 

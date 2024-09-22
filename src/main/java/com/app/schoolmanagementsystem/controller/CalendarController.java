@@ -125,8 +125,8 @@ public class CalendarController implements Initializable {
             {
                 Image deleteImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png")));
                 ImageView deleteImageView = new ImageView(deleteImage);
-                deleteImageView.setFitHeight(20);
-                deleteImageView.setFitWidth(20);
+                deleteImageView.setFitHeight(16);
+                deleteImageView.setFitWidth(16);
                 deleteButton.setGraphic(deleteImageView);
                 deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-border-color: #A3B5ED; -fx-border-radius: 5px; -fx-background-radius: 5px;");
                 deleteButton.setOnAction(event -> {
@@ -144,8 +144,8 @@ public class CalendarController implements Initializable {
 
                 Image editImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/edit.png")));
                 ImageView editImageView = new ImageView(editImage);
-                editImageView.setFitHeight(20);
-                editImageView.setFitWidth(20);
+                editImageView.setFitHeight(15);
+                editImageView.setFitWidth(15);
                 editButton.setGraphic(editImageView);
                 editButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-border-color: #A3B5ED; -fx-border-radius: 5px; -fx-background-radius: 5px;");
                 editButton.setOnAction(event -> {

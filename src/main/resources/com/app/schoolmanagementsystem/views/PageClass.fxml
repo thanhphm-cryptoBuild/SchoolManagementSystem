@@ -27,7 +27,7 @@
                <children>
                   <VBox prefHeight="626.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="516.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
+                        <VBox prefHeight="619.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
                            <children>
                               <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
                                  <children>
@@ -40,10 +40,10 @@
                               </HBox>
                               <Separator prefWidth="200.0">
                                  <VBox.margin>
-                                    <Insets bottom="15.0" top="15.0" />
+                                    <Insets bottom="15.0" />
                                  </VBox.margin>
                               </Separator>
-                              <VBox prefHeight="450.0" prefWidth="310.0" spacing="5.0">
+                              <VBox prefHeight="502.0" prefWidth="310.0" spacing="5.0">
                                  <children>
                                     <HBox prefHeight="80.0" prefWidth="460.0" spacing="20.0">
                                        <children>
@@ -54,8 +54,8 @@
                                                       <Font name="Sitka Text" size="12.0" />
                                                    </font>
                                                 </Label>
-                                                <TextField fx:id="classNo" prefHeight="40.0" prefWidth="250.0" promptText="Class " />
-                                                <Label fx:id="validateClass" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="310.0" />
+                                                <ChoiceBox fx:id="classNo" prefHeight="40.0" prefWidth="350.0" />
+                                                <Label fx:id="validateClass" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="310.0" textFill="RED" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -68,7 +68,7 @@
                                              </font>
                                           </Label>
                                           <TextField fx:id="sectionClass" prefHeight="40.0" prefWidth="250.0" promptText="Section" />
-                                          <Label fx:id="validateSection" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="311.0" />
+                                          <Label fx:id="validateSection" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="311.0" textFill="RED" />
                                        </children>
                                     </VBox>
                                     <HBox spacing="20.0">
@@ -81,23 +81,23 @@
                                                    </font>
                                                 </Label>
                                                 <ChoiceBox fx:id="selectTeacherName" prefHeight="40.0" prefWidth="313.0" />
-                                                <Label fx:id="validateName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="150.0" />
-                                             </children>
-                                          </VBox>
-                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
-                                             <children>
-                                                <Label text="Teacher ID">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="selectTeacherID" prefHeight="40.0" prefWidth="313.0" />
-                                                <Label fx:id="validateID" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="150.0" />
+                                                <Label fx:id="validateName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="313.0" textFill="RED" />
                                              </children>
                                           </VBox>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="180.0" prefHeight="80.0" prefWidth="200.0" spacing="20.0">
+                                    <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                       <children>
+                                          <Label text="Teacher ID">
+                                             <font>
+                                                <Font name="Sitka Text" size="12.0" />
+                                             </font>
+                                          </Label>
+                                          <ChoiceBox fx:id="selectTeacherID" prefHeight="40.0" prefWidth="313.0" />
+                                          <Label fx:id="validateID" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="310.0" textFill="RED" />
+                                       </children>
+                                    </VBox>
+                                    <HBox layoutX="10.0" layoutY="180.0" prefHeight="103.0" prefWidth="310.0" spacing="20.0">
                                        <children>
                                           <VBox prefHeight="120.0" prefWidth="250.0" spacing="5.0">
                                              <children>
@@ -107,7 +107,7 @@
                                                    </font>
                                                 </Label>
                                                 <DatePicker fx:id="enrollmentPicker" prefHeight="40.0" prefWidth="250.0" promptText="Start Date" />
-                                                <Label fx:id="validateStartDate" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="148.0" />
+                                                <Label fx:id="validateStartDate" alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="146.0" textFill="RED" wrapText="true" />
                                              </children>
                                           </VBox>
                                           <VBox layoutX="10.0" layoutY="10.0" prefHeight="120.0" prefWidth="250.0" spacing="5.0">
@@ -118,7 +118,7 @@
                                                    </font>
                                                 </Label>
                                                 <DatePicker fx:id="completePicker" prefHeight="40.0" prefWidth="250.0" promptText="End Date" />
-                                                <Label fx:id="validateEndDate" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="146.0" />
+                                                <Label fx:id="validateEndDate" alignment="TOP_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="40.0" prefWidth="146.0" textFill="RED" wrapText="true" />
                                              </children>
                                           </VBox>
                                        </children>
@@ -152,7 +152,7 @@
                               </VBox>
                            </children>
                            <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
                            </padding>
                         </VBox>
                      </children>

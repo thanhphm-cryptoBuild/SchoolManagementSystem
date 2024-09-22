@@ -175,6 +175,13 @@
                                     <Label fx:id="classNameErrorLabel" styleClass="error-label" text="Error" visible="false" />
                                  </children>
                               </VBox>
+                              <VBox layoutX="241.0" layoutY="10.0" prefHeight="90.0" prefWidth="375.0" spacing="5.0">
+                                 <children>
+                                    <Label text="Acadamic Year" />
+                                    <ChoiceBox prefHeight="35.0" prefWidth="325.0" />
+                                    <Label prefHeight="18.0" prefWidth="197.0" styleClass="error-label" text="Error" visible="false" />
+                                 </children>
+                              </VBox>
                               <VBox prefHeight="90.0" prefWidth="375.0" spacing="5.0">
                                  <children>
                                     <Label text="Register Date" />
