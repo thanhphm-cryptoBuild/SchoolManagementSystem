@@ -79,6 +79,18 @@ public class Staff {
         this.positionName = positionName;
     }
 
+    public Staff(int staffID, String firstName, String lastName, Byte gender, String phoneNumber, String email, String positionName, String avatar, String status) {
+        this.staffID = staffID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.positionName = positionName;
+        this.avatar = avatar;
+        this.status = status;
+    }
+
     public int getStaffID() {
         return staffID;
     }

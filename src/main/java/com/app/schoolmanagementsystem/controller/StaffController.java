@@ -309,6 +309,10 @@ public class StaffController implements Initializable {
                 // Cắt ảnh thành hình tròn
                 imageView.setClip(new Circle(12, 12, 12)); // Create a circular clip
                 setGraphic(empty ? null : imageView);
+                // Tạo HBox và căn giữa
+                HBox hBox = new HBox(imageView);
+                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                setGraphic(hBox);
             }
         });
 
@@ -457,47 +461,6 @@ public class StaffController implements Initializable {
             }
         });
     }
-
-//    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
-//
-//    public void loginUser(String email, String password) {
-//        if (authService.login(email, password)) {
-//            // Lưu vai trò vào UserSession thay vì biến cục bộ
-//            String roleName = authService.getRoleName(email);
-//            UserSession.setCurrentRoleName(roleName); // Sử dụng UserSession để lưu vai trò
-//            System.out.println("Logged in with role: " + roleName);
-//        } else {
-//            System.out.println("Login failed.");
-//        }
-//    }
-//
-//    // Phương thức để lấy roleName hiện tại
-//    public String getCurrentRoleName() {
-//        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
-//    }
-//
-//    // Các phương thức khác liên quan đến phân quyền
-//    private boolean canPerformAction(int staffID) {
-//        String staffRoleName = getStaffRoleNameByStaffID(staffID);
-//        String userRoleName = getCurrentRoleName();
-//
-//        // Console log roleName của người dùng và nhân viên
-//        System.out.println("User roleName: " + userRoleName);
-//        System.out.println("Staff roleName: " + staffRoleName);
-//
-//        // Phân quyền dựa trên vai trò của người dùng đăng nhập và vai trò của nhân viên
-//        if ("Admin Master".equals(userRoleName)) {
-//            return true;
-//        } else if ("Manager".equals(userRoleName) && "Teacher".equals(staffRoleName)) {
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    // Phương thức lấy vai trò (RoleName) của nhân viên dựa trên StaffID
-//    private String getStaffRoleNameByStaffID(int staffID) {
-//        return staffModel.getRoleByStaffID(staffID); // Gọi phương thức từ StaffModel
-//    }
 
 
 

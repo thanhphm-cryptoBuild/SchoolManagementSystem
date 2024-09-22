@@ -762,26 +762,6 @@ public class AddStaffController implements Initializable {
         }
     }
 
-//    private void saveImageToResources(InputStream inputStream, String imageName) throws IOException {
-//        // Đường dẫn đến thư mục lưu trữ hình ảnh trong thư mục resources
-//        String path = "src/main/resources/com/app/schoolmanagementsystem/images/" + imageName;
-//        File file = new File(path);
-//
-//        // Tạo thư mục nếu chưa tồn tại
-//        File parentDir = file.getParentFile();
-//        if (!parentDir.exists()) {
-//            parentDir.mkdirs();
-//        }
-//
-//        // Lưu hình ảnh vào thư mục
-//        try (FileOutputStream outputStream = new FileOutputStream(file)) {
-//            byte[] buffer = new byte[1024];
-//            int bytesRead;
-//            while ((bytesRead = inputStream.read(buffer)) != -1) {
-//                outputStream.write(buffer, 0, bytesRead);
-//            }
-//        }
-//    }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

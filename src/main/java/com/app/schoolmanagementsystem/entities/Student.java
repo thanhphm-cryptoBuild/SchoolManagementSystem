@@ -38,6 +38,17 @@ public class Student {
         this.status = status;
     }
 
+    public Student(int studentID, String firstName, String lastName, Byte gender, String phoneNumber, String email, String avatar, String status) {
+        this.studentID = studentID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.avatar = avatar;
+        this.status = status;
+    }
+
     public int getStudentID() {
         return studentID;
     }

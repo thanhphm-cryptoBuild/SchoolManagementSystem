@@ -44,6 +44,8 @@ public class AuthService {
                 String storedPassword = rs.getString("Password");
                 String status = rs.getString("Status");
                 String roleName = rs.getString("RoleName");
+                String avatarPath = getStaffAvatar(email);
+                UserSession.setStaffAvatar(avatarPath);
 
                 if (!"active".equals(status)) {
                     return false;
@@ -60,6 +62,22 @@ public class AuthService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public String getStaffAvatar(String email) {
+        try (Connection conn = ConnectDB.connection()) {
+            String query = "SELECT Avatar FROM Staff WHERE Email = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("Avatar"); // Trả về đường dẫn hình ảnh
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy
     }
 
 
