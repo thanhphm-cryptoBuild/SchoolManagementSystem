@@ -84,6 +84,14 @@
     -fx-background-color: linear-gradient(to top, #AB8905, #C9AA00);
 }
 
+.title_label {
+    -fx-text-fill: #1A3395;
+}
+
+.title_label_edit {
+    -fx-text-fill: #AB8905;
+}
+
 .table-view {
     -fx-font-family: "Sitka Text";
     -fx-font-size: 12px; /* Bạn có thể điều chỉnh kích thước font nếu cần */

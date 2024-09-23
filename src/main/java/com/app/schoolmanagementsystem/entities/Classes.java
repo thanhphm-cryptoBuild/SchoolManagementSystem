@@ -15,16 +15,18 @@ public class Classes {
     private int staffID;
     private LocalDate enrollmentDate;
     private LocalDate completeDate;
+    public Classes(int i, String selectedClass, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate,  String description) {
+    }
 
     // Constructor
-    public Classes(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
-        this.classID = classID;
-        this.className = className;
-        this.section = section;
-        this.staffID = staffID;
-        this.enrollmentDate = enrollmentDate;
-        this.completeDate = completeDate;
-    }
+//    public Classes(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
+//        this.classID = classID;
+//        this.className = className;
+//        this.section = section;
+//        this.staffID = staffID;
+//        this.enrollmentDate = enrollmentDate;
+//        this.completeDate = completeDate;
+//    }
 
     // Getters and Setters
 
@@ -82,7 +84,7 @@ public class Classes {
 
     // Save Class to Database
     public boolean saveClass(ClassModel newClass) {
-        String sql = "INSERT INTO Classes (ClassName, Section, StaffID, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Classes (ClassName, Section, StaffID, Description, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = ConnectDB.connection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -91,6 +93,9 @@ public class Classes {
             stmt.setInt(3, newClass.getStaffID());
             stmt.setDate(4, java.sql.Date.valueOf(newClass.getEnrollmentDate()));
             stmt.setDate(5, java.sql.Date.valueOf(newClass.getCompleteDate()));
+            stmt.setString(4, newClass.getDescription());
+            stmt.setDate(5, Date.valueOf(newClass.getEnrollmentDate()));
+            stmt.setDate(6, Date.valueOf(newClass.getCompleteDate()));
 
             int rowsInserted = stmt.executeUpdate();
 
@@ -101,10 +106,32 @@ public class Classes {
         }
     }
 
+    public boolean updateClass(ClassModel updatedClass) {
+        String sql = "UPDATE Classes SET ClassName = ?, Section = ?, StaffID = ?, Description = ?, EnrollmentDate = ?, CompleteDate = ? WHERE ClassID = ?";
+
+        try (Connection conn = ConnectDB.connection()) {
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, updatedClass.getClassName());
+            stmt.setString(2, updatedClass.getSection());
+            stmt.setInt(3, updatedClass.getStaffID());
+            stmt.setString(4, updatedClass.getDescription());
+            stmt.setDate(5, Date.valueOf(updatedClass.getEnrollmentDate()));
+            stmt.setDate(6, Date.valueOf(updatedClass.getCompleteDate()));
+            stmt.setInt(7, updatedClass.getClassID());
+
+            int rowsUpdated = stmt.executeUpdate();
+
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public List<ClassModel> getAllClasses() {
         List<ClassModel> classesList = new ArrayList<>();
-        String query = "SELECT c.ClassID, c.ClassName, c.Section, c.StaffID, c.EnrollmentDate, c.CompleteDate, " +
+        String query = "SELECT c.ClassID, c.ClassName, c.Section, c.StaffID, c.EnrollmentDate, c.CompleteDate, c.Description, " +
                 "CONCAT(s.FirstName, ' ', s.LastName) AS TeacherName, s.PhoneNumber AS TeacherPhoneNumber " +
                 "FROM Classes c " +
                 "JOIN Staff s ON c.StaffID = s.StaffID";
@@ -121,6 +148,7 @@ public class Classes {
                         rs.getInt("StaffID"),
                         rs.getDate("EnrollmentDate").toLocalDate(),
                         rs.getDate("CompleteDate").toLocalDate(),
+                        rs.getString("Description"),
                         rs.getString("TeacherName"),
                         rs.getString("TeacherPhoneNumber")
                 );
@@ -132,5 +160,105 @@ public class Classes {
         }
 
         return classesList;
+    }
+
+    public boolean isStaffIDUnique(int staffID, int enrollmentYear, int completeYear) {
+        String query = "SELECT COUNT(*) FROM Classes WHERE StaffID = ? AND YEAR(EnrollmentDate) = ? AND YEAR(CompleteDate) = ?";
+
+        try (Connection connection = ConnectDB.connection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, staffID);
+            pstmt.setInt(2, enrollmentYear);
+            pstmt.setInt(3, completeYear);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count == 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean isAcademicYearValid(String className, String section, int newEnrollmentYear, int newCompleteYear) {
+        String query = "SELECT COUNT(*) FROM Classes WHERE ClassName = ? AND Section = ? AND (" +
+                "(YEAR(EnrollmentDate) <= ? AND YEAR(CompleteDate) > ?) OR " +
+                "(YEAR(EnrollmentDate) < ? AND YEAR(CompleteDate) >= ?))";
+
+        try (Connection connection = ConnectDB.connection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, className);
+            pstmt.setString(2, section);
+            pstmt.setInt(3, newEnrollmentYear);
+            pstmt.setInt(4, newEnrollmentYear);
+            pstmt.setInt(5, newCompleteYear);
+            pstmt.setInt(6, newCompleteYear);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count == 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean isStaffIDUniqueEdit(int staffID, int enrollmentYear, int completeYear, int currentClassID) {
+        String query = "SELECT COUNT(*) FROM Classes WHERE StaffID = ? AND YEAR(EnrollmentDate) = ? AND YEAR(CompleteDate) = ? AND ClassID != ?";
+
+        try (Connection connection = ConnectDB.connection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, staffID);
+            pstmt.setInt(2, enrollmentYear);
+            pstmt.setInt(3, completeYear);
+            pstmt.setInt(4, currentClassID);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count == 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean isAcademicYearValidEdit(String className, String section, int newEnrollmentYear, int newCompleteYear, int currentClassID) {
+        String query = "SELECT COUNT(*) FROM Classes WHERE ClassName = ? AND Section = ? AND (" +
+                "(YEAR(EnrollmentDate) <= ? AND YEAR(CompleteDate) > ?) OR " +
+                "(YEAR(EnrollmentDate) < ? AND YEAR(CompleteDate) >= ?)) AND ClassID != ?";
+
+        try (Connection connection = ConnectDB.connection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, className);
+            pstmt.setString(2, section);
+            pstmt.setInt(3, newEnrollmentYear);
+            pstmt.setInt(4, newEnrollmentYear);
+            pstmt.setInt(5, newCompleteYear);
+            pstmt.setInt(6, newCompleteYear);
+            pstmt.setInt(7, currentClassID);
+
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int count = rs.getInt(1);
+                return count == 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 }
