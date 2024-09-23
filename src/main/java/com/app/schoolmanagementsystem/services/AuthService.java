@@ -55,7 +55,13 @@ public class AuthService {
                 UserSession.setCurrentRoleName(roleName);
 
                 // Compare user password with hashed password
-                return BCrypt.checkpw(password, storedPassword);
+                try {   
+                    return BCrypt.checkpw(password, storedPassword);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Invalid salt version for user: " + email);
+                    e.printStackTrace();
+                    return false;
+                }
             }
             return false;
         } catch (SQLException e) {
@@ -72,12 +78,16 @@ public class AuthService {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("Avatar"); // Trả về đường dẫn hình ảnh
+                String avatarPath = rs.getString("Avatar");
+                if (avatarPath != null && !avatarPath.isEmpty()) {
+                    // Ensure the path is correctly formatted as a URL
+                    return "file:" + avatarPath;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy
+        return null; // Return null if not found
     }
 
 
