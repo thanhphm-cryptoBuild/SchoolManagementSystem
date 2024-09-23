@@ -19,20 +19,22 @@ public class Classes {
     }
 
     // Constructor
-//    public Classes(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
-//        this.classID = classID;
-//        this.className = className;
-//        this.section = section;
-//        this.staffID = staffID;
-//        this.enrollmentDate = enrollmentDate;
-//        this.completeDate = completeDate;
-//    }
+    public Classes(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
+        this.classID = classID;
+        this.className = className;
+        this.section = section;
+        this.staffID = staffID;
+        this.enrollmentDate = enrollmentDate;
+        this.completeDate = completeDate;
+    }
 
     // Getters and Setters
 
     public Classes() {
         //TODO Auto-generated constructor stub
     }
+
+
 
     public int getClassID() {
         return classID;
