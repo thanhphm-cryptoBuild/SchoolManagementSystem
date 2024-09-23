@@ -14,6 +14,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
+import java.time.Duration;
 
 public class AuthService {
 
@@ -145,9 +146,10 @@ public class AuthService {
                 if (storedResetCode != null && storedResetCode.equals(resetCode)) {
                     if (!isResetCodeUsed) {
                         LocalDateTime now = LocalDateTime.now();
-                        long minutesElapsed = ChronoUnit.MINUTES.between(creationTime, now);
+                        Duration duration = Duration.between(creationTime, now);
+                        long secondsElapsed = duration.getSeconds();
 
-                        if (minutesElapsed <= 1) { // 60 giây = 1 phút
+                        if (secondsElapsed <= 60) { // 60 giây = 1 phút
                             return true; // Mã khôi phục hợp lệ
                         } else {
                             throw new SQLException("Reset code has expired.");
@@ -164,6 +166,7 @@ public class AuthService {
         }
     }
 
+
     private String generateResetCode() {
         Random rand = new Random();
         int code = rand.nextInt(999999);
@@ -172,7 +175,7 @@ public class AuthService {
 
     // Phương thức đặt lại mật khẩu
     public boolean resetPassword(int staffID, String resetCode, String newPassword) throws SQLException {
-        // Validation newPassword
+        // Validation for newPassword
         if (newPassword == null || newPassword.isEmpty() || newPassword.length() < 5) {
             throw new SQLException("Password must be at least 5 characters long.");
         }
@@ -188,14 +191,14 @@ public class AuthService {
                 LocalDateTime creationTime = rs.getObject("ResetCodeCreationTime", LocalDateTime.class);
                 boolean isResetCodeUsed = rs.getBoolean("IsResetCodeUsed");
 
-                // Compare reset code and check status
+                // Compare reset code and check its status
                 if (storedResetCode != null && storedResetCode.equals(resetCode)) {
                     if (!isResetCodeUsed) {
                         LocalDateTime now = LocalDateTime.now();
-                        long minutesElapsed = ChronoUnit.MINUTES.between(creationTime, now);
+                        long minutesElapsed = ChronoUnit.SECONDS.between(creationTime, now); // Compare seconds
 
-                        if (minutesElapsed <= 1) { // 60 seconds = 1 minute
-                            // Hash new password before updating
+                        if (minutesElapsed <= 60) { // 60 seconds expiry
+                            // Hash new password
                             String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
                             // Update password and reset reset code status
@@ -205,7 +208,7 @@ public class AuthService {
                             updateStmt.setInt(2, staffID);
                             int rowsUpdated = updateStmt.executeUpdate();
 
-                            return rowsUpdated > 0; // Return true if at least one row was updated
+                            return rowsUpdated > 0; // Return true if the password was successfully updated
                         } else {
                             throw new SQLException("Reset code has expired.");
                         }
@@ -220,6 +223,7 @@ public class AuthService {
             }
         }
     }
+
 
 
     public boolean hasRole(String email, String roleName) {
