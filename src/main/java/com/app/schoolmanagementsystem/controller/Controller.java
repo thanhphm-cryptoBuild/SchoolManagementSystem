@@ -2,11 +2,14 @@ package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.application.Application;
 import com.app.schoolmanagementsystem.entities.Staff;
+import com.app.schoolmanagementsystem.services.AuthService;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -15,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -120,6 +124,7 @@ public class Controller implements Initializable {
 
 
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -147,6 +152,17 @@ public class Controller implements Initializable {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
         roleLabel.setText(roleName);
+
+        String avatarPath = UserSession.getStaffAvatar();
+        if (avatarPath != null) {
+            img_avatar.setImage(new Image(avatarPath)); // Cập nhật hình ảnh avatar
+            img_avatar.setFitHeight(40);
+            img_avatar.setFitWidth(40);
+            Circle clip = new Circle(17.5, 17.5, 17.5);
+            img_avatar.setClip(clip);
+
+        }
+
     }
 
 

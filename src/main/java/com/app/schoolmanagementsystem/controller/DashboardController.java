@@ -1,5 +1,6 @@
 package com.app.schoolmanagementsystem.controller;
 
+import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,6 +10,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import com.app.schoolmanagementsystem.model.StaffModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -33,11 +35,39 @@ public class DashboardController implements Initializable {
     @FXML
     private Label studentCountLabel;
 
+    @FXML
+    private Label label_totalStaff;
+
+    @FXML
+    private Label label_totalStudent;
+    private StaffModel staffModel;
+
+    private StudentModel studentModel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
+
+        staffModel = new StaffModel();
+        updateTotalStaff();
+
+        studentModel = new StudentModel();
+        updateTotalStudent();
+
     }
+
+    private void updateTotalStaff() {
+        int totalStaff = staffModel.countActiveStaff();
+        label_totalStaff.setText(String.valueOf(totalStaff));
+    }
+
+    private void updateTotalStudent() {
+        int totalStudent = studentModel.countActiveStudent();
+        label_totalStudent.setText(String.valueOf(totalStudent));
+    }
+
+
 
     void loadDataPieChart() {
         int maleStudents = ConnectDB.countStudentsByGender(true);

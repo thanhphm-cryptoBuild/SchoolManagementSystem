@@ -1,5 +1,11 @@
 package com.app.schoolmanagementsystem.model;
 
+import com.app.schoolmanagementsystem.utils.ConnectDB;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Date;
 
 public class StudentModel {
@@ -201,5 +207,30 @@ public class StudentModel {
             // Return the internal resource path
             return "/com/app/schoolmanagementsystem/images/" + avatar;
         }
+    }
+
+    public StudentModel() {
+    }
+
+
+    public int countActiveStudent() {
+        int count = 0;
+        String query = "SELECT COUNT(*) AS totalActiveStaff FROM Students WHERE Status = ?";
+
+        try (Connection conn = ConnectDB.connection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            preparedStatement.setString(1, "active");
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    count = resultSet.getInt("totalActiveStaff");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
     }
 }

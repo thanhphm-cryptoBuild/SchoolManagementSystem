@@ -74,7 +74,7 @@ public class AddStaffController implements Initializable {
     @FXML
     private ChoiceBox<String> experienceChoiceBox;
     @FXML
-    private TextField positionNameField;
+    private ChoiceBox<String> positionNameChoiceBox;
     @FXML
     private ChoiceBox<String> relationshipChoiceBox1;
     @FXML
@@ -147,6 +147,8 @@ public class AddStaffController implements Initializable {
     @FXML
     private ImageView profileImageView;
 
+    private String avatarPath = "useravatar.png"; // Biến để lưu đường dẫn hình ảnh
+
     private StaffModel staffService;
 
     public AddStaffController() {
@@ -197,6 +199,7 @@ public class AddStaffController implements Initializable {
         salaryChoiceBox.getItems().addAll("50000", "60000", "70000", "80000");
         educationChoiceBox.getItems().addAll("Intermediate", "College", "University", "Master's", "Ph.D.");
         experienceChoiceBox.getItems().addAll("0-1 years", "1-3 years", "3-5 years", "5-10 years", "10+ years");
+        positionNameChoiceBox.getItems().addAll("Admin Master", "Manager", "Teacher");
         relationshipChoiceBox1.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         relationshipChoiceBox2.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         // Cấu hình DatePicker để chỉ cho phép chọn ngày từ năm 2010 trở về trước
@@ -222,6 +225,19 @@ public class AddStaffController implements Initializable {
         });
     }
 
+    @FXML
+    void handleUploadAvatar(MouseEvent event) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
+        File file = fileChooser.showOpenDialog(null);
+
+        if (file != null) {
+            avatarPath = file.toURI().toString(); // Lưu đường dẫn URL
+            Image image = new Image(avatarPath);
+            profileImageView.setImage(image); // Hiển thị hình ảnh lên ImageView
+        }
+    }
+
 
     @FXML
     private void handleAddButtonAction() {
@@ -239,7 +255,7 @@ public class AddStaffController implements Initializable {
         String salary = salaryChoiceBox.getValue();
         String educationBackground = educationChoiceBox.getValue();
         String experience = experienceChoiceBox.getValue();
-        String positionName = positionNameField.getText();
+        String positionName = positionNameChoiceBox.getValue();
         LocalDate dob = dobDatePicker.getValue();
         LocalDate hireDate = hireDatePicker.getValue();
         String avatar = "";
@@ -466,16 +482,16 @@ public class AddStaffController implements Initializable {
         // Khai báo biến isValid
 
 
-// Validate các trường thành viên gia đình
-        String familyMemberName1 = familyMemberNameField1.getText();
-        String familyMemberRelationship1 = relationshipChoiceBox1.getValue();
-        String familyMemberContact1 = contactNumberField1.getText();
-
-        String familyMemberName2 = familyMemberNameField2.getText();
-        String familyMemberRelationship2 = relationshipChoiceBox2.getValue();
-        String familyMemberContact2 = contactNumberField2.getText();
-
         boolean hasFamilyMember = false;
+
+// Validate các trường thành viên gia đình
+        String familyMemberName1 = familyMemberNameField1.getText().trim();
+        String familyMemberRelationship1 = relationshipChoiceBox1.getValue();
+        String familyMemberContact1 = contactNumberField1.getText().trim();
+
+        String familyMemberName2 = familyMemberNameField2.getText().trim();
+        String familyMemberRelationship2 = relationshipChoiceBox2.getValue();
+        String familyMemberContact2 = contactNumberField2.getText().trim();
 
 // Kiểm tra và xác thực thông tin thành viên gia đình 1
         if (!familyMemberName1.isEmpty() || !familyMemberContact1.isEmpty() || familyMemberRelationship1 != null) {
@@ -496,7 +512,7 @@ public class AddStaffController implements Initializable {
                 hasError = true;
                 isValid = false;
             } else if (!familyMemberContact1.matches("\\d{10}")) {
-                contactNumber1ErrorLabel.setText("Contact 1 cannot be blank.");
+                contactNumber1ErrorLabel.setText("Số liên lạc 1 phải là một số hợp lệ với 10 chữ số.");
                 contactNumber1ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -513,7 +529,6 @@ public class AddStaffController implements Initializable {
                 relationship1ErrorLabel.setVisible(false);
             }
         }
-
 
 // Kiểm tra và xác thực thông tin thành viên gia đình 2
         if (!familyMemberName2.isEmpty() || !familyMemberContact2.isEmpty() || familyMemberRelationship2 != null) {
@@ -534,7 +549,8 @@ public class AddStaffController implements Initializable {
                 hasError = true;
                 isValid = false;
             } else if (!familyMemberContact2.matches("\\d{10}")) {
-                contactNumber2ErrorLabel.setText("The second family member contact number must be a valid number.");
+                contactNumber2ErrorLabel.setText("Số liên lạc thành viên gia đình thứ hai phải là một số hợp lệ với 10 chữ số.");
+
                 contactNumber2ErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -550,11 +566,11 @@ public class AddStaffController implements Initializable {
             } else {
                 relationship2ErrorLabel.setVisible(false);
             }
+        }
 
-
-            if (isValid) {
-                hasFamilyMember = true;
-            }
+// Nếu có lỗi trong việc xác thực thông tin thành viên gia đình, dừng quá trình và không tiếp tục
+        if (!isValid) {
+            return; // Hoặc có thể hiển thị một thông báo tổng quát nếu cần
         }
 
 // Nếu không có thông tin cho ít nhất một thành viên gia đình
@@ -563,24 +579,25 @@ public class AddStaffController implements Initializable {
             return;
         }
 
-
-
 // Tạo danh sách thành viên gia đình
         List<StaffFamily> familyMembers = new ArrayList<>();
 
-        if (isValid && !familyMemberName1.isEmpty() && familyMemberRelationship1 != null && !familyMemberContact1.isEmpty()) {
+        if (!familyMemberName1.isEmpty() && familyMemberRelationship1 != null && !familyMemberContact1.isEmpty()) {
             StaffFamily familyMember1 = new StaffFamily(familyMemberName1, familyMemberRelationship1, familyMemberContact1);
             familyMembers.add(familyMember1);
         }
 
-        if (isValid && !familyMemberName2.isEmpty() && familyMemberRelationship2 != null && !familyMemberContact2.isEmpty()) {
+        if (!familyMemberName2.isEmpty() && familyMemberRelationship2 != null && !familyMemberContact2.isEmpty()) {
             StaffFamily familyMember2 = new StaffFamily(familyMemberName2, familyMemberRelationship2, familyMemberContact2);
             familyMembers.add(familyMember2);
         }
 
+// Kiểm tra lại tính hợp lệ trước khi tiếp tục
+        if (!isValid) {
+            return;
+        }
 
-
-        // Tạo đối tượng Staff
+// Tạo đối tượng Staff
         Staff newStaff = new Staff();
         newStaff.setFirstName(firstName);
         newStaff.setLastName(lastName);
@@ -589,7 +606,7 @@ public class AddStaffController implements Initializable {
         newStaff.setPhoneNumber(phoneNumber);
         newStaff.setAddress(address);
         newStaff.setGender(gender != null && gender.equals("Male") ? (byte) 1 : (byte) 0);
-        newStaff.setAvatar(avatar);
+        newStaff.setAvatar(avatarPath);
         newStaff.setStatus("active");
         newStaff.setSalary(Double.parseDouble(salary));
         newStaff.setEducationBackground(educationBackground);
@@ -598,20 +615,19 @@ public class AddStaffController implements Initializable {
         newStaff.setHireDate(Date.valueOf(hireDate));
         newStaff.setPositionName(positionName);
 
-
-        // Tạo đối tượng StaffRoles từ vai trò
+// Tạo đối tượng StaffRoles từ vai trò
         StaffRoles staffRole = new StaffRoles(role);
 
-
-        // Lưu nhân viên vào cơ sở dữ liệu
+// Lưu nhân viên vào cơ sở dữ liệu chỉ nếu tất cả các thông tin đều hợp lệ
         boolean isAdded = staffService.addStaff(newStaff, familyMembers, staffRole);
         if (isAdded) {
-            showConfirmation("Thêm nhân viên thành công!");
+            showConfirmation("Staff updated successfully.");
         } else {
-            showAlert(Alert.AlertType.ERROR, "Lỗi", "Không thể thêm nhân viên: " );
+            showError("Failed to update staff.");
             emailErrorLabel.setText("Email already exists in the database.");
             emailErrorLabel.setVisible(true);
         }
+
     }
 
 
@@ -708,35 +724,24 @@ public class AddStaffController implements Initializable {
     @FXML
     private void handleChooseFileButtonAction() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose Profile Image");
+        fileChooser.setTitle("Choose Avatar Image");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
-        File selectedFile = fileChooser.showOpenDialog(null);
-
+        File selectedFile = fileChooser.showOpenDialog(formAddStaff.getScene().getWindow());
         if (selectedFile != null) {
-            // Kiểm tra tính hợp lệ của hình ảnh
+            // Validate the image before setting it
             if (isValidImage(selectedFile)) {
-                try {
-                    // Hiển thị hình ảnh đã chọn
-                    Image profileImage = new Image(selectedFile.toURI().toString());
-                    profileImageView.setImage(profileImage);
-
-                    // Lưu hình ảnh vào thư mục resources
-                    String imageName = selectedFile.getName();
-                    saveImageToResources(new FileInputStream(selectedFile), imageName);
-
-                    // Cập nhật tên hình ảnh vào cơ sở dữ liệu nếu cần
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showError("An error occurred while saving the image.");
-                }
+                // Set the image directly without resizing
+                Image avatarImage = new Image(selectedFile.toURI().toString());
+                profileImageView.setImage(avatarImage);
+                avatarPath = selectedFile.toURI().toString();
             } else {
-                // Hiển thị thông báo lỗi nếu hình ảnh không hợp lệ
+                // Show error message if the image is not valid
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
-                alert.setContentText("Your image must be 2x3, 3x4, or 4x6.");
+                alert.setContentText("Your image must be 2x3, 3x4 or 4x6 ratio.");
                 alert.showAndWait();
             }
         }
@@ -757,26 +762,6 @@ public class AddStaffController implements Initializable {
         }
     }
 
-    private void saveImageToResources(InputStream inputStream, String imageName) throws IOException {
-        // Đường dẫn đến thư mục lưu trữ hình ảnh trong thư mục resources
-        String path = "src/main/resources/com/app/schoolmanagementsystem/images/" + imageName;
-        File file = new File(path);
-
-        // Tạo thư mục nếu chưa tồn tại
-        File parentDir = file.getParentFile();
-        if (!parentDir.exists()) {
-            parentDir.mkdirs();
-        }
-
-        // Lưu hình ảnh vào thư mục
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-        }
-    }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);

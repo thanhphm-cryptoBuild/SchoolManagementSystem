@@ -2,6 +2,7 @@ package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.services.AuthService;
 import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
@@ -30,7 +31,9 @@ import javafx.util.Duration;
 import java.io.*;
 import java.net.URL;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 
@@ -72,7 +75,7 @@ public class StaffController implements Initializable {
     private TableColumn<Staff, Void> actionColumn;
     @FXML
     private TableColumn<Staff, String> positionNameColumn;
-    
+
 
     @FXML
     private AnchorPane moveBG;
@@ -100,6 +103,9 @@ public class StaffController implements Initializable {
     private Label label_StaffID;
 
     private Integer IDStaff;
+
+    private Image defaultAvatar;
+    private final Map<String, Image> avatarCache = new HashMap<>();
 
 
 
@@ -289,26 +295,37 @@ public class StaffController implements Initializable {
             protected void updateItem(String avatarPath, boolean empty) {
                 super.updateItem(avatarPath, empty);
                 if (empty || avatarPath == null || avatarPath.isEmpty()) {
-                    setGraphic(null);
+                    imageView.setImage(defaultAvatar);
                 } else {
-                    Staff staff = getTableRow().getItem();
-                    if (staff != null) {
-                        String fullAvatarPath = staff.getFullAvatarPath();
-                        Image avatarImage;
+                    // Lấy đối tượng StudentModel hiện tại
+                    Staff staff = getTableView().getItems().get(getIndex());
+                    String fullAvatarPath = staff.getFullAvatarPath();
+
+                    Image avatarImage = avatarCache.get(fullAvatarPath);
+                    if (avatarImage == null) {
                         try {
                             avatarImage = new Image(staff.isExternalAvatar() ? fullAvatarPath : getClass().getResource(fullAvatarPath).toExternalForm());
+                            avatarCache.put(fullAvatarPath, avatarImage);
                         } catch (Exception e) {
-                            avatarImage = new Image(getClass().getResource("/com/app/schoolmanagementsystem/images/default_avatar.png").toExternalForm());
+                            avatarImage = defaultAvatar;
                         }
-                        imageView.setImage(avatarImage);
-                        clip.setWidth(imageView.getFitWidth());
-                        clip.setHeight(imageView.getFitHeight());
-                        setGraphic(imageView);
-                        setAlignment(Pos.CENTER);
                     }
+                    imageView.setImage(avatarImage);
                 }
+                imageView.setFitHeight(32); // Set fixed height for the avatar
+                imageView.setFitWidth(32); // Set fixed width for the avatar
+                imageView.setPreserveRatio(true); // Maintain aspect ratio
+
+                // Cắt ảnh thành hình tròn
+                imageView.setClip(new Circle(12, 12, 12)); // Create a circular clip
+                setGraphic(empty ? null : imageView);
+                // Tạo HBox và căn giữa
+                HBox hBox = new HBox(imageView);
+                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                setGraphic(hBox);
             }
         });
+
     }
 
 
@@ -530,7 +547,7 @@ public class StaffController implements Initializable {
 
             EditStaffController editStaffController = loader.getController();
             editStaffController.setStaffData(staff); // Gửi dữ liệu nhân viên vào controller
-            editStaffController.setPageStaff(pageEditStaff);
+            editStaffController.setPageStaff(pageStaff);
             editStaffController.setBGPageStaff(moveBG);
 
             pageEditStaff.setTranslateX(2000);

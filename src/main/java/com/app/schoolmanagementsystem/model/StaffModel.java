@@ -130,6 +130,27 @@ public class StaffModel {
         return staffList;
     }
 
+    public String getAvatarByStaffId(int staffId) {
+        String avatarName = null;
+        String query = "SELECT Avatar FROM Staff WHERE StaffID = ?";
+
+        try (Connection conn = ConnectDB.connection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, staffId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                avatarName = rs.getString("Avatar"); // Trả về tên tệp hình ảnh
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return avatarName;
+    }
+
+
     // Phương thức để lấy vai trò của nhân viên dựa trên StaffID
     public String getRoleByStaffID(int staffID) {
         String roleName = "";
@@ -943,6 +964,27 @@ public class StaffModel {
         }
 
         return staffList;
+    }
+
+    // Hàm cập nhật đường dẫn hình ảnh
+    public void updateImagePathInDatabase(Integer staffID, String imageName) {
+        String sql = "UPDATE staff SET avatar = ? WHERE staffID = ?";
+        try (Connection connection = ConnectDB.connection(); // Thay bằng cách lấy kết nối của bạn
+             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
+            preparedStatement.setString(1, imageName);
+            preparedStatement.setInt(2, staffID); // IDStaff là ID của nhân viên hiện tại
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Image path updated successfully.");
+            } else {
+                System.out.println("Failed to update image path.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            // Có thể ném ra ngoại lệ hoặc xử lý lỗi tại đây
+        }
     }
 
 
