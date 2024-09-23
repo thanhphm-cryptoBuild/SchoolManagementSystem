@@ -9,14 +9,16 @@ public class ClassModel {
     private int staffID;
     private LocalDate enrollmentDate;
     private LocalDate completeDate;
+    private String description;
     private String teacherName;
     private String teacherPhoneNumber;
 
-    public ClassModel(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate, String teacherName, String teacherPhoneNumber) {
+    public ClassModel(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate, String description, String teacherName, String teacherPhoneNumber) {
         this.classID = classID;
         this.className = className;
         this.section = section;
         this.staffID = staffID;
+        this.description = description;
         this.enrollmentDate = enrollmentDate;
         this.completeDate = completeDate;
         this.teacherName = teacherName;
@@ -30,16 +32,15 @@ public class ClassModel {
         this.staffID = staffID;
     }
 
-    public ClassModel(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
+    public ClassModel(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate, String description) {
         this.classID = classID;
         this.className = className;
         this.section = section;
         this.staffID = staffID;
+        this.description = description;
         this.enrollmentDate = enrollmentDate;
         this.completeDate = completeDate;
     }
-
-    // Getters and Setters
 
     public String getTeacherName() {
         return teacherName;
@@ -113,8 +114,31 @@ public class ClassModel {
         }
     }
 
+    public String getFormattedTeacherName() {
+        if (teacherName != null && !teacherName.isEmpty()) {
+            String[] parts = teacherName.split(" ");
+            if (parts.length >= 2) {
+                String firstName = parts[0];
+                String lastName = parts[parts.length - 1];
+                return firstName + " " + lastName + " (" + staffID + ")";
+            } else {
+                return teacherName + " (" + staffID + ")";
+            }
+        }
+        return "";
+    }
+
+
     @Override
     public String toString() {
         return className;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
