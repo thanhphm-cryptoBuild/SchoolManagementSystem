@@ -22,6 +22,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -65,7 +69,7 @@ public class AddStudentController implements Initializable {
     @FXML
     private Label addressErrorLabel;
     @FXML
-    private ChoiceBox<ClassModel> classNameField;
+    private ChoiceBox<String> classNameField;
     @FXML
     private Label classNameErrorLabel;
     @FXML
@@ -98,8 +102,13 @@ public class AddStudentController implements Initializable {
     private Label reasonForLeavingErrorLabel;
     @FXML
     private ImageView avatarImageView;
+    @FXML
+    private ChoiceBox<String> academicYearField;
+    @FXML
+    private Label academicYearErrorLabel;
 
     private String avatarPath = "useravatar.png"; // Default avatar
+    private Map<String, Map<String, ClassModel>> classMap = new HashMap<>();
 
     public void setPageStudent(StackPane pageStudent) {
         this.pageStudent = pageStudent;
@@ -265,7 +274,9 @@ public class AddStudentController implements Initializable {
                 String phoneNumber = phoneNumberField.getText();
                 String gender = genderField.getValue();
                 String address = addressField.getText();
-                ClassModel selectedClass = classNameField.getValue();
+                String selectedClassName = classNameField.getValue();
+                String selectedAcademicYear = academicYearField.getValue();
+                ClassModel selectedClass = classMap.get(selectedClassName).get(selectedAcademicYear);
                 String enrollmentDate = enrollmentDateField.getValue() != null ? enrollmentDateField.getValue().toString() : null;
                 String fatherName = fatherNameField.getText();
                 String fatherPhoneNumber = fatherPhoneNumberField.getText();
@@ -385,6 +396,13 @@ public class AddStudentController implements Initializable {
 
         // Set DatePicker constraints for Date of Birth
         setDatePickerConstraints();
+
+        // Add listener to classNameField to update academic year
+        classNameField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                updateAcademicYear(newValue);
+            }
+        });
     }
 
     private void setDatePickerConstraints() {
@@ -413,7 +431,7 @@ public class AddStudentController implements Initializable {
 
     private void loadClassNames() {
         try (Connection connection = ConnectDB.connection()) {
-            String query = "SELECT classID, className, section, staffID FROM classes";
+            String query = "SELECT classID, className, section, enrollmentDate, completeDate FROM classes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -421,11 +439,40 @@ public class AddStudentController implements Initializable {
                 int classID = resultSet.getInt("classID");
                 String className = resultSet.getString("className");
                 String section = resultSet.getString("section");
-                int staffID = resultSet.getInt("staffID");
-                classNameField.getItems().add(new ClassModel(classID, className, section, staffID));
+                LocalDate enrollmentDate = resultSet.getDate("enrollmentDate").toLocalDate();
+                LocalDate completeDate = resultSet.getDate("completeDate").toLocalDate();
+                String displayName = className + section;
+                String academicYear = enrollmentDate.getYear() + " - " + completeDate.getYear();
+
+                // Add to classMap if not already present
+                classMap.putIfAbsent(displayName, new HashMap<>());
+                classMap.get(displayName).put(academicYear, new ClassModel(classID, className, section, enrollmentDate, completeDate));
+                
+                // Add to classNameField if not already present
+                if (!classNameField.getItems().contains(displayName)) {
+                    classNameField.getItems().add(displayName);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void updateAcademicYear(String className) {
+        // Clear previous items
+        academicYearField.getItems().clear();
+
+        // Collect all academic years for the selected class name
+        Map<String, ClassModel> classModels = classMap.get(className);
+        if (classModels != null) {
+            for (String academicYear : classModels.keySet()) {
+                academicYearField.getItems().add(academicYear);
+            }
+        }
+
+        // Set the first academic year as the default value
+        if (!academicYearField.getItems().isEmpty()) {
+            academicYearField.setValue(academicYearField.getItems().get(0));
         }
     }
 

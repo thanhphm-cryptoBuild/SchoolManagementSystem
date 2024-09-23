@@ -118,7 +118,7 @@ public class StudentController implements Initializable {
     }
 
     private void setupSearchChoiceBox() {
-        searchChoiceBox.setItems(FXCollections.observableArrayList("Student ID", "Gender", "Class")); // Updated line
+        searchChoiceBox.setItems(FXCollections.observableArrayList("Student ID", "Gender", "Class Name")); // Updated line
     }
 
     @FXML
@@ -150,12 +150,15 @@ public class StudentController implements Initializable {
         for (StudentModel student : studentData) {
             boolean matches = false;
             if (student.getFirstName().toLowerCase().contains(searchText) || student.getEmail().toLowerCase().contains(searchText)) {
-                if ("Student ID".equals(searchChoice) && String.valueOf(student.getStudentID()).contains(filterText)) { // Updated line
+                if ("Student ID".equals(searchChoice) && String.valueOf(student.getStudentID()).equals(filterText)) { // Updated line
                     matches = true;
-                } else if ("Gender".equals(searchChoice) && (student.getGender() ? "male" : "female").equalsIgnoreCase(filterText)) { // Updated line
+                } else if ("Gender".equals(searchChoice) && (student.getGender() ? "male" : "female").equalsIgnoreCase(filterText)) {
                     matches = true;
-                } else if ("Class".equals(searchChoice) && getClassNameById(student.getClassID()).toLowerCase().contains(filterText)) {
-                    matches = true;
+                } else if ("Class Name".equals(searchChoice)) {
+                    String classNameWithSection = getClassNameById(student.getClassID()).toLowerCase();
+                    if (classNameWithSection.contains(filterText)) {
+                        matches = true;
+                    }
                 } else if (filterText.isEmpty()) {
                     matches = true;
                 }
@@ -237,8 +240,8 @@ public class StudentController implements Initializable {
                     }
                     imageView.setImage(avatarImage);
                 }
-                imageView.setFitHeight(32); // Set fixed height for the avatar
-                imageView.setFitWidth(32); // Set fixed width for the avatar
+                imageView.setFitHeight(48); // Set fixed height for the avatar
+                imageView.setFitWidth(48); // Set fixed width for the avatar
                 imageView.setPreserveRatio(true); // Maintain aspect ratio
 
                 // Clip the image into a circle
@@ -255,8 +258,8 @@ public class StudentController implements Initializable {
             int classId = cellData.getValue().getClassID();
             Classes cls = getClassById(classId);
             if (cls != null && cls.getEnrollmentDate() != null && cls.getCompleteDate() != null) {
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-                String dateRange = cls.getEnrollmentDate().format(formatter) + " -> " + cls.getCompleteDate().format(formatter);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+                String dateRange = cls.getEnrollmentDate().format(formatter) + " - " + cls.getCompleteDate().format(formatter);
                 return new SimpleStringProperty(dateRange);
             } else {
                 return new SimpleStringProperty("N/A");
@@ -324,7 +327,7 @@ public class StudentController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    HBox actionButtons = new HBox(5, editButton, deleteButton, gradeButton);
+                    HBox actionButtons = new HBox(5, editButton, deleteButton);
                     setGraphic(actionButtons);
                 }
             }
@@ -346,8 +349,13 @@ public class StudentController implements Initializable {
         // Configure ClassName column
         colClassName.setCellValueFactory(cellData -> {
             int classID = cellData.getValue().getClassID();
-            String className = getClassNameById(classID);
-            return new SimpleStringProperty(className);
+            Classes cls = getClassById(classID);
+            if (cls != null) {
+                String classNameWithSection = cls.getClassName()  + cls.getSection();
+                return new SimpleStringProperty(classNameWithSection);
+            } else {
+                return new SimpleStringProperty("N/A");
+            }
         });
         colClassName.setStyle("-fx-alignment: CENTER;"); // Center align ClassName column
     }
@@ -389,14 +397,14 @@ public class StudentController implements Initializable {
 
     private String getClassNameById(int classID) {
         String className = "";
-        String query = "SELECT ClassName FROM classes WHERE ClassID = " + classID;
+        String query = "SELECT ClassName, Section FROM classes WHERE ClassID = " + classID;
 
         try (Connection conn = ConnectDB.connection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(query)) {
 
             if (rs.next()) {
-                className = rs.getString("ClassName");
+                className = rs.getString("ClassName") + rs.getString("Section");
             }
         } catch (SQLException e) {
             e.printStackTrace();

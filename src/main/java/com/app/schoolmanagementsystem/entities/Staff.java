@@ -20,13 +20,13 @@ public class Staff {
     private double salary;
     private String educationBackground;
     private String experience;
-    private String avatar;
     private String status;
     private String resetCode;
     private LocalDateTime resetCodeCreationTime;
     private boolean isResetCodeUsed;
     private String otherField;
-
+    private String avatar;
+    private boolean isExternalAvatar;
     public String getOtherField() {
         return otherField;
     }
@@ -222,6 +222,19 @@ public class Staff {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+        this.isExternalAvatar = avatar != null && (avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/"));
+    }
+
+    public boolean isExternalAvatar() {
+        return isExternalAvatar;
+    }
+
+    public String getFullAvatarPath() {
+        if (isExternalAvatar) {
+            return avatar;
+        } else {
+            return "/com/app/schoolmanagementsystem/images/" + avatar;
+        }
     }
 
     public String getStatus() {

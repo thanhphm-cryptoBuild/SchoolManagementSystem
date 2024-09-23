@@ -1,12 +1,11 @@
 package com.app.schoolmanagementsystem.controller;
-import com.app.schoolmanagementsystem.model.StudentFamilyModel;
 
 import com.app.schoolmanagementsystem.model.ClassModel;
+import com.app.schoolmanagementsystem.model.StudentFamilyModel;
 import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -19,7 +18,6 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -27,7 +25,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Period;
-import java.time.ZoneId;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -71,7 +70,7 @@ public class EditStudentController implements Initializable {
     @FXML
     private Label addressErrorLabel;
     @FXML
-    private ChoiceBox<ClassModel> classNameField;
+    private ChoiceBox<String> classNameField;
     @FXML
     private Label classNameErrorLabel;
     @FXML
@@ -104,6 +103,10 @@ public class EditStudentController implements Initializable {
     private Label reasonForLeavingErrorLabel;
     @FXML
     private ImageView avatarImageView;
+    @FXML
+    private ChoiceBox<String> academicYearField;
+    @FXML
+    private Label academicYearErrorLabel;
 
     @FXML
     private Label studentIdValueLabel; // New Label to display Student ID
@@ -111,6 +114,7 @@ public class EditStudentController implements Initializable {
     private String avatarPath = "useravatar.png"; // Default avatar
     private StudentModel student;
     private StudentFamilyModel studentFamily;
+    private Map<String, Map<String, ClassModel>> classMap = new HashMap<>();
 
     public void setPageStudent(StackPane pageStudent) {
         this.pageStudent = pageStudent;
@@ -129,15 +133,16 @@ public class EditStudentController implements Initializable {
         dobField.setValue(student.getDateOfBirth() != null ? convertToLocalDateViaSqlDate(student.getDateOfBirth()) : null);
         genderField.setValue(student.getGender() ? "Male" : "Female");
         addressField.setText(student.getAddress());
-        
+
         ClassModel studentClass = getClassModelById(student.getClassID());
-        classNameField.setValue(studentClass); // Chọn lớp hiện tại
-        
+        classNameField.setValue(studentClass.getClassName() + studentClass.getSection()); // Chọn lớp hiện tại
+        updateAcademicYear(studentClass.getClassName() + studentClass.getSection());
+
         enrollmentDateField.setValue(student.getEnrollmentDate() != null ? convertToLocalDateViaSqlDate(student.getEnrollmentDate()) : null);
         previousSchoolField.setText(student.getPreviousSchool());
         reasonForLeavingField.setText(student.getReasonForLeaving());
         avatarPath = student.getAvatar();
-        
+
         // Kiểm tra và đặt hình ảnh đại diện
         try {
             Image avatarImage = new Image(avatarPath);
@@ -192,8 +197,9 @@ public class EditStudentController implements Initializable {
             if (resultSet.next()) {
                 String className = resultSet.getString("className");
                 String section = resultSet.getString("section");
-                int staffID = resultSet.getInt("staffID");
-                return new ClassModel(classID, className, section, staffID);
+                LocalDate enrollmentDate = resultSet.getDate("enrollmentDate").toLocalDate();
+                LocalDate completeDate = resultSet.getDate("completeDate").toLocalDate();
+                return new ClassModel(classID, className, section, enrollmentDate, completeDate);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -268,16 +274,20 @@ public class EditStudentController implements Initializable {
         addressErrorLabel.setVisible(false);
         classNameErrorLabel.setVisible(false);
         enrollmentDateErrorLabel.setVisible(false);
-
+        fatherNameErrorLabel.setVisible(false); // Reset father name error label
+        fatherPhoneNumberErrorLabel.setVisible(false); // Reset father phone number error label
+        motherNameErrorLabel.setVisible(false); // Reset mother name error label
+        motherPhoneNumberErrorLabel.setVisible(false); // Reset mother phone number error label
+    
         boolean hasError = false;
-
+    
         // Validate fields
-        if (lastNameField.getText().isEmpty() || !Character.isUpperCase(lastNameField.getText().charAt(0))) {
+        if (lastNameField.getText() == null || lastNameField.getText().isEmpty() || !Character.isUpperCase(lastNameField.getText().charAt(0))) {
             lastNameErrorLabel.setText("Last name must start with an uppercase letter");
             lastNameErrorLabel.setVisible(true);
             hasError = true;
         }
-        if (firstNameField.getText().isEmpty() || !Character.isUpperCase(firstNameField.getText().charAt(0))) {
+        if (firstNameField.getText() == null || firstNameField.getText().isEmpty() || !Character.isUpperCase(firstNameField.getText().charAt(0))) {
             firstNameErrorLabel.setText("First name must start with an uppercase letter");
             firstNameErrorLabel.setVisible(true);
             hasError = true;
@@ -306,7 +316,7 @@ public class EditStudentController implements Initializable {
             enrollmentDateErrorLabel.setVisible(true);
             hasError = true;
         }
-        if (addressField.getText().isEmpty()) {
+        if (addressField.getText() == null || addressField.getText().isEmpty()) {
             addressErrorLabel.setText("Address is required");
             addressErrorLabel.setVisible(true);
             hasError = true;
@@ -321,7 +331,52 @@ public class EditStudentController implements Initializable {
             classNameErrorLabel.setVisible(true);
             hasError = true;
         }
-
+    
+        // Validate father and mother fields
+        if (fatherNameField.getText() != null && !fatherNameField.getText().isEmpty()) {
+            if (!Character.isUpperCase(fatherNameField.getText().charAt(0))) {
+                fatherNameErrorLabel.setText("Father's name must start with an uppercase letter");
+                fatherNameErrorLabel.setVisible(true);
+                hasError = true;
+            }
+            if (fatherPhoneNumberField.getText() == null || fatherPhoneNumberField.getText().isEmpty()) {
+                fatherPhoneNumberErrorLabel.setText("Father's phone number is required");
+                fatherPhoneNumberErrorLabel.setVisible(true);
+                hasError = true;
+            } else if (!isValidPhoneNumber(fatherPhoneNumberField.getText())) {
+                fatherPhoneNumberErrorLabel.setText("Invalid father's phone number");
+                fatherPhoneNumberErrorLabel.setVisible(true);
+                hasError = true;
+            }
+        }
+    
+        if (motherNameField.getText() != null && !motherNameField.getText().isEmpty()) {
+            if (!Character.isUpperCase(motherNameField.getText().charAt(0))) {
+                motherNameErrorLabel.setText("Mother's name must start with an uppercase letter");
+                motherNameErrorLabel.setVisible(true);
+                hasError = true;
+            }
+            if (motherPhoneNumberField.getText() == null || motherPhoneNumberField.getText().isEmpty()) {
+                motherPhoneNumberErrorLabel.setText("Mother's phone number is required");
+                motherPhoneNumberErrorLabel.setVisible(true);
+                hasError = true;
+            } else if (!isValidPhoneNumber(motherPhoneNumberField.getText())) {
+                motherPhoneNumberErrorLabel.setText("Invalid mother's phone number");
+                motherPhoneNumberErrorLabel.setVisible(true);
+                hasError = true;
+            }
+        }
+    
+        // Ensure at least one of the parent names is filled
+        if ((fatherNameField.getText() == null || fatherNameField.getText().isEmpty()) && 
+            (motherNameField.getText() == null || motherNameField.getText().isEmpty())) {
+            fatherNameErrorLabel.setText("At least one parent name is required");
+            fatherNameErrorLabel.setVisible(true);
+            motherNameErrorLabel.setText("At least one parent name is required");
+            motherNameErrorLabel.setVisible(true);
+            hasError = true;
+        }
+    
         if (!hasError) {
             // Proceed with updating the student
             String lastName = lastNameField.getText();
@@ -331,7 +386,9 @@ public class EditStudentController implements Initializable {
             String phoneNumber = phoneNumberField.getText();
             String gender = genderField.getValue();
             String address = addressField.getText();
-            ClassModel selectedClass = classNameField.getValue();
+            String selectedClassName = classNameField.getValue();
+            String selectedAcademicYear = academicYearField.getValue();
+            ClassModel selectedClass = classMap.get(selectedClassName).get(selectedAcademicYear);
             String enrollmentDate = enrollmentDateField.getValue() != null ? enrollmentDateField.getValue().toString() : null;
             String fatherName = fatherNameField.getText();
             String fatherPhoneNumber = fatherPhoneNumberField.getText();
@@ -339,7 +396,7 @@ public class EditStudentController implements Initializable {
             String motherPhoneNumber = motherPhoneNumberField.getText();
             String previousSchool = previousSchoolField.getText();
             String reasonForLeaving = reasonForLeavingField.getText();
-
+    
             // Connect and update data in the database
             try (Connection connection = ConnectDB.connection()) {
                 // Update student information
@@ -358,16 +415,27 @@ public class EditStudentController implements Initializable {
                 studentPreparedStatement.setString(11, reasonForLeaving);
                 studentPreparedStatement.setString(12, avatarPath);
                 studentPreparedStatement.setInt(13, student.getStudentID());
-
+    
                 studentPreparedStatement.executeUpdate();
-
+    
+                // Update student family information
+                String familyQuery = "UPDATE studentfamily SET FatherName = ?, FatherPhoneNumber = ?, MotherName = ?, MotherPhoneNumber = ? WHERE StudentID = ?";
+                PreparedStatement familyPreparedStatement = connection.prepareStatement(familyQuery);
+                familyPreparedStatement.setString(1, fatherName.isEmpty() ? null : fatherName);
+                familyPreparedStatement.setString(2, fatherPhoneNumber.isEmpty() ? null : fatherPhoneNumber);
+                familyPreparedStatement.setString(3, motherName.isEmpty() ? null : motherName);
+                familyPreparedStatement.setString(4, motherPhoneNumber.isEmpty() ? null : motherPhoneNumber);
+                familyPreparedStatement.setInt(5, student.getStudentID());
+    
+                familyPreparedStatement.executeUpdate();
+    
                 // Show success message
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
                 alert.setContentText("Student updated successfully!");
                 alert.showAndWait();
-
+    
             } catch (SQLException e) {
                 e.printStackTrace();
             }
@@ -400,6 +468,7 @@ public class EditStudentController implements Initializable {
         genderField.setValue(null);
         addressField.clear();
         classNameField.setValue(null);
+        academicYearField.setValue(null);
         enrollmentDateField.setValue(null);
         fatherNameField.clear();
         fatherPhoneNumberField.clear();
@@ -417,29 +486,35 @@ public class EditStudentController implements Initializable {
         loadClassNames();
 
         // Thiết lập StringConverter cho classNameField
-        classNameField.setConverter(new StringConverter<ClassModel>() {
+        classNameField.setConverter(new StringConverter<String>() {
             @Override
-            public String toString(ClassModel classModel) {
-                if (classModel == null) {
-                    return "";
-                }
-                return classModel.getClassName(); // Hiển thị tên lớp
+            public String toString(String className) {
+                return className;
             }
 
             @Override
-            public ClassModel fromString(String string) {
-                // Không cần thiết cho ChoiceBox hiển thị
-                return null;
+            public String fromString(String string) {
+                return string;
             }
         });
 
         // Set DatePicker constraints for Date of Birth
         setDatePickerConstraints();
+
+        // Add listener to classNameField to update academic year
+        classNameField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                updateAcademicYear(newValue);
+            }
+        });
     }
 
     private void setDatePickerConstraints() {
-       
+        // Define the maximum selectable date as December 31, 2010
         final LocalDate MAX_DATE = LocalDate.of(2011, 1, 1).minusDays(1);
+
+        // Set the default date to January 1, 2010
+        dobField.setValue(LocalDate.of(2010, 1, 1));
 
         // Apply DayCellFactory to disable dates after MAX_DATE
         dobField.setDayCellFactory(picker -> new DateCell() {
@@ -449,7 +524,7 @@ public class EditStudentController implements Initializable {
 
                 if (date.isAfter(MAX_DATE)) {
                     setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;"); 
+                    setStyle("-fx-background-color: #ffc0cb;"); // Optional: Highlight disabled dates
                 }
             }
         });
@@ -460,7 +535,7 @@ public class EditStudentController implements Initializable {
 
     private void loadClassNames() {
         try (Connection connection = ConnectDB.connection()) {
-            String query = "SELECT * FROM classes";
+            String query = "SELECT classID, className, section, enrollmentDate, completeDate FROM classes";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
@@ -468,11 +543,40 @@ public class EditStudentController implements Initializable {
                 int classID = resultSet.getInt("classID");
                 String className = resultSet.getString("className");
                 String section = resultSet.getString("section");
-                int staffID = resultSet.getInt("staffID");
-                classNameField.getItems().add(new ClassModel(classID, className, section, staffID));
+                LocalDate enrollmentDate = resultSet.getDate("enrollmentDate").toLocalDate();
+                LocalDate completeDate = resultSet.getDate("completeDate").toLocalDate();
+                String displayName = className + section;
+                String academicYear = enrollmentDate.getYear() + " - " + completeDate.getYear();
+
+                // Add to classMap if not already present
+                classMap.putIfAbsent(displayName, new HashMap<>());
+                classMap.get(displayName).put(academicYear, new ClassModel(classID, className, section, enrollmentDate, completeDate));
+                
+                // Add to classNameField if not already present
+                if (!classNameField.getItems().contains(displayName)) {
+                    classNameField.getItems().add(displayName);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void updateAcademicYear(String className) {
+        // Clear previous items
+        academicYearField.getItems().clear();
+
+        // Collect all academic years for the selected class name
+        Map<String, ClassModel> classModels = classMap.get(className);
+        if (classModels != null) {
+            for (String academicYear : classModels.keySet()) {
+                academicYearField.getItems().add(academicYear);
+            }
+        }
+
+        // Set the first academic year as the default value
+        if (!academicYearField.getItems().isEmpty()) {
+            academicYearField.setValue(academicYearField.getItems().get(0));
         }
     }
 
@@ -490,6 +594,7 @@ public class EditStudentController implements Initializable {
 
     private boolean isValidDOB(LocalDate dob) {
         LocalDate today = LocalDate.now();
-        return Period.between(dob, today).getYears() >= 12;
+        Period period = Period.between(dob, today);
+        return period.getYears() >= 12;
     }
 }

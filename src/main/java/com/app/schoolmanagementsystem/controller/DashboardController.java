@@ -41,10 +41,14 @@ public class DashboardController implements Initializable {
     void loadDataPieChart() {
         int maleStudents = ConnectDB.countStudentsByGender(true);
         int femaleStudents = ConnectDB.countStudentsByGender(false);
+        int maleStaff = ConnectDB.countStaffByGender(true);
+        int femaleStaff = ConnectDB.countStaffByGender(false);
 
         ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
                 new PieChart.Data("Male Student", maleStudents),
-                new PieChart.Data("Female Student", femaleStudents)
+                new PieChart.Data("Female Student", femaleStudents),
+                new PieChart.Data("Male Staff", maleStaff),
+                new PieChart.Data("Female Staff", femaleStaff)
         );
 
         PieChart pieChart = new PieChart(list);
@@ -111,9 +115,5 @@ public class DashboardController implements Initializable {
 
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }
-    //chạy hàm đếm student
-//    private void loadStudentCount() {
-//        int studentCount = ConnectDB.countStudents();
-//        studentCountLabel.setText(String.valueOf(studentCount));
-//    }
+                    
 }

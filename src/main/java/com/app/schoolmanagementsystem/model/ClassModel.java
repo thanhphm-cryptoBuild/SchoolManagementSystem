@@ -39,6 +39,14 @@ public class ClassModel {
         this.completeDate = completeDate;
     }
 
+    public ClassModel(int classID, String className, String section, LocalDate enrollmentDate, LocalDate completeDate) {
+        this.classID = classID;
+        this.className = className;
+        this.section = section;
+        this.enrollmentDate = enrollmentDate;
+        this.completeDate = completeDate;
+    }
+
     // Getters and Setters
 
     public String getTeacherName() {

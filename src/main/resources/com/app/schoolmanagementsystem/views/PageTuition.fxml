@@ -101,27 +101,16 @@
                      <children>
                         <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
                            <children>
-                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                              <TableView fx:id="tuitionTable" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="140.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn fx:id="columnTuitionFeeID" prefWidth="75.0" text="Tuition Fee ID" />
+                                    <TableColumn fx:id="columnStudentID" prefWidth="75.0" text="Student ID" />
+                                    <TableColumn fx:id="columnAmount" prefWidth="140.0" text="Amount" />
+                                    <TableColumn fx:id="columnDueDate" prefWidth="75.0" text="Due Date" />
+                                    <TableColumn fx:id="columnPaidDate" prefWidth="75.0" text="Paid Date" />
+                                    <TableColumn fx:id="columnStatus" prefWidth="75.0" text="Status" />
+                                    <TableColumn fx:id="columnDescription" prefWidth="75.0" text="Description" />
+
                                  </columns>
                               </TableView>
                               <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />

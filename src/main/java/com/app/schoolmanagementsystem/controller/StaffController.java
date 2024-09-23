@@ -22,6 +22,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -71,6 +72,7 @@ public class StaffController implements Initializable {
     private TableColumn<Staff, Void> actionColumn;
     @FXML
     private TableColumn<Staff, String> positionNameColumn;
+    
 
     @FXML
     private AnchorPane moveBG;
@@ -276,36 +278,33 @@ public class StaffController implements Initializable {
             private final Rectangle clip = new Rectangle();
 
             {
-                imageView.setFitHeight(24); // Điều chỉnh kích thước hình ảnh nếu cần
-                imageView.setFitWidth(24);
-                imageView.setPreserveRatio(true);
+                imageView.setFitHeight(48); // Set fixed height for the avatar
+                imageView.setFitWidth(48); // Set fixed width for the avatar
+                imageView.setPreserveRatio(true); // Maintain aspect ratio
 
-                // Tạo hình dạng bo tròn cho hình ảnh
-                clip.setArcWidth(24); // Đặt kích thước bo tròn (thay đổi nếu cần)
-                clip.setArcHeight(24); // Đặt kích thước bo tròn (thay đổi nếu cần)
-                imageView.setClip(clip);
+                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
             }
 
             @Override
-            protected void updateItem(String imageName, boolean empty) {
-                super.updateItem(imageName, empty);
-                if (empty || imageName == null || imageName.isEmpty()) {
-                    setGraphic(null); // Không hiển thị gì nếu không có hình ảnh
+            protected void updateItem(String avatarPath, boolean empty) {
+                super.updateItem(avatarPath, empty);
+                if (empty || avatarPath == null || avatarPath.isEmpty()) {
+                    setGraphic(null);
                 } else {
-                    try {
-                        // Nạp hình ảnh từ thư mục resources
-                        Image image = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/" + imageName));
-                        imageView.setImage(image);
-
-                        // Đặt kích thước hình dạng bo tròn
+                    Staff staff = getTableRow().getItem();
+                    if (staff != null) {
+                        String fullAvatarPath = staff.getFullAvatarPath();
+                        Image avatarImage;
+                        try {
+                            avatarImage = new Image(staff.isExternalAvatar() ? fullAvatarPath : getClass().getResource(fullAvatarPath).toExternalForm());
+                        } catch (Exception e) {
+                            avatarImage = new Image(getClass().getResource("/com/app/schoolmanagementsystem/images/default_avatar.png").toExternalForm());
+                        }
+                        imageView.setImage(avatarImage);
                         clip.setWidth(imageView.getFitWidth());
                         clip.setHeight(imageView.getFitHeight());
-
                         setGraphic(imageView);
                         setAlignment(Pos.CENTER);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        setGraphic(null); // Xử lý lỗi nếu không thể nạp hình ảnh
                     }
                 }
             }
@@ -531,7 +530,7 @@ public class StaffController implements Initializable {
 
             EditStaffController editStaffController = loader.getController();
             editStaffController.setStaffData(staff); // Gửi dữ liệu nhân viên vào controller
-            editStaffController.setPageStaff(pageStaff);
+            editStaffController.setPageStaff(pageEditStaff);
             editStaffController.setBGPageStaff(moveBG);
 
             pageEditStaff.setTranslateX(2000);
