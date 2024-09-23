@@ -1,6 +1,8 @@
 package com.app.schoolmanagementsystem.utils;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ConnectDB {
 
@@ -64,5 +66,35 @@ public class ConnectDB {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static List<Integer> getStaffData() {
+        List<Integer> staffData = new ArrayList<>();
+        String query = "SELECT COUNT(StaffID) AS count FROM staff WHERE Status = 'active'";
+        try (Connection conn = connection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                staffData.add(rs.getInt("count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return staffData;
+    }
+
+    public static List<Integer> getStudentData() {
+        List<Integer> studentData = new ArrayList<>();
+        String query = "SELECT COUNT(StudentID) AS count FROM students WHERE Status = 'active'";
+        try (Connection conn = connection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                studentData.add(rs.getInt("count"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return studentData;
     }
 }

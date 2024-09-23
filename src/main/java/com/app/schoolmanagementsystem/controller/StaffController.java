@@ -2,6 +2,7 @@ package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.services.AuthService;
 import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
@@ -22,6 +23,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Callback;
 import javafx.util.Duration;
@@ -29,7 +31,9 @@ import javafx.util.Duration;
 import java.io.*;
 import java.net.URL;
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 
@@ -72,6 +76,7 @@ public class StaffController implements Initializable {
     @FXML
     private TableColumn<Staff, String> positionNameColumn;
 
+
     @FXML
     private AnchorPane moveBG;
 
@@ -98,6 +103,9 @@ public class StaffController implements Initializable {
     private Label label_StaffID;
 
     private Integer IDStaff;
+
+    private Image defaultAvatar;
+    private final Map<String, Image> avatarCache = new HashMap<>();
 
 
 
@@ -276,40 +284,48 @@ public class StaffController implements Initializable {
             private final Rectangle clip = new Rectangle();
 
             {
-                imageView.setFitHeight(24); // Điều chỉnh kích thước hình ảnh nếu cần
-                imageView.setFitWidth(24);
-                imageView.setPreserveRatio(true);
+                imageView.setFitHeight(48); // Set fixed height for the avatar
+                imageView.setFitWidth(48); // Set fixed width for the avatar
+                imageView.setPreserveRatio(true); // Maintain aspect ratio
 
-                // Tạo hình dạng bo tròn cho hình ảnh
-                clip.setArcWidth(24); // Đặt kích thước bo tròn (thay đổi nếu cần)
-                clip.setArcHeight(24); // Đặt kích thước bo tròn (thay đổi nếu cần)
-                imageView.setClip(clip);
+                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
             }
 
             @Override
-            protected void updateItem(String imageName, boolean empty) {
-                super.updateItem(imageName, empty);
-                if (empty || imageName == null || imageName.isEmpty()) {
-                    setGraphic(null); // Không hiển thị gì nếu không có hình ảnh
+            protected void updateItem(String avatarPath, boolean empty) {
+                super.updateItem(avatarPath, empty);
+                if (empty || avatarPath == null || avatarPath.isEmpty()) {
+                    imageView.setImage(defaultAvatar);
                 } else {
-                    try {
-                        // Nạp hình ảnh từ thư mục resources
-                        Image image = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/" + imageName));
-                        imageView.setImage(image);
+                    // Lấy đối tượng StudentModel hiện tại
+                    Staff staff = getTableView().getItems().get(getIndex());
+                    String fullAvatarPath = staff.getFullAvatarPath();
 
-                        // Đặt kích thước hình dạng bo tròn
-                        clip.setWidth(imageView.getFitWidth());
-                        clip.setHeight(imageView.getFitHeight());
-
-                        setGraphic(imageView);
-                        setAlignment(Pos.CENTER);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        setGraphic(null); // Xử lý lỗi nếu không thể nạp hình ảnh
+                    Image avatarImage = avatarCache.get(fullAvatarPath);
+                    if (avatarImage == null) {
+                        try {
+                            avatarImage = new Image(staff.isExternalAvatar() ? fullAvatarPath : getClass().getResource(fullAvatarPath).toExternalForm());
+                            avatarCache.put(fullAvatarPath, avatarImage);
+                        } catch (Exception e) {
+                            avatarImage = defaultAvatar;
+                        }
                     }
+                    imageView.setImage(avatarImage);
                 }
+                imageView.setFitHeight(32); // Set fixed height for the avatar
+                imageView.setFitWidth(32); // Set fixed width for the avatar
+                imageView.setPreserveRatio(true); // Maintain aspect ratio
+
+                // Cắt ảnh thành hình tròn
+                imageView.setClip(new Circle(12, 12, 12)); // Create a circular clip
+                setGraphic(empty ? null : imageView);
+                // Tạo HBox và căn giữa
+                HBox hBox = new HBox(imageView);
+                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                setGraphic(hBox);
             }
         });
+
     }
 
 

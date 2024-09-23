@@ -20,13 +20,13 @@ public class Staff {
     private double salary;
     private String educationBackground;
     private String experience;
-    private String avatar;
     private String status;
     private String resetCode;
     private LocalDateTime resetCodeCreationTime;
     private boolean isResetCodeUsed;
     private String otherField;
-
+    private String avatar;
+    private boolean isExternalAvatar;
     public String getOtherField() {
         return otherField;
     }
@@ -80,6 +80,12 @@ public class Staff {
         this.avatar = avatar;
         this.status = status;
     }
+    public Staff(int staffID, String firstName, String lastName, String positionName) {
+        this.staffID = staffID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.positionName = positionName;
+    }
 
     public Staff(int staffID, String firstName, String lastName, String phoneNumber, String positionName) {
         this.staffID = staffID;
@@ -96,6 +102,18 @@ public class Staff {
         this.phoneNumber = phoneNumber;
         this.positionName = positionName;
         this.otherField = otherField;
+    }
+
+    public Staff(int staffID, String firstName, String lastName, Byte gender, String phoneNumber, String email, String positionName, String avatar, String status) {
+        this.staffID = staffID;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.gender = gender;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.positionName = positionName;
+        this.avatar = avatar;
+        this.status = status;
     }
 
     public int getStaffID() {
@@ -216,7 +234,10 @@ public class Staff {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+        this.isExternalAvatar = avatar != null && (avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/"));
     }
+
+
 
     public String getStatus() {
         return status;
@@ -259,5 +280,34 @@ public class Staff {
 
         return firstName + " " + lastName + " (" + positionName + ")";
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+
+    /**
+     * Lấy đường dẫn đầy đủ đến avatar dựa trên nguồn của nó.
+     *
+     * @return Đường dẫn đầy đủ đến ảnh avatar.
+     */
+    public String getFullAvatarPath() {
+        if (isExternalAvatar()) {
+            return avatar;
+        } else {
+            // Trả về đường dẫn tài nguyên nội bộ
+            return "/com/app/schoolmanagementsystem/images/" + avatar;
+        }
+    }
+
+    /**
+     * Kiểm tra xem avatar có phải từ nguồn bên ngoài hay không.
+     *
+     * @return true nếu avatar là từ nguồn bên ngoài, ngược lại false.
+     */
+    public boolean isExternalAvatar() {
+        return avatar != null && (avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/"));
+    }
+
+
 
 }

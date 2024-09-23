@@ -1,5 +1,6 @@
 package com.app.schoolmanagementsystem.controller;
 
+import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -9,9 +10,11 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.StackPane;
+import com.app.schoolmanagementsystem.model.StaffModel;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.List;
 
 public class DashboardController implements Initializable {
     @FXML
@@ -32,19 +35,51 @@ public class DashboardController implements Initializable {
     @FXML
     private Label studentCountLabel;
 
+    @FXML
+    private Label label_totalStaff;
+
+    @FXML
+    private Label label_totalStudent;
+    private StaffModel staffModel;
+
+    private StudentModel studentModel;
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadDataPieChart();
         loadDataLineChart();
+
+        staffModel = new StaffModel();
+        updateTotalStaff();
+
+        studentModel = new StudentModel();
+        updateTotalStudent();
+
     }
+
+    private void updateTotalStaff() {
+        int totalStaff = staffModel.countActiveStaff();
+        label_totalStaff.setText(String.valueOf(totalStaff));
+    }
+
+    private void updateTotalStudent() {
+        int totalStudent = studentModel.countActiveStudent();
+        label_totalStudent.setText(String.valueOf(totalStudent));
+    }
+
+
 
     void loadDataPieChart() {
         int maleStudents = ConnectDB.countStudentsByGender(true);
         int femaleStudents = ConnectDB.countStudentsByGender(false);
+        int maleStaff = ConnectDB.countStaffByGender(true);
+        int femaleStaff = ConnectDB.countStaffByGender(false);
 
         ObservableList<PieChart.Data> list = FXCollections.observableArrayList(
                 new PieChart.Data("Male Student", maleStudents),
-                new PieChart.Data("Female Student", femaleStudents)
+                new PieChart.Data("Female Student", femaleStudents),
+                new PieChart.Data("Male Staff", maleStaff),
+                new PieChart.Data("Female Staff", femaleStaff)
         );
 
         PieChart pieChart = new PieChart(list);
@@ -62,58 +97,24 @@ public class DashboardController implements Initializable {
         XYChart.Series lineChartOne = new XYChart.Series<>();
         lineChartOne.setName("Staff");
 
-        lineChartOne.getData().add(new XYChart.Data<>("1", 2));
-        lineChartOne.getData().add(new XYChart.Data<>("2", 10));
-        lineChartOne.getData().add(new XYChart.Data<>("3", 9));
-        lineChartOne.getData().add(new XYChart.Data<>("4", 11));
-        lineChartOne.getData().add(new XYChart.Data<>("5", 15));
-        lineChartOne.getData().add(new XYChart.Data<>("6", 10));
-        lineChartOne.getData().add(new XYChart.Data<>("7", 14));
-        lineChartOne.getData().add(new XYChart.Data<>("8", 20));
-        lineChartOne.getData().add(new XYChart.Data<>("9", 21));
-        lineChartOne.getData().add(new XYChart.Data<>("10", 22));
-        lineChartOne.getData().add(new XYChart.Data<>("11", 34));
-        lineChartOne.getData().add(new XYChart.Data<>("12", 50));
+        // Fetch staff data dynamically
+        List<Integer> staffData = ConnectDB.getStaffData();
+        for (int i = 0; i < staffData.size(); i++) {
+            lineChartOne.getData().add(new XYChart.Data<>(String.valueOf(i + 1), staffData.get(i)));
+        }
 
         XYChart.Series lineChartTwo = new XYChart.Series<>();
-        lineChartTwo.setName("Teacher");
+        lineChartTwo.setName("Student");
 
-        lineChartTwo.getData().add(new XYChart.Data<>("1", 5));
-        lineChartTwo.getData().add(new XYChart.Data<>("2", 2));
-        lineChartTwo.getData().add(new XYChart.Data<>("3", 15));
-        lineChartTwo.getData().add(new XYChart.Data<>("4", 7));
-        lineChartTwo.getData().add(new XYChart.Data<>("5", 20));
-        lineChartTwo.getData().add(new XYChart.Data<>("6", 15));
-        lineChartTwo.getData().add(new XYChart.Data<>("7", 19));
-        lineChartTwo.getData().add(new XYChart.Data<>("8", 36));
-        lineChartTwo.getData().add(new XYChart.Data<>("9", 50));
-        lineChartTwo.getData().add(new XYChart.Data<>("10", 62));
-        lineChartTwo.getData().add(new XYChart.Data<>("11", 70));
-        lineChartTwo.getData().add(new XYChart.Data<>("12", 85));
+        // Fetch student data dynamically
+        List<Integer> studentData = ConnectDB.getStudentData();
+        for (int i = 0; i < studentData.size(); i++) {
+            lineChartTwo.getData().add(new XYChart.Data<>(String.valueOf(i + 1), studentData.get(i)));
+        }
 
-        XYChart.Series lineChartThree = new XYChart.Series<>();
-        lineChartThree.setName("Student");
-
-        lineChartThree.getData().add(new XYChart.Data<>("1", 50));
-        lineChartThree.getData().add(new XYChart.Data<>("2", 30));
-        lineChartThree.getData().add(new XYChart.Data<>("3", 10));
-        lineChartThree.getData().add(new XYChart.Data<>("4", 25));
-        lineChartThree.getData().add(new XYChart.Data<>("5", 12));
-        lineChartThree.getData().add(new XYChart.Data<>("6", 15));
-        lineChartThree.getData().add(new XYChart.Data<>("7", 60));
-        lineChartThree.getData().add(new XYChart.Data<>("8", 62));
-        lineChartThree.getData().add(new XYChart.Data<>("9", 68));
-        lineChartThree.getData().add(new XYChart.Data<>("10", 89));
-        lineChartThree.getData().add(new XYChart.Data<>("11", 80));
-        lineChartThree.getData().add(new XYChart.Data<>("12", 100));
-
-        lineview.getData().addAll(lineChartOne, lineChartTwo, lineChartThree);
+        lineview.getData().addAll(lineChartOne, lineChartTwo);
 
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }
-    //chạy hàm đếm student
-//    private void loadStudentCount() {
-//        int studentCount = ConnectDB.countStudents();
-//        studentCountLabel.setText(String.valueOf(studentCount));
-//    }
+                    
 }

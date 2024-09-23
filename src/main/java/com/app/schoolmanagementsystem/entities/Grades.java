@@ -5,13 +5,17 @@ public class Grades {
     private int studentID;
     private int subjectID;
     private double marks;
+    private String subjectName; // For displaying subject names
 
-    public Grades(int gradeID, int studentID, int subjectID, double marks) {
+    public Grades(int gradeID, int studentID, int subjectID, double marks, String subjectName) {
         this.gradeID = gradeID;
         this.studentID = studentID;
         this.subjectID = subjectID;
         this.marks = marks;
+        this.subjectName = subjectName;
     }
+
+    // Getters and Setters
 
     public int getGradeID() {
         return gradeID;
@@ -43,5 +47,13 @@ public class Grades {
 
     public void setMarks(double marks) {
         this.marks = marks;
+    }
+
+    public String getSubjectName() {
+        return subjectName;
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 }
