@@ -20,13 +20,13 @@ public class Staff {
     private double salary;
     private String educationBackground;
     private String experience;
+    private String avatar;
     private String status;
     private String resetCode;
     private LocalDateTime resetCodeCreationTime;
     private boolean isResetCodeUsed;
     private String otherField;
-    private String avatar;
-    private boolean isExternalAvatar;
+
     public String getOtherField() {
         return otherField;
     }
@@ -79,12 +79,6 @@ public class Staff {
         this.experience = experience;
         this.avatar = avatar;
         this.status = status;
-    }
-    public Staff(int staffID, String firstName, String lastName, String positionName) {
-        this.staffID = staffID;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.positionName = positionName;
     }
 
     public Staff(int staffID, String firstName, String lastName, String phoneNumber, String positionName) {
@@ -234,10 +228,7 @@ public class Staff {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
-        this.isExternalAvatar = avatar != null && (avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/"));
     }
-
-
 
     public String getStatus() {
         return status;
@@ -281,10 +272,6 @@ public class Staff {
         return firstName + " " + lastName + " (" + positionName + ")";
     }
 
-    public String getFullName() {
-        return firstName + " " + lastName;
-    }
-
     /**
      * Lấy đường dẫn đầy đủ đến avatar dựa trên nguồn của nó.
      *
@@ -307,7 +294,5 @@ public class Staff {
     public boolean isExternalAvatar() {
         return avatar != null && (avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/"));
     }
-
-
 
 }

@@ -97,24 +97,54 @@ public class DashboardController implements Initializable {
         XYChart.Series lineChartOne = new XYChart.Series<>();
         lineChartOne.setName("Staff");
 
-        // Fetch staff data dynamically
-        List<Integer> staffData = ConnectDB.getStaffData();
-        for (int i = 0; i < staffData.size(); i++) {
-            lineChartOne.getData().add(new XYChart.Data<>(String.valueOf(i + 1), staffData.get(i)));
-        }
+        lineChartOne.getData().add(new XYChart.Data<>("1", 2));
+        lineChartOne.getData().add(new XYChart.Data<>("2", 10));
+        lineChartOne.getData().add(new XYChart.Data<>("3", 9));
+        lineChartOne.getData().add(new XYChart.Data<>("4", 11));
+        lineChartOne.getData().add(new XYChart.Data<>("5", 15));
+        lineChartOne.getData().add(new XYChart.Data<>("6", 10));
+        lineChartOne.getData().add(new XYChart.Data<>("7", 14));
+        lineChartOne.getData().add(new XYChart.Data<>("8", 20));
+        lineChartOne.getData().add(new XYChart.Data<>("9", 21));
+        lineChartOne.getData().add(new XYChart.Data<>("10", 22));
+        lineChartOne.getData().add(new XYChart.Data<>("11", 34));
+        lineChartOne.getData().add(new XYChart.Data<>("12", 50));
 
         XYChart.Series lineChartTwo = new XYChart.Series<>();
-        lineChartTwo.setName("Student");
+        lineChartTwo.setName("Teacher");
 
-        // Fetch student data dynamically
-        List<Integer> studentData = ConnectDB.getStudentData();
-        for (int i = 0; i < studentData.size(); i++) {
-            lineChartTwo.getData().add(new XYChart.Data<>(String.valueOf(i + 1), studentData.get(i)));
-        }
+        lineChartTwo.getData().add(new XYChart.Data<>("1", 5));
+        lineChartTwo.getData().add(new XYChart.Data<>("2", 2));
+        lineChartTwo.getData().add(new XYChart.Data<>("3", 15));
+        lineChartTwo.getData().add(new XYChart.Data<>("4", 7));
+        lineChartTwo.getData().add(new XYChart.Data<>("5", 20));
+        lineChartTwo.getData().add(new XYChart.Data<>("6", 15));
+        lineChartTwo.getData().add(new XYChart.Data<>("7", 19));
+        lineChartTwo.getData().add(new XYChart.Data<>("8", 36));
+        lineChartTwo.getData().add(new XYChart.Data<>("9", 50));
+        lineChartTwo.getData().add(new XYChart.Data<>("10", 62));
+        lineChartTwo.getData().add(new XYChart.Data<>("11", 70));
+        lineChartTwo.getData().add(new XYChart.Data<>("12", 85));
 
-        lineview.getData().addAll(lineChartOne, lineChartTwo);
+        XYChart.Series lineChartThree = new XYChart.Series<>();
+        lineChartThree.setName("Student");
+
+        lineChartThree.getData().add(new XYChart.Data<>("1", 50));
+        lineChartThree.getData().add(new XYChart.Data<>("2", 30));
+        lineChartThree.getData().add(new XYChart.Data<>("3", 10));
+        lineChartThree.getData().add(new XYChart.Data<>("4", 25));
+        lineChartThree.getData().add(new XYChart.Data<>("5", 12));
+        lineChartThree.getData().add(new XYChart.Data<>("6", 15));
+        lineChartThree.getData().add(new XYChart.Data<>("7", 60));
+        lineChartThree.getData().add(new XYChart.Data<>("8", 62));
+        lineChartThree.getData().add(new XYChart.Data<>("9", 68));
+        lineChartThree.getData().add(new XYChart.Data<>("10", 89));
+        lineChartThree.getData().add(new XYChart.Data<>("11", 80));
+        lineChartThree.getData().add(new XYChart.Data<>("12", 100));
+
+        lineview.getData().addAll(lineChartOne, lineChartTwo, lineChartThree);
 
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }
-                    
+
 }

@@ -266,7 +266,7 @@ public class AdvancedController implements Initializable {
 
     private void setupStudentTableColumns() {
         // Avatar student column với hình ảnh
-        avatarStudentColumn.setCellValueFactory(new PropertyValueFactory<>("avatar.png"));
+        avatarStudentColumn.setCellValueFactory(new PropertyValueFactory<>("avatar"));
         avatarStudentColumn.setCellFactory(new Callback<TableColumn<Student, String>, TableCell<Student, String>>() {
             @Override
             public TableCell<Student, String> call(TableColumn<Student, String> param) {

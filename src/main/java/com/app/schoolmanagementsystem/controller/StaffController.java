@@ -76,7 +76,6 @@ public class StaffController implements Initializable {
     @FXML
     private TableColumn<Staff, String> positionNameColumn;
 
-
     @FXML
     private AnchorPane moveBG;
 
@@ -281,15 +280,6 @@ public class StaffController implements Initializable {
     private void configureAvatarColumn() {
         avatarColumn.setCellFactory(column -> new TableCell<Staff, String>() {
             private final ImageView imageView = new ImageView();
-            private final Rectangle clip = new Rectangle();
-
-            {
-                imageView.setFitHeight(48); // Set fixed height for the avatar
-                imageView.setFitWidth(48); // Set fixed width for the avatar
-                imageView.setPreserveRatio(true); // Maintain aspect ratio
-
-                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
-            }
 
             @Override
             protected void updateItem(String avatarPath, boolean empty) {
@@ -317,7 +307,7 @@ public class StaffController implements Initializable {
                 imageView.setPreserveRatio(true); // Maintain aspect ratio
 
                 // Cắt ảnh thành hình tròn
-                imageView.setClip(new Circle(12, 12, 12)); // Create a circular clip
+                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
                 setGraphic(empty ? null : imageView);
                 // Tạo HBox và căn giữa
                 HBox hBox = new HBox(imageView);
@@ -472,102 +462,134 @@ public class StaffController implements Initializable {
         });
     }
 
-//    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
-//
-//    public void loginUser(String email, String password) {
-//        if (authService.login(email, password)) {
-//            // Lưu vai trò vào UserSession thay vì biến cục bộ
-//            String roleName = authService.getRoleName(email);
-//            UserSession.setCurrentRoleName(roleName); // Sử dụng UserSession để lưu vai trò
-//            System.out.println("Logged in with role: " + roleName);
-//        } else {
-//            System.out.println("Login failed.");
-//        }
-//    }
-//
-//    // Phương thức để lấy roleName hiện tại
-//    public String getCurrentRoleName() {
-//        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
-//    }
-//
-//    // Các phương thức khác liên quan đến phân quyền
-//    private boolean canPerformAction(int staffID) {
-//        String staffRoleName = getStaffRoleNameByStaffID(staffID);
-//        String userRoleName = getCurrentRoleName();
-//
-//        // Console log roleName của người dùng và nhân viên
-//        System.out.println("User roleName: " + userRoleName);
-//        System.out.println("Staff roleName: " + staffRoleName);
-//
-//        // Phân quyền dựa trên vai trò của người dùng đăng nhập và vai trò của nhân viên
-//        if ("Admin Master".equals(userRoleName)) {
-//            return true;
-//        } else if ("Manager".equals(userRoleName) && "Teacher".equals(staffRoleName)) {
-//            return true;
-//        }
-//        return false;
-//    }
-//
-//    // Phương thức lấy vai trò (RoleName) của nhân viên dựa trên StaffID
-//    private String getStaffRoleNameByStaffID(int staffID) {
-//        return staffModel.getRoleByStaffID(staffID); // Gọi phương thức từ StaffModel
-//    }
+    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
+
+    public void loginUser(String email, String password) {
+        if (authService.login(email, password)) {
+            // Lưu vai trò vào UserSession thay vì biến cục bộ
+            String roleName = authService.getRoleName(email);
+            UserSession.setCurrentRoleName(roleName); // Sử dụng UserSession để lưu vai trò
+            System.out.println("Logged in with role: " + roleName);
+        } else {
+            System.out.println("Login failed.");
+        }
+    }
+
+    // Phương thức để lấy roleName hiện tại
+    public String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
+    }
+
+    // Các phương thức khác liên quan đến phân quyền
+    private boolean canPerformAction(int staffID) {
+        String staffRoleName = getStaffRoleNameByStaffID(staffID);
+        String userRoleName = getCurrentRoleName();
+
+        // Console log roleName của người dùng và nhân viên
+        System.out.println("User roleName: " + userRoleName);
+        System.out.println("Staff roleName: " + staffRoleName);
+
+        // Phân quyền dựa trên vai trò của người dùng đăng nhập và vai trò của nhân viên
+        if ("Admin Master".equals(userRoleName)) {
+            return true;
+        } else if ("Manager".equals(userRoleName) && "Teacher".equals(staffRoleName)) {
+            return true;
+        }
+        return false;
+    }
+
+    // Phương thức lấy vai trò (RoleName) của nhân viên dựa trên StaffID
+    private String getStaffRoleNameByStaffID(int staffID) {
+        return staffModel.getRoleByStaffID(staffID); // Gọi phương thức từ StaffModel
+    }
 
 
 
     private void showDetails(int index) {
         Staff staff = staffTableView.getItems().get(index);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Staff Details");
-        alert.setHeaderText("Details of Staff ID: " + staff.getStaffID());
-        alert.setContentText(staff.toString()); // Customize this to show more details
-        alert.showAndWait();
+
+        // Lấy vai trò của người dùng hiện tại từ UserSession
+        String userRoleName = UserSession.getCurrentRoleName();
+        String staffRoleName = getStaffRoleNameByStaffID(staff.getStaffID());
+
+        System.out.println("User roleName: " + userRoleName);
+        System.out.println("Staff roleName: " + staffRoleName);
+
+        // Kiểm tra quyền của người dùng hiện tại
+        if (canPerformAction(staff.getStaffID())) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Staff Details");
+            alert.setHeaderText("Details of Staff ID: " + staff.getStaffID());
+            alert.setContentText("Name: " + staff.getStaffID() + "\nRole: " + staffRoleName);
+            alert.showAndWait();
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Permission Denied");
+            alert.setHeaderText("Access Denied");
+            alert.setContentText("You do not have permission to view details of this staff member.");
+            alert.showAndWait();
+        }
 
         resetSearchFields();
     }
 
 
+
     // Cập nhật phương thức editStaff để nhận đối tượng Staff
     private void editStaff(int staffId) {
-        System.out.println("Attempting to edit staff with ID: " + staffId); // Log ID nhân viên
+        System.out.println("Attempting to edit staff with ID: " + staffId);
 
         try {
-            // Truy xuất thông tin nhân viên dựa trên ID từ dịch vụ hoặc lớp xử lý dữ liệu
             Staff staff = staffModel.getStaffByID(staffId);
 
             if (staff == null) {
-                System.err.println("Staff with ID " + staffId + " not found."); // Log lỗi nếu không tìm thấy nhân viên
+                System.err.println("Staff with ID " + staffId + " not found.");
                 throw new IllegalArgumentException("Staff with ID " + staffId + " not found.");
             }
 
-            System.out.println("Editing staff: " + staff); // Log thông tin nhân viên
+            System.out.println("Editing staff: " + staff);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageEditStaff.fxml"));
-            StackPane pageEditStaff = loader.load();
+            // Lấy vai trò của người dùng hiện tại từ UserSession
+            String userRoleName = UserSession.getCurrentRoleName();
+            String staffRoleName = getStaffRoleNameByStaffID(staffId);
 
-            EditStaffController editStaffController = loader.getController();
-            editStaffController.setStaffData(staff); // Gửi dữ liệu nhân viên vào controller
-            editStaffController.setPageStaff(pageStaff);
-            editStaffController.setBGPageStaff(moveBG);
+            System.out.println("User roleName: " + userRoleName);
+            System.out.println("Staff roleName: " + staffRoleName);
 
-            pageEditStaff.setTranslateX(2000);
-            pageEditStaff.setTranslateY(6);
+            if (canPerformAction(staffId)) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageEditStaff.fxml"));
+                StackPane pageEditStaff = loader.load();
 
-            pageStaff.getChildren().add(pageEditStaff);
+                EditStaffController editStaffController = loader.getController();
+                editStaffController.setStaffData(staff);
+                editStaffController.setPageStaff(pageStaff);
+                editStaffController.setBGPageStaff(moveBG);
 
-            GaussianBlur gaussianBlur = new GaussianBlur(10);
-            moveBG.setEffect(gaussianBlur);
+                pageEditStaff.setTranslateX(2000);
+                pageEditStaff.setTranslateY(6);
 
-            TranslateTransition translateTransition = new TranslateTransition();
-            translateTransition.setDuration(Duration.seconds(0.2));
-            translateTransition.setNode(pageEditStaff);
-            translateTransition.setFromX(2000);
-            translateTransition.setToY(6);
-            translateTransition.setToX(115);
+                pageStaff.getChildren().add(pageEditStaff);
 
-            translateTransition.play();
+                GaussianBlur gaussianBlur = new GaussianBlur(10);
+                moveBG.setEffect(gaussianBlur);
+
+                TranslateTransition translateTransition = new TranslateTransition();
+                translateTransition.setDuration(Duration.seconds(0.2));
+                translateTransition.setNode(pageEditStaff);
+                translateTransition.setFromX(2000);
+                translateTransition.setToY(6);
+                translateTransition.setToX(115);
+
+                translateTransition.play();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Permission Denied");
+                alert.setHeaderText("Access Denied");
+                alert.setContentText("You do not have permission to edit this staff member.");
+                alert.showAndWait();
+            }
         } catch (IOException e) {
-            e.printStackTrace(); // In chi tiết lỗi ra console
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load PageEditStaff.fxml");
@@ -575,7 +597,7 @@ public class StaffController implements Initializable {
             alert.showAndWait();
             resetSearchFields();
         } catch (IllegalArgumentException e) {
-            e.printStackTrace(); // In chi tiết lỗi ra console
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Staff Not Found");
@@ -590,19 +612,38 @@ public class StaffController implements Initializable {
 
 
 
+
     private void deleteStaff(int index) {
         Staff staff = staffTableView.getItems().get(index);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Delete Staff");
-        alert.setHeaderText("Are you sure you want to delete Staff ID: " + staff.getStaffID() + "?");
-        if (alert.showAndWait().get().getButtonData().isDefaultButton()) {
-            // Implement delete logic here
-            staffModel.deleteStaff(staff.getStaffID());
-            loadStaffData(); // Refresh the list
-            resetSearchFields();
+
+        // Lấy vai trò của người dùng hiện tại từ UserSession
+        String userRoleName = UserSession.getCurrentRoleName();
+        String staffRoleName = getStaffRoleNameByStaffID(staff.getStaffID());
+
+        System.out.println("User roleName: " + userRoleName);
+        System.out.println("Staff roleName: " + staffRoleName);
+
+        // Kiểm tra quyền của người dùng hiện tại
+        if (canPerformAction(staff.getStaffID())) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete Staff");
+            alert.setHeaderText("Are you sure you want to delete Staff ID: " + staff.getStaffID() + "?");
+            if (alert.showAndWait().get().getButtonData().isDefaultButton()) {
+                // Implement delete logic here
+                staffModel.deleteStaff(staff.getStaffID());
+                loadStaffData(); // Refresh the list
+            }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Permission Denied");
+            alert.setHeaderText("Access Denied");
+            alert.setContentText("You do not have permission to delete this staff member.");
+            alert.showAndWait();
         }
 
+        resetSearchFields();
     }
+
 
 
     private void loadStaffData() {

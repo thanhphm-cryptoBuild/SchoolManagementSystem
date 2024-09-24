@@ -1,5 +1,5 @@
 package com.app.schoolmanagementsystem.controller;
-
+import com.app.schoolmanagementsystem.session.UserSession;
 import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.entities.Classes;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
@@ -113,8 +113,19 @@ public class StudentController implements Initializable {
         setupTableColumns();
         loadStudentData();
         setupSearchChoiceBox();
-        searchChoiceBox.getItems().add("Filter"); // Add "Filter" as the first item
-        searchChoiceBox.setValue("Filter"); // Set default value to "Filter"
+        searchChoiceBox.getItems().add("Filter"); // Add "Select" as the first item
+        searchChoiceBox.setValue("Filter"); // Set default value to "Select"
+        hideAction();
+    }
+
+    private void hideAction() {
+        // Kiểm tra vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+
+        // Nếu vai trò là "Teacher", ẩn cột action
+        if ("Teacher".equals(currentRole)) {
+            colAction.setVisible(false); // Ẩn cột hành động nếu là Teacher
+        }
     }
 
     private void setupSearchChoiceBox() {
@@ -333,6 +344,8 @@ public class StudentController implements Initializable {
             }
         });
 
+        colAction.setStyle("-fx-alignment: CENTER;");
+
         // Configure Gender column
         colGender.setCellFactory(column -> new TableCell<StudentModel, Boolean>() {
             @Override
@@ -530,6 +543,20 @@ public class StudentController implements Initializable {
 
     @FXML
     void addStudentBTN(MouseEvent event) throws IOException {
+
+        // Kiểm tra vai trò người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Lấy vai trò hiện tại của người dùng
+
+        if ("Teacher".equals(currentRole)) {
+            // Hiển thị thông báo không đủ thẩm quyền
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cảnh báo");
+            alert.setHeaderText(null);
+            alert.setContentText("You do not have sufficient authority to add students.");
+            alert.showAndWait();
+            return; // Dừng phương thức nếu là Teacher
+        }
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAddStudent.fxml"));
         StackPane pageAddStudent = loader.load();
 
@@ -552,6 +579,11 @@ public class StudentController implements Initializable {
         translateTransition.setToX(420);
         translateTransition.setToY(6);
         translateTransition.play();
+    }
+
+    // Phương thức lấy roleName hiện tại
+    private String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Lấy roleName từ UserSession
     }
 
     @FXML

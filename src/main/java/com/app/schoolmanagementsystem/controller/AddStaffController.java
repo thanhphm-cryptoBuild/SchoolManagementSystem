@@ -4,6 +4,7 @@ import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.entities.StaffFamily;
 import com.app.schoolmanagementsystem.entities.StaffRoles;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -183,7 +184,7 @@ public class AddStaffController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         // Initialize choice boxes with roles, genders, salaries, education backgrounds, and experiences
         // Đường dẫn đến hình ảnh trong thư mục resources
-        String path = "avatar-ex.jpg";
+        String path = "useravatar.png";
         InputStream imageStream = getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/" + path);
 
         if (imageStream != null) {
@@ -191,10 +192,20 @@ public class AddStaffController implements Initializable {
             profileImageView.setImage(image);
         } else {
             // Sử dụng hình ảnh mặc định nếu không tìm thấy hình ảnh
-            Image defaultImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/avatar-ex.jpg"));
+            Image defaultImage = new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/useravatar.png"));
             profileImageView.setImage(defaultImage);
         }
-        roleChoiceBox.getItems().addAll("Admin Master", "Manager", "Teacher");
+
+        // Lấy vai trò hiện tại
+        String currentRoleName = getCurrentRoleName(); // Giả sử bạn có phương thức này để lấy roleName
+        if ("Manager".equals(currentRoleName)) {
+            // Nếu là Manager, chỉ thêm "Teacher"
+            roleChoiceBox.getItems().add("Teacher");
+        } else {
+            // Nếu không, thêm tất cả các vai trò
+            roleChoiceBox.getItems().addAll("Admin Master", "Manager", "Teacher");
+        }
+
         genderChoiceBox.getItems().addAll("Male", "Female");
         salaryChoiceBox.getItems().addAll("50000", "60000", "70000", "80000");
         educationChoiceBox.getItems().addAll("Intermediate", "College", "University", "Master's", "Ph.D.");
@@ -203,6 +214,7 @@ public class AddStaffController implements Initializable {
         relationshipChoiceBox1.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         relationshipChoiceBox2.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         // Cấu hình DatePicker để chỉ cho phép chọn ngày từ năm 2010 trở về trước
+
         LocalDate maxDate = LocalDate.of(2000, 12, 31); // Ngày tối đa
         dobDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
             @Override
@@ -225,17 +237,9 @@ public class AddStaffController implements Initializable {
         });
     }
 
-    @FXML
-    void handleUploadAvatar(MouseEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif"));
-        File file = fileChooser.showOpenDialog(null);
-
-        if (file != null) {
-            avatarPath = file.toURI().toString(); // Lưu đường dẫn URL
-            Image image = new Image(avatarPath);
-            profileImageView.setImage(image); // Hiển thị hình ảnh lên ImageView
-        }
+    // Phương thức để lấy roleName hiện tại
+    public String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
     }
 
 
@@ -374,13 +378,13 @@ public class AddStaffController implements Initializable {
             hireDateErrorLabel.setVisible(false);
         }
 
-        if (positionName.isEmpty()) {
-            positionNameErrorLabel.setText("Position Name cannot be left blank.");
+        if (positionName == null) {
+            positionNameErrorLabel.setText("positionName cannot be left blank.");
             positionNameErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
         } else {
-            positionNameErrorLabel.setVisible(false);
+            salaryErrorLabel.setVisible(false);
         }
 
 
@@ -431,28 +435,28 @@ public class AddStaffController implements Initializable {
 
 
         // Validate định dạng hình đại diện
-        if (avatar.isEmpty()) {
-            chooseFileErrorLabel.setText("Avatar cannot be blank.");
-            chooseFileErrorLabel.setVisible(true);
-            hasError = true;
-            isValid = false;
-        } else {
-            // Danh sách các định dạng hợp lệ
-            List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
-
-            // Lấy phần mở rộng của tệp
-            String fileExtension = avatar.substring(avatar.lastIndexOf('.') + 1).toLowerCase();
-
-            // Kiểm tra định dạng
-            if (!validFormats.contains(fileExtension)) {
-                chooseFileErrorLabel.setText("Avatar must be in format: png, jpg, hoặc jpeg.");
-                chooseFileErrorLabel.setVisible(true);
-                hasError = true;
-                isValid = false;
-            } else {
-                chooseFileErrorLabel.setVisible(false);
-            }
-        }
+//        if (avatar.isEmpty()) {
+//            chooseFileErrorLabel.setText("Avatar cannot be blank.");
+//            chooseFileErrorLabel.setVisible(true);
+//            hasError = true;
+//            isValid = false;
+//        } else {
+//            // Danh sách các định dạng hợp lệ
+//            List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
+//
+//            // Lấy phần mở rộng của tệp
+//            String fileExtension = avatar.substring(avatar.lastIndexOf('.') + 1).toLowerCase();
+//
+//            // Kiểm tra định dạng
+//            if (!validFormats.contains(fileExtension)) {
+//                chooseFileErrorLabel.setText("Avatar must be in format: png, jpg, hoặc jpeg.");
+//                chooseFileErrorLabel.setVisible(true);
+//                hasError = true;
+//                isValid = false;
+//            } else {
+//                chooseFileErrorLabel.setVisible(false);
+//            }
+//        }
 
         if (email.isEmpty()) {
             emailErrorLabel.setText("Email cannot be blank.");

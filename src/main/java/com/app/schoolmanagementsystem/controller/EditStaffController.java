@@ -4,6 +4,7 @@ import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.entities.StaffFamily;
 import com.app.schoolmanagementsystem.entities.StaffRoles;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.session.UserSession;
 import com.app.schoolmanagementsystem.utils.PasswordUtil;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
@@ -277,6 +278,15 @@ public class EditStaffController implements Initializable {
 
             // Đảm bảo roleChoiceBox có các giá trị để chọn
             ObservableList<String> roleOptions = FXCollections.observableArrayList("Admin Master", "Manager", "Teacher");
+            // Kiểm tra vai trò người dùng hiện tại
+            String currentRole = getCurrentRoleName();
+
+            // Nếu vai trò là "Manager", chỉ giữ lại "Teacher"
+            if ("Manager".equals(currentRole)) {
+                roleOptions.clear(); // Xóa hết các tùy chọn hiện có
+                roleOptions.add("Teacher"); // Chỉ thêm "Teacher" vào
+            }
+            // Đặt giá trị cho ChoiceBox
             roleChoiceBox.setItems(roleOptions);
 
             // Lấy và hiển thị thông tin gia đình
@@ -284,6 +294,10 @@ public class EditStaffController implements Initializable {
 
 
         }
+    }
+
+    public String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
     }
 
     private void loadFamilyData(int staffID) {
@@ -472,7 +486,7 @@ public class EditStaffController implements Initializable {
             hireDateErrorLabel.setVisible(false);
         }
 
-        if (position.isEmpty()) {
+        if (position == null) {
             positionNameErrorLabel.setText("Position cannot be left blank.");
             positionNameErrorLabel.setVisible(true);
             hasError = true;

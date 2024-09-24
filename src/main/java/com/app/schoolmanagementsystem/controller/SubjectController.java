@@ -1,9 +1,14 @@
 package com.app.schoolmanagementsystem.controller;
 
+import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.entities.Subject;
 import com.app.schoolmanagementsystem.entities.SubjectClass;
+import com.app.schoolmanagementsystem.model.StaffModel;
 import com.app.schoolmanagementsystem.model.SubjectClassModel;
 import com.app.schoolmanagementsystem.model.SubjectModel;
+import com.app.schoolmanagementsystem.session.UserSession;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,8 +17,10 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -21,6 +28,9 @@ public class SubjectController implements Initializable {
 
     @FXML
     private StackPane pageSubject;
+
+    @FXML
+    private VBox formAddSubject;
 
     @FXML
     private ChoiceBox<?> selectClassNo;
@@ -32,17 +42,27 @@ public class SubjectController implements Initializable {
     private ChoiceBox<Subject> selectSubject;
 
     @FXML
-    private ChoiceBox<?> selectTeacherID;
+    private ChoiceBox<Integer> selectTeacherID;
 
     @FXML
-    private ChoiceBox<?> selectTeacherName;
+    private ChoiceBox<Staff> selectTeacherName;
 
     @FXML
     private TextField textDescription;
 
+    private final Staff selectTeacherPlaceholder = new Staff(-1, "", "", "", "", "");
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        loadSubjects();
+        populateChoiceBoxes();
+        disableformAddSubject();
+    }
+
 
     @FXML
     void addFormSubject(MouseEvent event) {
+
     }
 
     @FXML
@@ -50,10 +70,19 @@ public class SubjectController implements Initializable {
 
     }
 
+    private void disableformAddSubject() {
+        // Kiểm tra vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-            loadSubjects();
+        // Nếu vai trò là "Teacher", ẩn cột action
+        if ("Teacher".equals(currentRole)) {
+            formAddSubject.setDisable(true); // an add class
+        }
+    }
+
+    // Phương thức lấy roleName hiện tại
+    private String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Lấy roleName từ UserSession
     }
 
     private void loadSubjects() {
@@ -72,6 +101,55 @@ public class SubjectController implements Initializable {
             @Override
             public Subject fromString(String string) {
                 return null;
+            }
+        });
+    }
+
+    void populateChoiceBoxes() {
+        StaffModel staffModel = new StaffModel();
+        List<Staff> staffList = staffModel.selectName();
+
+        List<Staff> uniqueStaffList = new ArrayList<>();
+        for (Staff staff : staffList) {
+            boolean exists = uniqueStaffList.stream()
+                    .anyMatch(s -> s.getFirstName().equals(staff.getFirstName())
+                            && s.getLastName().equals(staff.getLastName())
+                            && s.getPositionName().equals(staff.getPositionName()));
+            if (!exists) {
+                uniqueStaffList.add(staff);
+            }
+        }
+
+        uniqueStaffList.add(0, selectTeacherPlaceholder);
+
+        ObservableList<Staff> observableStaffList = FXCollections.observableArrayList(uniqueStaffList);
+
+        selectTeacherName.setItems(observableStaffList);
+
+        selectTeacherName.getSelectionModel().select(selectTeacherPlaceholder);
+
+        selectTeacherName.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Staff>() {
+            @Override
+            public void changed(ObservableValue<? extends Staff> observable, Staff oldValue, Staff newValue) {
+                if (newValue != null) {
+                    String selectedFirstName = newValue.getFirstName();
+                    String selectedLastName = newValue.getLastName();
+                    String selectedPosition = newValue.getPositionName();
+
+                    List<Integer> teacherIDs = new ArrayList<>();
+                    for (Staff staff : staffList) {
+                        if (staff.getFirstName().equals(selectedFirstName) &&
+                                staff.getLastName().equals(selectedLastName) &&
+                                staff.getPositionName().equals(selectedPosition)) {
+                            teacherIDs.add(staff.getStaffID());
+                        }
+                    }
+
+                    selectTeacherID.setItems(FXCollections.observableArrayList(teacherIDs));
+                    if (!teacherIDs.isEmpty()) {
+                        selectTeacherID.getSelectionModel().selectFirst();
+                    }
+                }
             }
         });
     }

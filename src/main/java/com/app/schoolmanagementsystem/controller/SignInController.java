@@ -147,7 +147,7 @@ public class SignInController implements Initializable {
                     FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/Dashboard.fxml"));
                     Scene scene = new Scene(fxmlLoader.load(), 1366, 780);
 
-                    // Truyền vai trò tới DashboardController
+                    // Truyền vai trò tới Controller
                     Controller dashboardController = fxmlLoader.getController();
                     dashboardController.setRoleName(roleName);
 
