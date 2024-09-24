@@ -347,10 +347,10 @@ public class CalendarController implements Initializable {
             showAlert(Alert.AlertType.ERROR, "Form Error!", "Please select a date");
             return;
         }
-        if (description.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter a description");
-            return;
-        }
+//        if (description.isEmpty()) {
+//            showAlert(Alert.AlertType.ERROR, "Form Error!", "Please enter a description");
+//            return;
+//        }
 
         try (Connection connection = ConnectDB.connection()) {
             if (isTeacherTimeConflict(connection, teacherID, date, time)) {
