@@ -601,6 +601,15 @@ public class ClassesController implements Initializable {
         validateEditTeacherID.setText("");
     }
 
+//    private void disableFrom() {
+//        formAddClass.setDisable(true);
+//        setColumnVisible(colAction, false);
+//    }
+//
+//    private void setColumnVisible(TableColumn<?, ?> column, boolean isVisible) {
+//        column.setVisible(isVisible);
+//    }
+
     private void openFormEdit(ClassModel classModel) {
         formEditClass.setTranslateX(-50);
         formEditClass.setVisible(true);
@@ -653,6 +662,7 @@ public class ClassesController implements Initializable {
         populateChoiceBoxes();
         loadClassesData();
         initializeClassNo();
+//        disableFrom();
 
         enrollmentPicker.setOnAction(event -> {
             LocalDate enrollmentDate = enrollmentPicker.getValue();

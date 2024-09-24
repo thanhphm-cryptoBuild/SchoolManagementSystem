@@ -170,9 +170,9 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox fx:id="formEditClass" prefHeight="626.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;" visible="false">
+                        <VBox fx:id="formEditClass" prefHeight="679.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;" visible="false">
                            <children>
-                              <VBox prefHeight="619.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
+                              <VBox prefHeight="678.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
                                  <children>
                                     <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
                                        <children>
@@ -202,7 +202,7 @@
                                           <Insets bottom="15.0" />
                                        </VBox.margin>
                                     </Separator>
-                                    <VBox prefHeight="502.0" prefWidth="310.0" spacing="5.0">
+                                    <VBox prefHeight="576.0" prefWidth="310.0" spacing="5.0">
                                        <children>
                                           <HBox prefHeight="80.0" prefWidth="460.0" spacing="20.0">
                                              <children>
@@ -405,14 +405,14 @@
                            <children>
                               <TableView fx:id="tableViewClass" prefHeight="646.0" prefWidth="895.0">
                                  <columns>
-                                    <TableColumn fx:id="colClassID" prefWidth="65.0" text="Class ID" />
-                                    <TableColumn fx:id="colClassName" prefWidth="70.0" text="Class" />
-                                    <TableColumn fx:id="colSection" prefWidth="70.0" text="Section" />
+                                    <TableColumn fx:id="colClassID" prefWidth="55.0" text="Class ID" />
+                                    <TableColumn fx:id="colClassName" prefWidth="55.0" text="Class" />
+                                    <TableColumn fx:id="colSection" prefWidth="55.0" text="Section" />
                                     <TableColumn fx:id="colTeacherName" prefWidth="162.0" text="Homeroom Teacher (ID)" />
-                                    <TableColumn fx:id="colPhoneNumberTeacher" prefWidth="120.0" text="Phone Number" />
-                                    <TableColumn fx:id="colEnrollmentDate" prefWidth="140.0" text="Start Date" />
-                                    <TableColumn fx:id="colCompleteDate" prefWidth="140.0" text="End Date" />
-                                    <TableColumn fx:id="colDescription" prefWidth="140.0" text="Description" />
+                                    <TableColumn fx:id="colPhoneNumberTeacher" prefWidth="100.0" text="Phone Number" />
+                                    <TableColumn fx:id="colEnrollmentDate" prefWidth="100.0" text="Start Date" />
+                                    <TableColumn fx:id="colCompleteDate" prefWidth="100.0" text="End Date" />
+                                    <TableColumn fx:id="colDescription" prefWidth="135.0" text="Description" />
                                     <TableColumn fx:id="colAction" prefWidth="90.0" text="Action" />
                                  </columns>
                               </TableView>

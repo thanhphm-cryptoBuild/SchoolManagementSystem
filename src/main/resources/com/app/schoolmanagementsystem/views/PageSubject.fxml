@@ -24,142 +24,252 @@
          <children>
             <HBox prefHeight="700.0">
                <children>
-                  <VBox prefHeight="626.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;">
+                  <Pane>
                      <children>
-                        <VBox alignment="CENTER" prefHeight="523.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
+                        <VBox fx:id="formAddSubjectClass" prefHeight="517.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;">
                            <children>
-                              <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
+                              <VBox prefHeight="517.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
                                  <children>
-                                    <Label prefHeight="26.0" prefWidth="468.0" styleClass="title_label" text="Add New Subject">
-                                       <font>
-                                          <Font name="Sitka Text Bold" size="18.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </HBox>
-                              <Separator prefWidth="200.0">
-                                 <VBox.margin>
-                                    <Insets bottom="15.0" top="15.0" />
-                                 </VBox.margin>
-                              </Separator>
-                              <VBox prefHeight="450.0" prefWidth="400.0" spacing="5.0">
-                                 <children>
-                                    <HBox prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                    <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
                                        <children>
-                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="351.0" spacing="5.0">
-                                             <children>
-                                                <Label text="Subject">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="selectSubject" prefHeight="39.0" prefWidth="315.0" />
-                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
-                                             </children>
-                                          </VBox>
+                                          <Label prefHeight="26.0" prefWidth="468.0" styleClass="title_label" text="Add Subject Detail">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="18.0" />
+                                             </font>
+                                          </Label>
                                        </children>
                                     </HBox>
-                                    <HBox layoutX="10.0" layoutY="90.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
-                                       <children>
-                                          <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
-                                             <children>
-                                                <Label text="Teacher Name">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="selectTeacherName" prefHeight="40.0" prefWidth="250.0" />
-                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
-                                             </children>
-                                          </VBox>
-                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
-                                             <children>
-                                                <Label text="Teacher ID">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="selectTeacherID" prefHeight="40.0" prefWidth="150.0" />
-                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="10.0" layoutY="95.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
-                                       <children>
-                                          <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
-                                             <children>
-                                                <Label text="Class">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="selectClassNo" prefHeight="39.0" prefWidth="326.0" />
-                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
-                                             </children>
-                                          </VBox>
-                                          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
-                                             <children>
-                                                <Label text="Section">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <ChoiceBox fx:id="selectSectionClass" prefHeight="39.0" prefWidth="326.0" />
-                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                    <HBox layoutX="10.0" layoutY="154.0" prefHeight="80.0" prefWidth="460.0">
-                                       <children>
-                                          <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
-                                             <children>
-                                                <Label text="Description">
-                                                   <font>
-                                                      <Font name="Sitka Text" size="12.0" />
-                                                   </font>
-                                                </Label>
-                                                <TextField fx:id="textDescription" prefHeight="40.0" prefWidth="250.0" />
-                                                <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
-                                             </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                    <HBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="250.0" prefHeight="45.0" prefWidth="460.0" spacing="20.0">
-                                       <children>
-                                          <VBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
-                                             <children>
-                                                <Button mnemonicParsing="false" onMouseClicked="#addFormSubject" prefHeight="40.0" prefWidth="250.0" styleClass="button_form_add" text="Add" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Sitka Text Bold" size="14.0" />
-                                                   </font>
-                                                </Button>
-                                             </children>
-                                          </VBox>
-                                          <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
-                                             <children>
-                                                <Button mnemonicParsing="false" onMouseClicked="#resetFormSubject" prefHeight="40.0" prefWidth="250.0" styleClass="reset_form_add" text="Reset" textFill="WHITE">
-                                                   <font>
-                                                      <Font name="Sitka Text Bold" size="14.0" />
-                                                   </font>
-                                                </Button>
-                                             </children>
-                                          </VBox>
-                                       </children>
+                                    <Separator prefWidth="200.0">
                                        <VBox.margin>
-                                          <Insets />
+                                          <Insets bottom="15.0" />
                                        </VBox.margin>
-                                    </HBox>
+                                    </Separator>
+                                    <VBox prefHeight="408.0" prefWidth="310.0" spacing="5.0">
+                                       <children>
+                                          <HBox prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="351.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Subject">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="selectSubject" prefHeight="39.0" prefWidth="315.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="10.0" layoutY="95.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Class Name">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="selectClassName" prefHeight="39.0" prefWidth="326.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="10.0" layoutY="90.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Subject Teacher ">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="selectTeacherName" prefHeight="40.0" prefWidth="350.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="10.0" layoutY="95.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Teacher ID (Filter of Subject Teacher)">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="selectTeacherID" prefHeight="40.0" prefWidth="350.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="250.0" prefHeight="45.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onMouseClicked="#addFormSubject" prefHeight="40.0" prefWidth="250.0" styleClass="button_form_add" text="Add" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Sitka Text Bold" size="14.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onMouseClicked="#resetFormSubject" prefHeight="40.0" prefWidth="250.0" styleClass="reset_form_add" text="Reset" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Sitka Text Bold" size="14.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
                                  </children>
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                                 </padding>
                               </VBox>
                            </children>
-                           <padding>
-                              <Insets bottom="20.0" left="20.0" right="20.0" top="30.0" />
-                           </padding>
+                        </VBox>
+                        <VBox fx:id="formEditSubjectClass" prefHeight="517.0" prefWidth="350.0" spacing="20.0" style="-fx-background-radius: 10px;" visible="false">
+                           <children>
+                              <VBox prefHeight="517.0" prefWidth="350.0" style="-fx-background-radius: 10px; -fx-background-color: #FFFFFF;">
+                                 <children>
+                                    <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="400.0">
+                                       <children>
+                                          <Label prefHeight="26.0" prefWidth="244.0" styleClass="title_label_edit" text="Edit Subject Detail">
+                                             <font>
+                                                <Font name="Sitka Text Bold" size="18.0" />
+                                             </font>
+                                          </Label>
+                                          <HBox prefHeight="100.0" prefWidth="200.0">
+                                             <children>
+                                                <Label alignment="CENTER_RIGHT" prefHeight="60.0" prefWidth="199.0" styleClass="title_label_edit" text="ID: ">
+                                                   <font>
+                                                      <Font name="Sitka Text Bold" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="showEditClassSubjectID" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="60.0" prefWidth="130.0" styleClass="title_label_edit">
+                                                   <font>
+                                                      <Font name="Sitka Text Bold" size="16.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </HBox>
+                                    <Separator prefWidth="200.0">
+                                       <VBox.margin>
+                                          <Insets bottom="15.0" />
+                                       </VBox.margin>
+                                    </Separator>
+                                    <VBox prefHeight="408.0" prefWidth="310.0" spacing="5.0">
+                                       <children>
+                                          <HBox prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="351.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Subject">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="showEditSubject" prefHeight="39.0" prefWidth="315.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="10.0" layoutY="95.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Class Name">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="showEditClassName" prefHeight="39.0" prefWidth="326.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="10.0" layoutY="90.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Subject Teacher ">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="showEditTeacherName" prefHeight="40.0" prefWidth="350.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox layoutX="10.0" layoutY="95.0" prefHeight="80.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="500.0" spacing="5.0">
+                                                   <children>
+                                                      <Label text="Teacher ID (Filter of Subject Teacher)">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="12.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <ChoiceBox fx:id="showEditTeacherID" prefHeight="40.0" prefWidth="350.0" />
+                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                          </HBox>
+                                          <HBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="250.0" prefHeight="45.0" prefWidth="460.0" spacing="20.0">
+                                             <children>
+                                                <VBox alignment="BOTTOM_LEFT" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onMouseClicked="#updateFormEditSubject" prefHeight="40.0" prefWidth="250.0" styleClass="button_form_add" text="Update" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Sitka Text Bold" size="14.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </VBox>
+                                                <VBox alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="250.0" spacing="5.0">
+                                                   <children>
+                                                      <Button mnemonicParsing="false" onMouseClicked="#closeFormEditSubject" prefHeight="40.0" prefWidth="250.0" styleClass="reset_form_add" text="Cancle" textFill="WHITE">
+                                                         <font>
+                                                            <Font name="Sitka Text Bold" size="14.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </VBox>
+                                             </children>
+                                             <VBox.margin>
+                                                <Insets top="10.0" />
+                                             </VBox.margin>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="20.0" left="20.0" right="20.0" top="10.0" />
+                                 </padding>
+                              </VBox>
+                           </children>
                         </VBox>
                      </children>
-                  </VBox>
+                  </Pane>
                   <Pane prefHeight="690.0" prefWidth="15.0" />
                   <VBox prefHeight="700.0" prefWidth="895.0" style="-fx-background-color: #FFFFFF; -fx-background-radius: 10px;">
                      <children>
@@ -169,7 +279,7 @@
                                  <children>
                                     <VBox alignment="CENTER_LEFT" prefHeight="22.0" prefWidth="450.0">
                                        <children>
-                                          <Label prefHeight="51.0" prefWidth="227.0" styleClass="title_label" text="All Subject List">
+                                          <Label prefHeight="51.0" prefWidth="227.0" styleClass="title_label" text="All Subject Detail">
                                              <font>
                                                 <Font name="Sitka Text Bold" size="18.0" />
                                              </font>
@@ -235,16 +345,14 @@
                         </VBox>
                         <VBox prefHeight="646.0" prefWidth="895.0" style="-fx-background-color: #FFFFFF;">
                            <children>
-                              <TableView prefHeight="646.0" prefWidth="895.0">
+                              <TableView fx:id="tableViewClassSubject" prefHeight="646.0" prefWidth="895.0">
                                  <columns>
-                                    <TableColumn prefWidth="100.0" text="Column X" />
-                                    <TableColumn prefWidth="100.0" text="Column X" />
-                                    <TableColumn prefWidth="100.0" text="Column X" />
-                                    <TableColumn prefWidth="100.0" text="Column X" />
-                                    <TableColumn prefWidth="100.0" text="Column X" />
-                                    <TableColumn prefWidth="100.0" text="Column X" />
-                                    <TableColumn prefWidth="100.0" text="Column X" />
-                                    <TableColumn prefWidth="153.0" text="Column X" />
+                                    <TableColumn fx:id="colClassSubjectID" prefWidth="60.0" text="ID" />
+                                    <TableColumn fx:id="colSubject" prefWidth="120.0" text="Subject" />
+                                    <TableColumn fx:id="colClassName" prefWidth="200.0" text="Class Name (Acadamic Year)" />
+                                    <TableColumn fx:id="colTeacherName" prefWidth="190.0" text="Subject Teacher (ID)" />
+                                    <TableColumn fx:id="colPhoneNumber" prefWidth="130.0" text="Phone Number" />
+                                    <TableColumn fx:id="colAction" prefWidth="152.0" text="Action" />
                                  </columns>
                               </TableView>
                            </children>

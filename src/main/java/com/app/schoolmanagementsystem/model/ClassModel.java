@@ -138,6 +138,14 @@ public class ClassModel {
         return "";
     }
 
+    public String getClassNameWithYears() {
+        if (enrollmentDate != null && completeDate != null) {
+            return className + section + " ("+ enrollmentDate.getYear() + " - " + completeDate.getYear() + ")";
+        }
+        return className + section;
+    }
+
+
 
     @Override
     public String toString() {
