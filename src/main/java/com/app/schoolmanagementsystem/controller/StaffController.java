@@ -34,6 +34,7 @@ import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 
@@ -601,7 +602,6 @@ public class StaffController implements Initializable {
             loadStaffData(); // Refresh the list
             resetSearchFields();
         }
-
     }
 
 

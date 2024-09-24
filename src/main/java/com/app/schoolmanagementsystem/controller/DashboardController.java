@@ -40,9 +40,16 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label label_totalStudent;
+
+    @FXML
+    private Label label_totalClass;
+
     private StaffModel staffModel;
 
     private StudentModel studentModel;
+    @FXML
+    private Label label_totalClasses;
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -55,6 +62,7 @@ public class DashboardController implements Initializable {
         studentModel = new StudentModel();
         updateTotalStudent();
 
+        updateClassCount();
     }
 
     private void updateTotalStaff() {
@@ -67,6 +75,20 @@ public class DashboardController implements Initializable {
         label_totalStudent.setText(String.valueOf(totalStudent));
     }
 
+    private void updateClassCount() {
+        int totalClasses = countClasses();
+        label_totalClasses.setText(String.valueOf(totalClasses));
+    }
+
+    private int countClasses() {
+        int totalClasses = 0;
+        try {
+            totalClasses = ConnectDB.countClasses();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return totalClasses;
+    }
 
 
     void loadDataPieChart() {
@@ -97,22 +119,37 @@ public class DashboardController implements Initializable {
         XYChart.Series lineChartOne = new XYChart.Series<>();
         lineChartOne.setName("Staff");
 
-        // Fetch staff data dynamically
-        List<Integer> staffData = ConnectDB.getStaffData();
-        for (int i = 0; i < staffData.size(); i++) {
-            lineChartOne.getData().add(new XYChart.Data<>(String.valueOf(i + 1), staffData.get(i)));
-        }
+        lineChartOne.getData().add(new XYChart.Data<>("1", 2));
+        lineChartOne.getData().add(new XYChart.Data<>("2", 10));
+        lineChartOne.getData().add(new XYChart.Data<>("3", 9));
+        lineChartOne.getData().add(new XYChart.Data<>("4", 11));
+        lineChartOne.getData().add(new XYChart.Data<>("5", 15));
+        lineChartOne.getData().add(new XYChart.Data<>("6", 10));
+        lineChartOne.getData().add(new XYChart.Data<>("7", 14));
+        lineChartOne.getData().add(new XYChart.Data<>("8", 20));
+        lineChartOne.getData().add(new XYChart.Data<>("9", 21));
+        lineChartOne.getData().add(new XYChart.Data<>("10", 22));
+        lineChartOne.getData().add(new XYChart.Data<>("11", 34));
+        lineChartOne.getData().add(new XYChart.Data<>("12", 50));
 
-        XYChart.Series lineChartTwo = new XYChart.Series<>();
-        lineChartTwo.setName("Student");
 
-        // Fetch student data dynamically
-        List<Integer> studentData = ConnectDB.getStudentData();
-        for (int i = 0; i < studentData.size(); i++) {
-            lineChartTwo.getData().add(new XYChart.Data<>(String.valueOf(i + 1), studentData.get(i)));
-        }
+        XYChart.Series lineChartThree = new XYChart.Series<>();
+        lineChartThree.setName("Student");
 
-        lineview.getData().addAll(lineChartOne, lineChartTwo);
+        lineChartThree.getData().add(new XYChart.Data<>("1", 50));
+        lineChartThree.getData().add(new XYChart.Data<>("2", 30));
+        lineChartThree.getData().add(new XYChart.Data<>("3", 10));
+        lineChartThree.getData().add(new XYChart.Data<>("4", 25));
+        lineChartThree.getData().add(new XYChart.Data<>("5", 12));
+        lineChartThree.getData().add(new XYChart.Data<>("6", 15));
+        lineChartThree.getData().add(new XYChart.Data<>("7", 60));
+        lineChartThree.getData().add(new XYChart.Data<>("8", 62));
+        lineChartThree.getData().add(new XYChart.Data<>("9", 68));
+        lineChartThree.getData().add(new XYChart.Data<>("10", 89));
+        lineChartThree.getData().add(new XYChart.Data<>("11", 80));
+        lineChartThree.getData().add(new XYChart.Data<>("12", 100));
+
+        lineview.getData().addAll(lineChartOne, lineChartThree);
 
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }

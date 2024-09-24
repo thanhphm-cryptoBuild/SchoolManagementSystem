@@ -231,16 +231,20 @@ public class AdvancedController implements Initializable {
                         if (empty || imagePath == null) {
                             setGraphic(null);
                         } else {
-                            ImageView imageView = new ImageView(new Image(imagePath));
-                            imageView.setFitWidth(24);
-                            imageView.setFitHeight(24);
-                            Circle clip = new Circle(12, 12, 12);
-                            imageView.setClip(clip);
+                            try {
+                                ImageView imageView = new ImageView(new Image(imagePath));
+                                imageView.setFitWidth(24);
+                                imageView.setFitHeight(24);
+                                Circle clip = new Circle(12, 12, 12);
+                                imageView.setClip(clip);
 
-                            // Tạo HBox và căn giữa
-                            HBox hBox = new HBox(imageView);
-                            hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
-                            setGraphic(hBox);
+                                // Tạo HBox và căn giữa
+                                HBox hBox = new HBox(imageView);
+                                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                                setGraphic(hBox);
+                            } catch (IllegalArgumentException e) {
+                                setGraphic(null); // Handle invalid URL gracefully
+                            }
                         }
                     }
                 };
@@ -277,16 +281,20 @@ public class AdvancedController implements Initializable {
                         if (empty || imagePath == null) {
                             setGraphic(null);
                         } else {
-                            ImageView imageView = new ImageView(new Image(imagePath));
-                            imageView.setFitWidth(24);
-                            imageView.setFitHeight(24);
-                            Circle clip = new Circle(12, 12, 12);
-                            imageView.setClip(clip);
+                            try {
+                                ImageView imageView = new ImageView(new Image(imagePath));
+                                imageView.setFitWidth(24);
+                                imageView.setFitHeight(24);
+                                Circle clip = new Circle(12, 12, 12);
+                                imageView.setClip(clip);
 
-                            // Tạo HBox và căn giữa
-                            HBox hBox = new HBox(imageView);
-                            hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
-                            setGraphic(hBox);
+                                // Tạo HBox và căn giữa
+                                HBox hBox = new HBox(imageView);
+                                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                                setGraphic(hBox);
+                            } catch (IllegalArgumentException e) {
+                                setGraphic(null); // Handle invalid URL gracefully
+                            }
                         }
                     }
                 };

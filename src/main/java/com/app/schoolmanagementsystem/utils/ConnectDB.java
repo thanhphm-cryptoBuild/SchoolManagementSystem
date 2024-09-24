@@ -97,4 +97,18 @@ public class ConnectDB {
         }
         return studentData;
     }
+    public static int countClasses() {
+        int totalClasses = 0;
+        String query = "SELECT COUNT(*) AS total FROM classes";
+        try (Connection conn = connection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                totalClasses = rs.getInt("total");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return totalClasses;
+    }
 }

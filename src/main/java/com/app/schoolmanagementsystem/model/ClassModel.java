@@ -1,6 +1,14 @@
 package com.app.schoolmanagementsystem.model;
 
 import java.time.LocalDate;
+import com.app.schoolmanagementsystem.utils.ConnectDB;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassModel {
     private int classID;
@@ -138,7 +146,6 @@ public class ClassModel {
         return "";
     }
 
-
     @Override
     public String toString() {
         return className;
@@ -150,5 +157,39 @@ public class ClassModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public static List<ClassModel> searchClassesByName(String className) {
+        List<ClassModel> classList = new ArrayList<>();
+        String query = "SELECT c.ClassID, c.ClassName, c.Section, c.StaffID, c.EnrollmentDate, c.CompleteDate, c.Description, " +
+                       "CONCAT(s.FirstName, ' ', s.LastName) AS TeacherName, s.PhoneNumber AS TeacherPhoneNumber " +
+                       "FROM Classes c " +
+                       "JOIN Staff s ON c.StaffID = s.StaffID " +
+                       "WHERE c.ClassName LIKE ?";
+    
+        try (Connection connection = ConnectDB.connection();
+             PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setString(1, "%" + className + "%");
+            ResultSet rs = pstmt.executeQuery();
+    
+            while (rs.next()) {
+                ClassModel classModel = new ClassModel(
+                        rs.getInt("ClassID"),
+                        rs.getString("ClassName"),
+                        rs.getString("Section"),
+                        rs.getInt("StaffID"),
+                        rs.getDate("EnrollmentDate").toLocalDate(),
+                        rs.getDate("CompleteDate").toLocalDate(),
+                        rs.getString("Description"),
+                        rs.getString("TeacherName"),
+                        rs.getString("TeacherPhoneNumber")
+                );
+                classList.add(classModel);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    
+        return classList; // Ensure the method returns the list
     }
 }

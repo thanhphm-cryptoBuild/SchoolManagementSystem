@@ -48,8 +48,6 @@ public class ClassesController implements Initializable {
     @FXML
     private TextField descriptionClass;
 
-    @FXML
-    private TableView<ClassModel> tableViewClass;
 
     @FXML
     private TableColumn<ClassModel, LocalDate> colCompleteDate;
@@ -149,6 +147,25 @@ public class ClassesController implements Initializable {
 
     @FXML
     private Label validateEditTeacherName;
+    @FXML
+    private TextField searchTextField;
+
+    @FXML
+    private TextField searchSectionField;
+
+    @FXML
+    private TableView<ClassModel> tableViewClass;
+    @FXML
+    private void searchClasses(MouseEvent event) {
+        String className = searchTextField.getText();
+        List<ClassModel> searchResults = ClassModel.searchClassesByName(className);
+        updateTableView(searchResults);
+    }
+
+    private void updateTableView(List<ClassModel> searchResults) {
+        ObservableList<ClassModel> classList = FXCollections.observableArrayList(searchResults);
+        tableViewClass.setItems(classList);
+    }
 
 
     private final Staff selectTeacherPlaceholder = new Staff(-1, "", "", "", "", "");

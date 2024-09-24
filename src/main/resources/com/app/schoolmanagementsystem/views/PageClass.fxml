@@ -350,12 +350,14 @@
                                           <HBox alignment="CENTER" prefHeight="36.0" prefWidth="400.0" styleClass="search_class">
                                              <children>
                                                 <HBox alignment="CENTER" prefHeight="20.0" prefWidth="170.0" styleClass="search_icon_field_class">
-                                                   <children>
-                                                      <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="20" wrappingWidth="25.723751068115234" />
-                                                   </children>
+                                                  <StackPane alignment="CENTER" prefHeight="36.0" prefWidth="36.0" styleClass="search_icon_field_class" onMouseClicked="#searchClasses">
+    <children>
+        <FontAwesomeIcon fill="#ad56ff" glyphName="SEARCH" size="20" wrappingWidth="25.723751068115234" />
+    </children>
+</StackPane>
                                                 </HBox>
                                                 <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                                <TextField prefHeight="30.0" prefWidth="280.0" promptText="Search Here" styleClass="search_field_class">
+                                                <TextField fx:id="searchTextField" layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="220.0" promptText="Search Here" styleClass="search_field_class">
                                                    <font>
                                                       <Font name="Sitka Text" size="14.0" />
                                                    </font>

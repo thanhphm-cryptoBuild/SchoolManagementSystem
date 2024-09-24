@@ -173,7 +173,7 @@
                                     <Insets bottom="15.0" top="15.0" />
                                  </padding>
                               </Separator>
-                              <Label prefHeight="76.0" prefWidth="231.0" text="20" textFill="WHITE">
+                              <Label fx:id="label_totalClasses" prefHeight="76.0" prefWidth="231.0" text="20" textFill="WHITE">
                                  <font>
                                     <Font name="System Bold" size="36.0" />
                                  </font>
