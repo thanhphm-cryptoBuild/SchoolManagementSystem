@@ -247,7 +247,7 @@ public class EditStaffController implements Initializable {
             positionNameChoiceBox.setValue(currentStaff.getPositionName());
             // Các tùy cho PositionName
             ObservableList<String> positionOptions = FXCollections.observableArrayList(
-                    "Admin Master", "Manager", "Teacher"
+                    "Math teacher", "Physics teacher", "Biology teacher, Music teacher"
             );
             positionNameChoiceBox.setItems(positionOptions);
 
