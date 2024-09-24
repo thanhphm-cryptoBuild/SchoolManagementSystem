@@ -4,6 +4,7 @@ import com.app.schoolmanagementsystem.entities.Classes;
 import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.model.ClassModel;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
@@ -166,8 +167,6 @@ public class ClassesController implements Initializable {
         LocalDate completeDate = completePicker.getValue();
 
         int staffID = selectTeacherID.getValue();
-
-        //
 
         try {
             ClassModel newClass = new ClassModel(0, selectedClass, section, staffID, enrollmentDate, completeDate, description);
@@ -603,15 +602,6 @@ public class ClassesController implements Initializable {
         validateEditTeacherID.setText("");
     }
 
-//    private void disableFrom() {
-//        formAddClass.setDisable(true);
-//        setColumnVisible(colAction, false);
-//    }
-//
-//    private void setColumnVisible(TableColumn<?, ?> column, boolean isVisible) {
-//        column.setVisible(isVisible);
-//    }
-
     private void openFormEdit(ClassModel classModel) {
         formEditClass.setTranslateX(-50);
         formEditClass.setVisible(true);
@@ -664,7 +654,7 @@ public class ClassesController implements Initializable {
         populateChoiceBoxes();
         loadClassesData();
         initializeClassNo();
-//        disableFrom();
+        disableformAddClass();
 
         enrollmentPicker.setOnAction(event -> {
             LocalDate enrollmentDate = enrollmentPicker.getValue();
@@ -672,5 +662,19 @@ public class ClassesController implements Initializable {
                 setDatePickerLimits(enrollmentDate);
             }
         });
+    }
+    private void disableformAddClass() {
+        // Kiểm tra vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+
+        // Nếu vai trò là "Teacher", ẩn cột action
+        if ("Teacher".equals(currentRole)) {
+            formAddClass.setDisable(true); // an add class
+        }
+    }
+
+    // Phương thức lấy roleName hiện tại
+    private String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Lấy roleName từ UserSession
     }
 }
