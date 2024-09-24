@@ -167,6 +167,8 @@ public class ClassesController implements Initializable {
 
         int staffID = selectTeacherID.getValue();
 
+        //
+
         try {
             ClassModel newClass = new ClassModel(0, selectedClass, section, staffID, enrollmentDate, completeDate, description);
 
