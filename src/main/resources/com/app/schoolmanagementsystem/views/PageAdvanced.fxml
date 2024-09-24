@@ -48,15 +48,15 @@
                                        </children>
                                     </HBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField prefHeight="30.0" prefWidth="270.0" promptText="Search Here" styleClass="search_field">
+                                    <TextField fx:id="staffSearchField" prefHeight="30.0" prefWidth="270.0" promptText="Search Here" styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
                                     </TextField>
                                     <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <ChoiceBox prefHeight="30.0" prefWidth="180.0" styleClass="select_box" />
+                                    <ChoiceBox fx:id="selectBoxStaff" prefHeight="30.0" prefWidth="180.0" styleClass="select_box" />
                                     <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <TextField layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
+                                    <TextField fx:id="extraSearchFieldStaff" layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
@@ -96,7 +96,7 @@
                                        <children>
                                           <StackPane prefWidth="120.0" styleClass="button_children">
                                              <children>
-                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="reloadStaffButton" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true" >
                                                    <image>
                                                       <Image url="@../images/recycle.png" />
                                                    </image>
@@ -116,27 +116,18 @@
                         <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
                            <children>
                               <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />
-                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                              <TableView fx:id="staffTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="140.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn fx:id="avatarStaffColumn" text="Avatar" prefWidth="50.0"/>
+                                    <TableColumn fx:id="idStaffColumn" text="ID" prefWidth="50.0"/>
+                                    <TableColumn fx:id="firstNameStaffColumn" text="First Name" prefWidth="100.0"/>
+                                    <TableColumn fx:id="lastNameStaffColumn" text="Last Name" prefWidth="100.0"/>
+                                    <TableColumn fx:id="emailStaffColumn" text="Email" prefWidth="120"/>
+                                    <TableColumn fx:id="genderStaffColumn" text="Gender" prefWidth="75.0"/>
+                                    <TableColumn fx:id="phoneStaffColumn" text="Phone" prefWidth="100.0"/>
+                                    <TableColumn fx:id="positionNameStaffColumn" text="Position Name" prefWidth="150"/>
+                                    <TableColumn fx:id="statusStaffColumn" text="Status" prefWidth="75.0"/>
+                                    <TableColumn fx:id="actionStaffColumn" text="Action" prefWidth="50.0"/>
                                  </columns>
                               </TableView>
                            </children>
@@ -171,15 +162,15 @@
                                        </children>
                                     </HBox>
                                     <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                    <TextField prefHeight="30.0" prefWidth="270.0" promptText="Search Here" styleClass="search_field">
+                                    <TextField fx:id="studentSearchField" prefHeight="30.0" prefWidth="270.0" promptText="Search Here" styleClass="search_field" >
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
                                     </TextField>
                                     <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <ChoiceBox prefHeight="30.0" prefWidth="180.0" styleClass="select_box" />
+                                    <ChoiceBox fx:id="selectBoxStudent" prefHeight="30.0" prefWidth="180.0" styleClass="select_box" />
                                     <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search" />
-                                    <TextField layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
+                                    <TextField fx:id="extraSearchFieldStudent" layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="250.0" promptText="Ex: ID, Gender,..." styleClass="search_field">
                                        <font>
                                           <Font name="Sitka Text" size="14.0" />
                                        </font>
@@ -219,7 +210,7 @@
                                        <children>
                                           <StackPane prefWidth="120.0" styleClass="button_children">
                                              <children>
-                                                <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                                                <ImageView fx:id="reloadStudentButton" fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                    <image>
                                                       <Image url="@../images/recycle.png" />
                                                    </image>
@@ -239,27 +230,17 @@
                         <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" styleClass="card_chart">
                            <children>
                               <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="700.0" visible="false" />
-                              <TableView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
+                              <TableView fx:id="studentTableView" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="648.0">
                                  <columns>
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="140.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
-                                    <TableColumn prefWidth="75.0" text="Column X" />
+                                    <TableColumn fx:id="avatarStudentColumn" text="Avatar" prefWidth="50.0"/>
+                                    <TableColumn fx:id="idStudentColumn" text="ID" prefWidth="50.0"/>
+                                    <TableColumn fx:id="firstNameStudentColumn" text="First Name" prefWidth="100.0"/>
+                                    <TableColumn fx:id="lastNameStudentColumn" text="Last Name" prefWidth="100.0"/>
+                                    <TableColumn fx:id="emailStudentColumn" text="Email" prefWidth="120.0"/>
+                                    <TableColumn fx:id="genderStudentColumn" text="Gender" prefWidth="75.0"/>
+                                    <TableColumn fx:id="phoneStudentColumn" text="Phone" prefWidth="130.0"/>
+                                    <TableColumn fx:id="statusStudentColumn" text="Status" prefWidth="75.0"/>
+                                    <TableColumn fx:id="actionStudentColumn" text="Action" prefWidth="50.0"/>
                                  </columns>
                               </TableView>
                            </children>

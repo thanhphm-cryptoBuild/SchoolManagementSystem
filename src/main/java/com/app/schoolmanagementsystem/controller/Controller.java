@@ -2,23 +2,30 @@ package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.application.Application;
 import com.app.schoolmanagementsystem.entities.Staff;
+import com.app.schoolmanagementsystem.services.AuthService;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -147,7 +154,69 @@ public class Controller implements Initializable {
     public void setRoleName(String roleName) {
         this.roleName = roleName;
         roleLabel.setText(roleName);
+
+        String avatarPath = UserSession.getStaffAvatar(); // Đường dẫn URL đến hình ảnh
+        if (avatarPath != null && !avatarPath.isEmpty()) {
+            try {
+                img_avatar.setImage(new Image(avatarPath)); // Cập nhật hình ảnh avatar từ đường dẫn URL
+            } catch (IllegalArgumentException e) {
+                System.out.println("Error loading image from URL: " + e.getMessage());
+                // Nếu không tải được hình ảnh từ URL, sử dụng hình ảnh mặc định
+                setDefaultAvatar();
+            }
+        } else {
+            // Nếu không có avatarPath, sử dụng hình ảnh mặc định
+            setDefaultAvatar();
+        }
+        // Thiết lập kích thước cho hình ảnh
+        img_avatar.setFitHeight(40);
+        img_avatar.setFitWidth(40);
+        // Tạo hình tròn để cắt hình ảnh
+        Circle clip = new Circle(20, 20, 20); // Tọa độ trung tâm là (12, 12) với bán kính 12
+        img_avatar.setClip(clip);
     }
+
+    private void setDefaultAvatar() {
+        String defaultPath = "useravatar.png"; // Tên file hình ảnh mặc định
+        InputStream imageStream = getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/" + defaultPath);
+        if (imageStream != null) {
+            img_avatar.setImage(new Image(imageStream)); // Cập nhật hình ảnh mặc định
+        } else {
+            System.out.println("Default avatar image not found."); // Xử lý nếu không tìm thấy hình ảnh mặc định
+        }
+    }
+
+
+//    private void configurePermissions() {
+//        String role = roleLabel.getText();  // Lấy vai trò từ Label
+//
+//        if ("Admin".equals(role)) {
+//            // Admin có quyền truy cập mọi chức năng
+//            iconStudentSB.setDisable(false);
+//            iconStaffSB.setDisable(false);
+//            iconClassSB.setDisable(false);
+//            iconAdvancedSB.setDisable(false);
+//        } else if ("Manager".equals(role)) {
+//            // Quản lý bị hạn chế một số quyền
+//            iconStudentSB.setDisable(false);  // Quản lý học sinh
+//            iconStaffSB.setDisable(true);     // Không quản lý nhân viên
+//            iconClassSB.setDisable(true);     // Không quản lý lớp học
+//            iconAdvancedSB.setDisable(false); // Quản lý chức năng nâng cao
+//        } else if ("Teacher".equals(role)) {
+//            // Giáo viên bị hạn chế nhiều quyền
+//            iconStudentSB.setDisable(true);   // Không quản lý học sinh
+//            iconStaffSB.setDisable(true);     // Không quản lý nhân viên
+//            iconClassSB.setDisable(false);    // Quản lý lớp học
+//            iconAdvancedSB.setDisable(true);  // Không quản lý chức năng nâng cao
+//        } else {
+//            // Các vai trò khác hoặc không hợp lệ sẽ bị hạn chế toàn bộ
+//            iconStudentSB.setDisable(true);
+//            iconStaffSB.setDisable(true);
+//            iconClassSB.setDisable(true);
+//            iconAdvancedSB.setDisable(true);
+//        }
+//    }
+
 
 
     private void loadPage(String page) throws IOException {
@@ -341,29 +410,47 @@ public class Controller implements Initializable {
 
     @FXML
     void buttonAdvanced(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml");
+        if (roleLabel.getText().equals("Admin Master")) {
+            loadPage("/com/app/schoolmanagementsystem/views/PageAdvanced.fxml");
+        } else {
+            showAlert("Access Denied", "You do not have permission to access this page.");
+        }
     }
-
 
     @FXML
     void buttonTuition(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageTuition.fxml");
+        if (roleLabel.getText().equals("Admin Master") || roleLabel.getText().equals("Manager")) {
+            loadPage("/com/app/schoolmanagementsystem/views/PageTuition.fxml");
+        } else {
+            showAlert("Access Denied", "You do not have permission to access this page.");
+        }
     }
 
     @FXML
     void buttonCalendar(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageCalendar.fxml");
+        if (roleLabel.getText().equals("Admin Master") || roleLabel.getText().equals("Manager") || roleLabel.getText().equals("Teacher")) {
+            loadPage("/com/app/schoolmanagementsystem/views/PageCalendar.fxml");
+        } else {
+            showAlert("Access Denied", "You do not have permission to access this page.");
+        }
     }
-
 
     @FXML
     void buttonClass(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageClass.fxml");
+        if (roleLabel.getText().equals("Admin Master") || roleLabel.getText().equals("Manager") || roleLabel.getText().equals("Teacher")) {
+            loadPage("/com/app/schoolmanagementsystem/views/PageClass.fxml");
+        } else {
+            showAlert("Access Denied", "You do not have permission to access this page.");
+        }
     }
 
     @FXML
     void buttonSubject(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageSubject.fxml");
+        if (roleLabel.getText().equals("Admin Master") || roleLabel.getText().equals("Manager") || roleLabel.getText().equals("Teacher")) {
+            loadPage("/com/app/schoolmanagementsystem/views/PageSubject.fxml");
+        } else {
+            showAlert("Access Denied", "You do not have permission to access this page.");
+        }
     }
 
     @FXML
@@ -373,14 +460,23 @@ public class Controller implements Initializable {
 
     @FXML
     void buttonStaff(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageStaff.fxml");
+        if (roleLabel.getText().equals("Admin Master") || roleLabel.getText().equals("Manager")) {
+            loadPage("/com/app/schoolmanagementsystem/views/PageStaff.fxml");
+        } else {
+            showAlert("Access Denied", "You do not have permission to access this page.");
+        }
     }
 
 
     @FXML
     void buttonStudent(MouseEvent event) throws IOException {
-        loadPage("/com/app/schoolmanagementsystem/views/PageStudent.fxml");
+        if (roleLabel.getText().equals("Admin Master") || roleLabel.getText().equals("Manager") || roleLabel.getText().equals("Teacher")) {
+            loadPage("/com/app/schoolmanagementsystem/views/PageStudent.fxml");
+        } else {
+            showAlert("Access Denied", "You do not have permission to access this page.");
+        }
     }
+
 
     @FXML
     void handle_Logout(MouseEvent event) throws IOException {
@@ -395,6 +491,15 @@ public class Controller implements Initializable {
         currentStage.setScene(scene);
         currentStage.show();
     }
+
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
 
 
 }

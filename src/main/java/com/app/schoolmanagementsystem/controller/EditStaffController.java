@@ -4,6 +4,7 @@ import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.entities.StaffFamily;
 import com.app.schoolmanagementsystem.entities.StaffRoles;
 import com.app.schoolmanagementsystem.model.StaffModel;
+import com.app.schoolmanagementsystem.session.UserSession;
 import com.app.schoolmanagementsystem.utils.PasswordUtil;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
@@ -83,7 +84,7 @@ public class EditStaffController implements Initializable {
     @FXML
     private ChoiceBox<String> relationshipChoiceBox2;
     @FXML
-    private TextField positionNameField;
+    private ChoiceBox<String> positionNameChoiceBox;
 
     @FXML
     private TextField familyMemberNameField1;
@@ -155,6 +156,8 @@ public class EditStaffController implements Initializable {
     @FXML
     private ImageView profileImageView;
 
+    private String avatarPath = "useravatar.png"; // Default avatar
+
     private StaffModel staffService;
 
     private Staff currentStaff;
@@ -210,7 +213,6 @@ public class EditStaffController implements Initializable {
             emailField.setText(currentStaff.getEmail());
             phoneNumberField.setText(currentStaff.getPhoneNumber());
             addressField.setText(currentStaff.getAddress());
-            positionNameField.setText(currentStaff.getPositionName());
 
             // Cập nhật label_StaffID với ID của nhân viên
             label_StaffID.setText(String.valueOf(currentStaff.getStaffID()));
@@ -242,23 +244,23 @@ public class EditStaffController implements Initializable {
             );
             experienceChoiceBox.setItems(experienceOptions);
 
+            positionNameChoiceBox.setValue(currentStaff.getPositionName());
+            // Các tùy cho PositionName
+            ObservableList<String> positionOptions = FXCollections.observableArrayList(
+                    "Admin Master", "Manager", "Teacher"
+            );
+            positionNameChoiceBox.setItems(positionOptions);
 
-            // Load profile image
-            // Đảm bảo rằng hình ảnh được đóng gói vào classpath của dự án
-            if (currentStaff.getAvatar() != null && !currentStaff.getAvatar().isEmpty()) {
-                try {
-                    // Đối với tài nguyên nằm trong thư mục resources
-                    String resourcePath = "/com/app/schoolmanagementsystem/images/" + currentStaff.getAvatar();
-                    Image profileImage = new Image(getClass().getResourceAsStream(resourcePath));
-                    profileImageView.setImage(profileImage);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    // Hiển thị hình ảnh mặc định nếu có lỗi
-                    profileImageView.setImage(new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/avatar-ex.jpg")));
-                }
-            } else {
-                // Hiển thị hình ảnh mặc định nếu không có avatar
-                profileImageView.setImage(new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/avatar-ex.jpg")));
+
+            avatarPath = currentStaff.getAvatar();
+
+            // Kiểm tra và đặt hình ảnh đại diện
+            try {
+                Image avatarImage = new Image(avatarPath);
+                profileImageView.setImage(avatarImage);
+            } catch (IllegalArgumentException e) {
+                // Nếu không tìm thấy hình ảnh, sử dụng hình ảnh mặc định
+                profileImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png"));
             }
 
             // Giả sử bạn đã có đối tượng StaffModel và currentStaff
@@ -276,6 +278,15 @@ public class EditStaffController implements Initializable {
 
             // Đảm bảo roleChoiceBox có các giá trị để chọn
             ObservableList<String> roleOptions = FXCollections.observableArrayList("Admin Master", "Manager", "Teacher");
+            // Kiểm tra vai trò người dùng hiện tại
+            String currentRole = getCurrentRoleName();
+
+            // Nếu vai trò là "Manager", chỉ giữ lại "Teacher"
+            if ("Manager".equals(currentRole)) {
+                roleOptions.clear(); // Xóa hết các tùy chọn hiện có
+                roleOptions.add("Teacher"); // Chỉ thêm "Teacher" vào
+            }
+            // Đặt giá trị cho ChoiceBox
             roleChoiceBox.setItems(roleOptions);
 
             // Lấy và hiển thị thông tin gia đình
@@ -283,6 +294,10 @@ public class EditStaffController implements Initializable {
 
 
         }
+    }
+
+    public String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
     }
 
     private void loadFamilyData(int staffID) {
@@ -354,15 +369,13 @@ public class EditStaffController implements Initializable {
         String role = roleChoiceBox.getValue();
         String gender = genderChoiceBox.getValue();
         String salary = salaryChoiceBox.getValue();
-        String position = positionNameField.getText();
+        String position = positionNameChoiceBox.getValue();
         String educationBackground = educationChoiceBox.getValue();
         String experience = experienceChoiceBox.getValue();
         LocalDate dob = dobDatePicker.getValue();
         LocalDate hireDate = hireDatePicker.getValue();
         // Lấy tên hình ảnh từ profileImageView nếu có
-        String newAvatar = (profileImageView.getImage() != null && profileImageView.getImage().getUrl() != null)
-                ? new File(profileImageView.getImage().getUrl()).getName()
-                : "";
+        String newAvatar = avatarPath != null ? avatarPath : ""; // Đường dẫn ảnh mới
 
         // Kiểm tra và cập nhật avatar
         String avatarToSet = newAvatar.isEmpty() ? oldAvatar : newAvatar;
@@ -473,7 +486,7 @@ public class EditStaffController implements Initializable {
             hireDateErrorLabel.setVisible(false);
         }
 
-        if (position.isEmpty()) {
+        if (position == null) {
             positionNameErrorLabel.setText("Position cannot be left blank.");
             positionNameErrorLabel.setVisible(true);
             hasError = true;
@@ -823,35 +836,24 @@ public class EditStaffController implements Initializable {
     @FXML
     private void handleChooseFileButtonAction() {
         FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Choose Profile Image");
+        fileChooser.setTitle("Choose Avatar Image");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
-        File selectedFile = fileChooser.showOpenDialog(null);
-
+        File selectedFile = fileChooser.showOpenDialog(formEditStaff.getScene().getWindow());
         if (selectedFile != null) {
-            // Kiểm tra tính hợp lệ của hình ảnh
+            // Validate the image before setting it
             if (isValidImage(selectedFile)) {
-                try {
-                    // Hiển thị hình ảnh đã chọn
-                    Image profileImage = new Image(selectedFile.toURI().toString());
-                    profileImageView.setImage(profileImage);
-
-                    // Lưu hình ảnh vào thư mục resources
-                    String imageName = selectedFile.getName();
-                    saveImageToResources(new FileInputStream(selectedFile), imageName);
-
-                    // Cập nhật tên hình ảnh vào cơ sở dữ liệu nếu cần
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    showError("An error occurred while saving the image.");
-                }
+                // Set the image directly without resizing
+                Image avatarImage = new Image(selectedFile.toURI().toString());
+                profileImageView.setImage(avatarImage);
+                avatarPath = selectedFile.toURI().toString();
             } else {
-                // Hiển thị thông báo lỗi nếu hình ảnh không hợp lệ
+                // Show error message if the image is not valid
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
-                alert.setContentText("Your image must be 2x3, 3x4, or 4x6.");
+                alert.setContentText("Your image must be 2x3, 3x4, or 4x6 ratio.");
                 alert.showAndWait();
             }
         }
@@ -872,26 +874,7 @@ public class EditStaffController implements Initializable {
         }
     }
 
-    private void saveImageToResources(InputStream inputStream, String imageName) throws IOException {
-        // Đường dẫn đến thư mục lưu trữ hình ảnh trong thư mục resources
-        String path = "src/main/resources/com/app/schoolmanagementsystem/images/" + imageName;
-        File file = new File(path);
 
-        // Tạo thư mục nếu chưa tồn tại
-        File parentDir = file.getParentFile();
-        if (!parentDir.exists()) {
-            parentDir.mkdirs();
-        }
-
-        // Lưu hình ảnh vào thư mục
-        try (FileOutputStream outputStream = new FileOutputStream(file)) {
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, bytesRead);
-            }
-        }
-    }
 
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);

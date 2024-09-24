@@ -1,6 +1,8 @@
 package com.app.schoolmanagementsystem.controller;
 
 import com.app.schoolmanagementsystem.entities.Timetable;
+import com.app.schoolmanagementsystem.services.AuthService;
+import com.app.schoolmanagementsystem.session.UserSession;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
@@ -104,6 +106,7 @@ public class CalendarController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        disableformAddCalendar();
         calendarPicker();
         populateChoiceBoxes();
         addButton.setOnAction(event -> insertTimetable());
@@ -189,6 +192,22 @@ public class CalendarController implements Initializable {
             refreshTable();
             resetFilterClassChoiceBox(); // Đặt lại bộ lọc sau khi làm mới
         });
+    }
+
+    private void disableformAddCalendar() {
+        // Thêm logic phân quyền cho "Teacher"
+        String currentRole = getCurrentRoleName();
+        if ("Teacher".equals(currentRole)) {
+            formAddCalendar.setDisable(true);// Gọi phương thức để disable formAddCalendar
+        }
+
+    }
+
+    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
+
+    // Phương thức để lấy roleName hiện tại
+    public String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
     }
 
     private <T> void centerAlignColumn(TableColumn<T, String> column) {

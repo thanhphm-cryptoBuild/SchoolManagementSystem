@@ -6,6 +6,7 @@ import com.app.schoolmanagementsystem.entities.SubjectClass;
 import com.app.schoolmanagementsystem.model.StaffModel;
 import com.app.schoolmanagementsystem.model.SubjectClassModel;
 import com.app.schoolmanagementsystem.model.SubjectModel;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -16,6 +17,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -26,6 +28,9 @@ public class SubjectController implements Initializable {
 
     @FXML
     private StackPane pageSubject;
+
+    @FXML
+    private VBox formAddSubject;
 
     @FXML
     private ChoiceBox<?> selectClassNo;
@@ -51,15 +56,33 @@ public class SubjectController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadSubjects();
         populateChoiceBoxes();
+        disableformAddSubject();
     }
+
 
     @FXML
     void addFormSubject(MouseEvent event) {
+
     }
 
     @FXML
     void resetFormSubject(MouseEvent event) {
 
+    }
+
+    private void disableformAddSubject() {
+        // Kiểm tra vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+
+        // Nếu vai trò là "Teacher", ẩn cột action
+        if ("Teacher".equals(currentRole)) {
+            formAddSubject.setDisable(true); // an add class
+        }
+    }
+
+    // Phương thức lấy roleName hiện tại
+    private String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Lấy roleName từ UserSession
     }
 
     private void loadSubjects() {

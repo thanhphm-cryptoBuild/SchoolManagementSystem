@@ -1,5 +1,6 @@
 package com.app.schoolmanagementsystem.services;
 
+import com.app.schoolmanagementsystem.session.UserSession;
 import com.app.schoolmanagementsystem.utils.Mail;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import org.mindrot.jbcrypt.BCrypt;
@@ -10,8 +11,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Random;
 import java.util.regex.Pattern;
+import java.time.Duration;
 
 public class AuthService {
 
@@ -32,20 +35,28 @@ public class AuthService {
         }
 
         try (Connection conn = ConnectDB.connection()) {
-            String query = "SELECT Password, Status FROM Staff WHERE Email = ?";
+            String query = "SELECT Password, Status, sr.RoleName FROM Staff s " +
+                    "JOIN StaffRoles sr ON s.StaffID = sr.StaffID " +
+                    "WHERE s.Email = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, email);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String storedPassword = rs.getString("Password");
                 String status = rs.getString("Status");
+                String roleName = rs.getString("RoleName");
+                String avatarPath = getStaffAvatar(email);
+                UserSession.setStaffAvatar(avatarPath);
 
                 if (!"active".equals(status)) {
                     return false;
                 }
 
-                // So sánh trực tiếp mật khẩu người dùng nhập vào với mật khẩu lưu trữ
-                return storedPassword.equals(password);
+                // Set currentRoleName
+                UserSession.setCurrentRoleName(roleName);
+
+                // Compare user password with hashed password
+                return BCrypt.checkpw(password, storedPassword);
             }
             return false;
         } catch (SQLException e) {
@@ -53,6 +64,24 @@ public class AuthService {
             return false;
         }
     }
+
+    public String getStaffAvatar(String email) {
+        try (Connection conn = ConnectDB.connection()) {
+            String query = "SELECT Avatar FROM Staff WHERE Email = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("Avatar"); // Trả về đường dẫn hình ảnh
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // Trả về null nếu không tìm thấy
+    }
+
+
 
 
     // Phương thức quên mật khẩu
@@ -117,9 +146,10 @@ public class AuthService {
                 if (storedResetCode != null && storedResetCode.equals(resetCode)) {
                     if (!isResetCodeUsed) {
                         LocalDateTime now = LocalDateTime.now();
-                        long minutesElapsed = ChronoUnit.MINUTES.between(creationTime, now);
+                        Duration duration = Duration.between(creationTime, now);
+                        long secondsElapsed = duration.getSeconds();
 
-                        if (minutesElapsed <= 1) { // 60 giây = 1 phút
+                        if (secondsElapsed <= 60) { // 60 giây = 1 phút
                             return true; // Mã khôi phục hợp lệ
                         } else {
                             throw new SQLException("Reset code has expired.");
@@ -136,6 +166,7 @@ public class AuthService {
         }
     }
 
+
     private String generateResetCode() {
         Random rand = new Random();
         int code = rand.nextInt(999999);
@@ -144,7 +175,7 @@ public class AuthService {
 
     // Phương thức đặt lại mật khẩu
     public boolean resetPassword(int staffID, String resetCode, String newPassword) throws SQLException {
-        // Validation newPassword
+        // Validation for newPassword
         if (newPassword == null || newPassword.isEmpty() || newPassword.length() < 5) {
             throw new SQLException("Password must be at least 5 characters long.");
         }
@@ -160,21 +191,24 @@ public class AuthService {
                 LocalDateTime creationTime = rs.getObject("ResetCodeCreationTime", LocalDateTime.class);
                 boolean isResetCodeUsed = rs.getBoolean("IsResetCodeUsed");
 
-                // Compare reset code and check status
+                // Compare reset code and check its status
                 if (storedResetCode != null && storedResetCode.equals(resetCode)) {
                     if (!isResetCodeUsed) {
                         LocalDateTime now = LocalDateTime.now();
-                        long minutesElapsed = ChronoUnit.MINUTES.between(creationTime, now);
+                        long minutesElapsed = ChronoUnit.SECONDS.between(creationTime, now); // Compare seconds
 
-                        if (minutesElapsed <= 1) { // 60 seconds = 1 minute
+                        if (minutesElapsed <= 60) { // 60 seconds expiry
+                            // Hash new password
+                            String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
+
                             // Update password and reset reset code status
                             String updateQuery = "UPDATE Staff SET Password = ?, ResetCode = NULL, ResetCodeCreationTime = NULL, IsResetCodeUsed = TRUE WHERE StaffID = ?";
                             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
-                            updateStmt.setString(1, newPassword);
+                            updateStmt.setString(1, hashedNewPassword);
                             updateStmt.setInt(2, staffID);
                             int rowsUpdated = updateStmt.executeUpdate();
 
-                            return rowsUpdated > 0; // Return true if at least one row was updated
+                            return rowsUpdated > 0; // Return true if the password was successfully updated
                         } else {
                             throw new SQLException("Reset code has expired.");
                         }
@@ -189,6 +223,7 @@ public class AuthService {
             }
         }
     }
+
 
 
     public boolean hasRole(String email, String roleName) {
@@ -260,6 +295,37 @@ public class AuthService {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    public boolean hasAccess(String roleName, String page) {
+        switch (roleName) {
+            case "Admin Master":
+                return true; // Admin Master có quyền truy cập tất cả các trang
+
+            case "Manager":
+                return List.of(
+                        "PageDashBoard.fxml",
+                        "PageCalendar.fxml",
+                        "PageStaff.fxml",
+                        "PageStudent.fxml",
+                        "PageClass.fxml",
+                        "PageSubject.fxml",
+                        "PageTuition.fxml",
+                        "PageAdvanced.fxml"
+                ).contains(page);
+
+            case "Teacher":
+                return !List.of(
+                        "PageAdvanced.fxml",
+                        "PageStaff.fxml",
+                        "PageSubject.fxml",
+                        "PageTuition.fxml",
+                        "PageAdvanced.fxml"
+                ).contains(page);
+
+            default:
+                return false; // Quyền truy cập không được xác định cho các vai trò khác
         }
     }
 
