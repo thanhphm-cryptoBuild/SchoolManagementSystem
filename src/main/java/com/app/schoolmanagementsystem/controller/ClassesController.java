@@ -602,6 +602,8 @@ public class ClassesController implements Initializable {
         validateEditTeacherID.setText("");
     }
 
+
+
     private void openFormEdit(ClassModel classModel) {
         formEditClass.setTranslateX(-50);
         formEditClass.setVisible(true);

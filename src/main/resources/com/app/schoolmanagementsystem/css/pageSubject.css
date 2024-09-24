@@ -71,6 +71,14 @@
     -fx-background-color: #6243FF;
 }
 
+.title_label {
+    -fx-text-fill: #1A3395;
+}
+
+.title_label_edit {
+    -fx-text-fill: #AB8905;
+}
+
 .button_form_add:hover {
     -fx-background-color: linear-gradient(to top, #1A3395, #6243FF);
 }
