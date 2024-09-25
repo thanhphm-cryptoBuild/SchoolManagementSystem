@@ -210,7 +210,7 @@ public class AddStaffController implements Initializable {
         salaryChoiceBox.getItems().addAll("50000", "60000", "70000", "80000");
         educationChoiceBox.getItems().addAll("Intermediate", "College", "University", "Master's", "Ph.D.");
         experienceChoiceBox.getItems().addAll("0-1 years", "1-3 years", "3-5 years", "5-10 years", "10+ years");
-        positionNameChoiceBox.getItems().addAll("Admin Master", "Manager", "Teacher");
+        positionNameChoiceBox.getItems().addAll("Manager", "Biology Teacher", "Computer Science Teacher", "Chemistry Teacher", "English Teacher", "Geography Teacher", "History Teacher", "Mathematics Teacher", "Physical Education Teacher", "Physics Teacher", "Science Teacher");
         relationshipChoiceBox1.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         relationshipChoiceBox2.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         // Cấu hình DatePicker để chỉ cho phép chọn ngày từ năm 2010 trở về trước
