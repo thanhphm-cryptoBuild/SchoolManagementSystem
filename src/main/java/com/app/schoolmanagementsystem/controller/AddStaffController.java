@@ -314,9 +314,9 @@ public class AddStaffController implements Initializable {
             hasError = true;
             isValid = false;
         } else {
-            LocalDate limitDate = LocalDate.of(2000, 1, 1);
+            LocalDate limitDate = LocalDate.of(2003, 1, 1);
             if (dob.isAfter(limitDate)) {
-                dobErrorLabel.setText("Date of birth must be before 2000.");
+                dobErrorLabel.setText("Date of birth must be before 2003.");
                 dobErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
