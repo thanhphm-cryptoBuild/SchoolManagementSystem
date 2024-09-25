@@ -4,12 +4,7 @@ import com.app.schoolmanagementsystem.entities.Classes;
 import com.app.schoolmanagementsystem.entities.Staff;
 import com.app.schoolmanagementsystem.entities.Subject;
 import com.app.schoolmanagementsystem.entities.SubjectClass;
-import com.app.schoolmanagementsystem.model.ClassModel;
-import com.app.schoolmanagementsystem.model.StaffModel;
-import com.app.schoolmanagementsystem.model.SubjectClassModel;
-import com.app.schoolmanagementsystem.model.SubjectModel;
-import com.app.schoolmanagementsystem.services.AuthService;
-import com.app.schoolmanagementsystem.session.UserSession;
+import com.app.schoolmanagementsystem.model.*;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
@@ -23,15 +18,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class SubjectController implements Initializable {
 
@@ -57,6 +50,18 @@ public class SubjectController implements Initializable {
     private ChoiceBox<Staff> selectTeacherName;
 
     @FXML
+    private Label validateClassName;
+
+    @FXML
+    private Label validateSubject;
+
+    @FXML
+    private Label validateTeacherID;
+
+    @FXML
+    private Label validateTeacherName;
+
+    @FXML
     private ChoiceBox<ClassModel> showEditClassName;
 
     @FXML
@@ -70,6 +75,18 @@ public class SubjectController implements Initializable {
 
     @FXML
     private ChoiceBox<Staff> showEditTeacherName;
+
+    @FXML
+    private Label validateEditClassName;
+
+    @FXML
+    private Label validateEditSubject;
+
+    @FXML
+    private Label validateEditTeacherID;
+
+    @FXML
+    private Label validateEditTeacherName;
 
     @FXML
     private TableView<SubjectClass> tableViewClassSubject;
@@ -101,12 +118,14 @@ public class SubjectController implements Initializable {
         populateChoiceBoxes();
         populateClassNames();
         loadClassSubjects();
-        hideActionSubject();
-        hideformAddSubjectClass();
     }
 
     @FXML
     void addFormSubject(MouseEvent event) {
+        if (!validateFormAdd()) {
+            return;
+        }
+
         ClassModel selectedClass = selectClassName.getValue();
         Subject selectedSubject = selectSubject.getValue();
         int selectedTeacherID = selectTeacherID.getValue();
@@ -116,6 +135,13 @@ public class SubjectController implements Initializable {
             int subjectID = selectedSubject.getSubjectID();
 
             SubjectClassModel subjectClassModel = new SubjectClassModel();
+
+            boolean isSubjectNameExists = subjectClassModel.isSubjectNameExists(subjectID, classID);
+            if (isSubjectNameExists) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Subject already exists for this class.");
+                return;
+            }
+
             subjectClassModel.addClassSubject(classID, subjectID, selectedTeacherID);
 
             loadClassSubjects();
@@ -126,10 +152,48 @@ public class SubjectController implements Initializable {
         }
     }
 
+    private boolean validateFormAdd() {
+        boolean isValid = true;
+
+        if (selectClassName.getValue() == null) {
+            validateClassName.setText("Class Name is required.");
+            isValid = false;
+        } else {
+            validateClassName.setText("");
+        }
+
+        if (selectSubject.getValue() == null) {
+            validateSubject.setText("Subject is required.");
+            isValid = false;
+        } else {
+            validateSubject.setText("");
+        }
+
+        if (selectTeacherName.getValue() == null || selectTeacherName.getValue() == selectTeacherPlaceholder) {
+            validateTeacherName.setText("Subject Teacher is required.");
+            isValid = false;
+        } else {
+            validateTeacherName.setText("");
+        }
+
+        Integer staffID = selectTeacherID.getValue();
+        if (staffID == null) {
+            validateTeacherID.setText("Staff ID is required.");
+            isValid = false;
+        } else {
+            validateTeacherID.setText("");
+        }
+
+        return isValid;
+    }
 
     @FXML
     void updateFormEditSubject(MouseEvent event) {
         try {
+            if (!validateFormEdit()) {
+                return;
+            }
+
             int classSubjectID = Integer.parseInt(showEditClassSubjectID.getText());
             ClassModel selectedClass = showEditClassName.getValue();
             Subject selectedSubject = showEditSubject.getValue();
@@ -140,6 +204,18 @@ public class SubjectController implements Initializable {
                 int subjectID = selectedSubject.getSubjectID();
 
                 SubjectClassModel subjectClassModel = new SubjectClassModel();
+
+                SubjectClass oldSubjectClass = subjectClassModel.getClassSubjectByID(classSubjectID);
+
+                if (oldSubjectClass != null) {
+                    boolean isSubjectNameExists = subjectClassModel.isSubjectNameEditExists(subjectID, classID, classSubjectID);
+                    if (isSubjectNameExists) {
+                        showAlert(Alert.AlertType.ERROR, "Error", "Subject already exists in this class.");
+                        return;
+                    }
+                }
+
+
                 subjectClassModel.updateClassSubject(classSubjectID, classID, subjectID, selectedTeacherID);
 
                 loadClassSubjects();
@@ -152,6 +228,46 @@ public class SubjectController implements Initializable {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to update subject detail.");
         }
+    }
+
+    private boolean validateFormEdit() {
+        boolean isValid = true;
+
+        validateEditSubject.setText("");
+        validateEditClassName.setText("");
+        validateEditTeacherName.setText("");
+        validateEditTeacherID.setText("");
+
+        if (showEditClassName.getValue() == null) {
+            validateEditClassName.setText("Class Name is required.");
+            isValid = false;
+        } else {
+            validateEditClassName.setText("");
+        }
+
+        if (showEditSubject.getValue() == null) {
+            validateEditSubject.setText("Subject is required.");
+            isValid = false;
+        } else {
+            validateEditSubject.setText("");
+        }
+
+        if (showEditTeacherName.getValue() == null || showEditTeacherName.getValue() == selectTeacherPlaceholder) {
+            validateEditTeacherName.setText("Subject Teacher is required.");
+            isValid = false;
+        } else {
+            validateTeacherName.setText("");
+        }
+
+        Integer staffID = showEditTeacherID.getValue();
+        if (staffID == null) {
+            validateEditTeacherID.setText("Staff ID is required.");
+            isValid = false;
+        } else {
+            validateEditTeacherID.setText("");
+        }
+
+        return isValid;
     }
 
 
@@ -169,6 +285,17 @@ public class SubjectController implements Initializable {
         selectClassName.setValue(null);
         selectTeacherID.getSelectionModel().clearSelection();
         selectTeacherName.getSelectionModel().select(selectTeacherPlaceholder);
+
+        validateSubject.setText("");
+        validateClassName.setText("");
+        validateTeacherName.setText("");
+        validateTeacherID.setText("");
+    }
+
+    @FXML
+    void refreshTableSubjectDetail(MouseEvent event) {
+        loadClassSubjects();
+        showAlert(Alert.AlertType.INFORMATION, "Confirmed", "Refresh Success");
     }
 
     @FXML
@@ -221,6 +348,21 @@ public class SubjectController implements Initializable {
 
         populateEditTeacherChoiceBoxes(subjectClass.getStaffID());
 
+    }
+
+    private void deleteClassSubject(SubjectClass subjectClassToDelete) {
+        int classSubjectID = subjectClassToDelete.getClassSubjectID();
+
+        try {
+            SubjectClassModel subjectClassModel = new SubjectClassModel();
+            subjectClassModel.deleteClassSubject(classSubjectID);
+
+            loadClassSubjects();
+            showAlert(Alert.AlertType.INFORMATION, "Success", "Subject detail ID: " + classSubjectID + " deleted successfully.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete subject detail ID: " + classSubjectID + ".");
+        }
     }
 
     private Subject findSubjectById(int subjectID) {
@@ -437,6 +579,7 @@ public class SubjectController implements Initializable {
 
         colAction.setCellFactory(param -> new TableCell<>() {
             private final Button editButton = new Button();
+            private final Button deleteButton = new Button();
 
             {
                 Image editImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/edit.png")));
@@ -449,6 +592,28 @@ public class SubjectController implements Initializable {
                     SubjectClass SubjectClassToEdit = getTableView().getItems().get(getIndex());
                     openFormEditSubjectClass(SubjectClassToEdit);
                 });
+
+                Image deleteImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png")));
+                ImageView deleteImageView = new ImageView(deleteImage);
+                deleteImageView.setFitHeight(16);
+                deleteImageView.setFitWidth(16);
+                deleteButton.setGraphic(deleteImageView);
+                deleteButton.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-border-color: #A3B5ED; -fx-border-radius: 5px; -fx-background-radius: 5px;");
+                deleteButton.setOnAction(event -> {
+                    SubjectClass subjectClassToDelete = getTableView().getItems().get(getIndex());
+
+                    int classSubjectID = subjectClassToDelete.getClassSubjectID();
+
+                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirmationAlert.setTitle("Delete Confirmation");
+                    confirmationAlert.setHeaderText(null);
+                    confirmationAlert.setContentText("Are you sure you want to delete this subject detail ID: " + classSubjectID + "?");
+
+                    Optional<ButtonType> result = confirmationAlert.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        deleteClassSubject(subjectClassToDelete);
+                    }
+                });
             }
 
             @Override
@@ -457,7 +622,9 @@ public class SubjectController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(editButton);
+                    HBox actionButtons = new HBox(10, editButton, deleteButton);
+                    actionButtons.setStyle("-fx-alignment: CENTER;");
+                    setGraphic(actionButtons);
                 }
             }
         });
@@ -472,33 +639,6 @@ public class SubjectController implements Initializable {
 
         ObservableList<SubjectClass> observableSubjectClassList = FXCollections.observableArrayList(subjectClassList);
         tableViewClassSubject.setItems(observableSubjectClassList);
-    }
-
-    private void hideformAddSubjectClass() {
-        // Kiểm tra vai trò của người dùng hiện tại
-        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
-
-        // Nếu vai trò là "Teacher", ẩn cột action
-        if ("Teacher".equals(currentRole)) {
-            formAddSubjectClass.setDisable(true); // Ẩn cột hành động nếu là Teacher
-        }
-    }
-
-    private void hideActionSubject() {
-        // Kiểm tra vai trò của người dùng hiện tại
-        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
-
-        // Nếu vai trò là "Teacher", ẩn cột action
-        if ("Teacher".equals(currentRole)) {
-            colAction.setVisible(false); // Ẩn cột hành động nếu là Teacher
-        }
-    }
-
-    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
-
-    // Phương thức để lấy roleName hiện tại
-    public String getCurrentRoleName() {
-        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
     }
 
 }

@@ -152,6 +152,7 @@ public class ClassesController implements Initializable {
     private Label validateEditTeacherName;
 
 
+
     private final Staff selectTeacherPlaceholder = new Staff(-1, "", "", "", "", "");
 
     @FXML
@@ -368,6 +369,19 @@ public class ClassesController implements Initializable {
 
         completePicker.setValue(null);
         completePicker.setDayCellFactory(picker -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate item, boolean empty) {
+                super.updateItem(item, empty);
+                setDisable(empty || item.isBefore(minCompleteDate));
+            }
+        });
+    }
+
+    private void setDatePickerLimitsEdit(LocalDate enrollmentDate) {
+        LocalDate minCompleteDate = enrollmentDate.plusYears(1);
+
+        showEditEndDate.setValue(null);
+        showEditEndDate.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate item, boolean empty) {
                 super.updateItem(item, empty);
@@ -649,6 +663,14 @@ public class ClassesController implements Initializable {
         classNo.getSelectionModel().selectFirst();
     }
 
+    private void initializeShowClassNo() {
+        ObservableList<String> classOptions = FXCollections.observableArrayList(
+                "Select Class", "10", "11", "12"
+        );
+        showEditClassNo.setItems(classOptions);
+        showEditClassNo.getSelectionModel().selectFirst();
+    }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -656,6 +678,7 @@ public class ClassesController implements Initializable {
         populateChoiceBoxes();
         loadClassesData();
         initializeClassNo();
+        initializeShowClassNo();
         disableformAddClass();
         hideActionClass();
 
@@ -665,7 +688,16 @@ public class ClassesController implements Initializable {
                 setDatePickerLimits(enrollmentDate);
             }
         });
+
+        showEditStartDate.setOnAction(event -> {
+            LocalDate enrollmentDate = showEditStartDate.getValue();
+            if (enrollmentDate != null) {
+                setDatePickerLimitsEdit(enrollmentDate);
+            }
+        });
+
     }
+
     private void disableformAddClass() {
         // Kiểm tra vai trò của người dùng hiện tại
         String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
