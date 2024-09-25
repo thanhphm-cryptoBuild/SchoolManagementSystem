@@ -50,11 +50,12 @@ public class EditStaffController implements Initializable {
     @FXML
     private AnchorPane moveBG;
 
-
     @FXML
     private TextField firstNameField;
+
     @FXML
     private TextField lastNameField;
+
     @FXML
     private PasswordField passwordField;
     @FXML

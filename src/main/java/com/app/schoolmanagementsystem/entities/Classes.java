@@ -263,4 +263,24 @@ public class Classes {
 
         return false;
     }
+
+    public int countClass() {
+        int count = 0;
+        String query = "SELECT COUNT(*) AS totalClass FROM Classes WHERE ClassID";
+
+        try (Connection conn = ConnectDB.connection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query)) {
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    count = resultSet.getInt("totalClass");
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return count;
+    }
 }

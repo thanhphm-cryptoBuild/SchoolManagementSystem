@@ -1,5 +1,6 @@
 package com.app.schoolmanagementsystem.controller;
 
+import com.app.schoolmanagementsystem.entities.Classes;
 import com.app.schoolmanagementsystem.model.StudentModel;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 import javafx.collections.FXCollections;
@@ -40,9 +41,15 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label label_totalStudent;
+
+    @FXML
+    private Label label_totalClass;
+
     private StaffModel staffModel;
 
     private StudentModel studentModel;
+
+    private Classes classes;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -55,6 +62,9 @@ public class DashboardController implements Initializable {
         studentModel = new StudentModel();
         updateTotalStudent();
 
+        classes = new Classes();
+        updateTotalClass();
+
     }
 
     private void updateTotalStaff() {
@@ -65,6 +75,11 @@ public class DashboardController implements Initializable {
     private void updateTotalStudent() {
         int totalStudent = studentModel.countActiveStudent();
         label_totalStudent.setText(String.valueOf(totalStudent));
+    }
+
+    private void updateTotalClass() {
+        int totalClass = classes.countClass();
+        label_totalClass.setText(String.valueOf(totalClass));
     }
 
 
