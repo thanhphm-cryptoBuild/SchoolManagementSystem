@@ -110,21 +110,6 @@ public class DashboardController implements Initializable {
         lineChartOne.getData().add(new XYChart.Data<>("11", 34));
         lineChartOne.getData().add(new XYChart.Data<>("12", 50));
 
-        XYChart.Series lineChartTwo = new XYChart.Series<>();
-        lineChartTwo.setName("Teacher");
-
-        lineChartTwo.getData().add(new XYChart.Data<>("1", 5));
-        lineChartTwo.getData().add(new XYChart.Data<>("2", 2));
-        lineChartTwo.getData().add(new XYChart.Data<>("3", 15));
-        lineChartTwo.getData().add(new XYChart.Data<>("4", 7));
-        lineChartTwo.getData().add(new XYChart.Data<>("5", 20));
-        lineChartTwo.getData().add(new XYChart.Data<>("6", 15));
-        lineChartTwo.getData().add(new XYChart.Data<>("7", 19));
-        lineChartTwo.getData().add(new XYChart.Data<>("8", 36));
-        lineChartTwo.getData().add(new XYChart.Data<>("9", 50));
-        lineChartTwo.getData().add(new XYChart.Data<>("10", 62));
-        lineChartTwo.getData().add(new XYChart.Data<>("11", 70));
-        lineChartTwo.getData().add(new XYChart.Data<>("12", 85));
 
         XYChart.Series lineChartThree = new XYChart.Series<>();
         lineChartThree.setName("Student");
@@ -142,7 +127,7 @@ public class DashboardController implements Initializable {
         lineChartThree.getData().add(new XYChart.Data<>("11", 80));
         lineChartThree.getData().add(new XYChart.Data<>("12", 100));
 
-        lineview.getData().addAll(lineChartOne, lineChartTwo, lineChartThree);
+        lineview.getData().addAll(lineChartOne, lineChartThree);
 
         lineview.lookup(".chart-legend").setStyle("-fx-font-size: 15px; -fx-font-family: Sitka Text;");
     }

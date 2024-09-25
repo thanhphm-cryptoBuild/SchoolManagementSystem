@@ -56,7 +56,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="selectSubject" prefHeight="39.0" prefWidth="315.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateSubject" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="315.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -71,7 +71,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="selectClassName" prefHeight="39.0" prefWidth="326.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateClassName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="310.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -86,7 +86,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="selectTeacherName" prefHeight="40.0" prefWidth="350.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateTeacherName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="312.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -101,7 +101,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="selectTeacherID" prefHeight="40.0" prefWidth="350.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateTeacherID" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="317.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -184,7 +184,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="showEditSubject" prefHeight="39.0" prefWidth="315.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateEditSubject" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="329.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -199,7 +199,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="showEditClassName" prefHeight="39.0" prefWidth="326.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateEditClassName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="314.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -214,7 +214,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="showEditTeacherName" prefHeight="40.0" prefWidth="350.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateEditTeacherName" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="342.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -229,7 +229,7 @@
                                                          </font>
                                                       </Label>
                                                       <ChoiceBox fx:id="showEditTeacherID" prefHeight="40.0" prefWidth="350.0" />
-                                                      <Label layoutX="10.0" layoutY="10.0" text="Label" visible="false" />
+                                                      <Label fx:id="validateEditTeacherID" layoutX="10.0" layoutY="10.0" prefHeight="18.0" prefWidth="313.0" textFill="RED" />
                                                    </children>
                                                 </VBox>
                                              </children>
@@ -320,7 +320,7 @@
                                        <children>
                                           <HBox alignment="CENTER_RIGHT" prefHeight="35.0" prefWidth="400.0" styleClass="button_subject">
                                              <children>
-                                                <StackPane prefWidth="400.0" styleClass="button_children">
+                                                <StackPane onMouseClicked="#refreshTableSubjectDetail" prefWidth="400.0" styleClass="button_children">
                                                    <children>
                                                       <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
