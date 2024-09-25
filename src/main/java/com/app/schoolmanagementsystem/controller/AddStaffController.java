@@ -210,13 +210,12 @@ public class AddStaffController implements Initializable {
         salaryChoiceBox.getItems().addAll("50000", "60000", "70000", "80000");
         educationChoiceBox.getItems().addAll("Intermediate", "College", "University", "Master's", "Ph.D.");
         experienceChoiceBox.getItems().addAll("0-1 years", "1-3 years", "3-5 years", "5-10 years", "10+ years");
-        positionNameChoiceBox.getItems().addAll("Admin Master", "Manager", "Teacher");
+        positionNameChoiceBox.getItems().addAll("Admin Master", "Manager", "Biology Teacher", "Computer Science Teacher", "Chemistry Teacher", "English Teacher", "Geography Teacher", "History Teacher", "Mathematics Teacher", "Physical Education Teacher", "Physics Teacher", "Science Teacher");
         relationshipChoiceBox1.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         relationshipChoiceBox2.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         // Cấu hình DatePicker để chỉ cho phép chọn ngày từ năm 2010 trở về trước
 
-        LocalDate maxDate = LocalDate.of(2003, 1, 1); // Ngày tối đa
-        dobDatePicker.setValue(LocalDate.of(2003, 1, 1));
+        LocalDate maxDate = LocalDate.of(2000, 12, 31); // Ngày tối đa
         dobDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
             @Override
             public DateCell call(DatePicker datePicker) {
@@ -236,14 +235,12 @@ public class AddStaffController implements Initializable {
                 };
             }
         });
-        dobDatePicker.setEditable(false);
     }
 
     // Phương thức để lấy roleName hiện tại
     public String getCurrentRoleName() {
         return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
     }
-
 
 
     @FXML
@@ -314,9 +311,9 @@ public class AddStaffController implements Initializable {
             hasError = true;
             isValid = false;
         } else {
-            LocalDate limitDate = LocalDate.of(2003, 1, 1);
+            LocalDate limitDate = LocalDate.of(2000, 1, 1);
             if (dob.isAfter(limitDate)) {
-                dobErrorLabel.setText("Date of birth must be before 2003.");
+                dobErrorLabel.setText("Date of birth must be before 2000.");
                 dobErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
@@ -381,13 +378,13 @@ public class AddStaffController implements Initializable {
             hireDateErrorLabel.setVisible(false);
         }
 
-        if (positionName.isEmpty()) {
-            positionNameErrorLabel.setText("Position Name cannot be left blank.");
+        if (positionName == null) {
+            positionNameErrorLabel.setText("positionName cannot be left blank.");
             positionNameErrorLabel.setVisible(true);
             hasError = true;
             isValid = false;
         } else {
-            positionNameErrorLabel.setVisible(false);
+            salaryErrorLabel.setVisible(false);
         }
 
 
@@ -437,7 +434,7 @@ public class AddStaffController implements Initializable {
         }
 
 
-//        // Validate định dạng hình đại diện
+        // Validate định dạng hình đại diện
 //        if (avatar.isEmpty()) {
 //            chooseFileErrorLabel.setText("Avatar cannot be blank.");
 //            chooseFileErrorLabel.setVisible(true);
