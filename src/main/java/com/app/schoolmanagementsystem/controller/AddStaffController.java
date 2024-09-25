@@ -215,7 +215,8 @@ public class AddStaffController implements Initializable {
         relationshipChoiceBox2.getItems().addAll("Father", "Mother", "Sibling", "Spouse", "Child");
         // Cấu hình DatePicker để chỉ cho phép chọn ngày từ năm 2010 trở về trước
 
-        LocalDate maxDate = LocalDate.of(2000, 12, 31); // Ngày tối đa
+        LocalDate maxDate = LocalDate.of(2003, 1, 1); // Ngày tối đa
+        dobDatePicker.setValue(LocalDate.of(2003, 1, 1));
         dobDatePicker.setDayCellFactory(new Callback<DatePicker, DateCell>() {
             @Override
             public DateCell call(DatePicker datePicker) {
@@ -235,6 +236,7 @@ public class AddStaffController implements Initializable {
                 };
             }
         });
+        dobDatePicker.setEditable(false);
     }
 
     // Phương thức để lấy roleName hiện tại
@@ -311,9 +313,9 @@ public class AddStaffController implements Initializable {
             hasError = true;
             isValid = false;
         } else {
-            LocalDate limitDate = LocalDate.of(2000, 1, 1);
+            LocalDate limitDate = LocalDate.of(2003, 1, 1);
             if (dob.isAfter(limitDate)) {
-                dobErrorLabel.setText("Date of birth must be before 2000.");
+                dobErrorLabel.setText("Date of birth must be before 2003.");
                 dobErrorLabel.setVisible(true);
                 hasError = true;
                 isValid = false;
