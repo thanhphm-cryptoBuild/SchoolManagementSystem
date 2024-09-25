@@ -109,7 +109,7 @@ public class StudentController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        defaultAvatar = new Image(Objects.requireNonNull(getClass().getResource("/com/app/schoolmanagementsystem/images/default_avatar.png")).toExternalForm());
+        defaultAvatar = new Image(Objects.requireNonNull(getClass().getResource("/com/app/schoolmanagementsystem/images/useravatar.png")).toExternalForm());
         setupTableColumns();
         loadStudentData();
         setupSearchChoiceBox();
