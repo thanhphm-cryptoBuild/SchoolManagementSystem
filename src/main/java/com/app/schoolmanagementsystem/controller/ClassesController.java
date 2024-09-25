@@ -655,6 +655,7 @@ public class ClassesController implements Initializable {
         loadClassesData();
         initializeClassNo();
         disableformAddClass();
+        hideActionClass();
 
         enrollmentPicker.setOnAction(event -> {
             LocalDate enrollmentDate = enrollmentPicker.getValue();
@@ -670,6 +671,16 @@ public class ClassesController implements Initializable {
         // Nếu vai trò là "Teacher", ẩn cột action
         if ("Teacher".equals(currentRole)) {
             formAddClass.setDisable(true); // an add class
+        }
+    }
+
+    private void hideActionClass() {
+        // Kiểm tra vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+
+        // Nếu vai trò là "Teacher", ẩn cột action
+        if ("Teacher".equals(currentRole)) {
+            colAction.setVisible(false); // Ẩn cột hành động nếu là Teacher
         }
     }
 

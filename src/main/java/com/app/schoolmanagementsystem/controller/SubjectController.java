@@ -8,6 +8,8 @@ import com.app.schoolmanagementsystem.model.ClassModel;
 import com.app.schoolmanagementsystem.model.StaffModel;
 import com.app.schoolmanagementsystem.model.SubjectClassModel;
 import com.app.schoolmanagementsystem.model.SubjectModel;
+import com.app.schoolmanagementsystem.services.AuthService;
+import com.app.schoolmanagementsystem.session.UserSession;
 import javafx.animation.TranslateTransition;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ChangeListener;
@@ -99,6 +101,8 @@ public class SubjectController implements Initializable {
         populateChoiceBoxes();
         populateClassNames();
         loadClassSubjects();
+        hideActionSubject();
+        hideformAddSubjectClass();
     }
 
     @FXML
@@ -468,6 +472,33 @@ public class SubjectController implements Initializable {
 
         ObservableList<SubjectClass> observableSubjectClassList = FXCollections.observableArrayList(subjectClassList);
         tableViewClassSubject.setItems(observableSubjectClassList);
+    }
+
+    private void hideformAddSubjectClass() {
+        // Kiểm tra vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+
+        // Nếu vai trò là "Teacher", ẩn cột action
+        if ("Teacher".equals(currentRole)) {
+            formAddSubjectClass.setDisable(true); // Ẩn cột hành động nếu là Teacher
+        }
+    }
+
+    private void hideActionSubject() {
+        // Kiểm tra vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+
+        // Nếu vai trò là "Teacher", ẩn cột action
+        if ("Teacher".equals(currentRole)) {
+            colAction.setVisible(false); // Ẩn cột hành động nếu là Teacher
+        }
+    }
+
+    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
+
+    // Phương thức để lấy roleName hiện tại
+    public String getCurrentRoleName() {
+        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
     }
 
 }
