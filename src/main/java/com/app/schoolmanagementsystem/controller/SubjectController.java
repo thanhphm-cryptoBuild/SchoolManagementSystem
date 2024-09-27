@@ -162,7 +162,6 @@ public class SubjectController implements Initializable {
             try {
                 idSearch = Integer.valueOf(extraSearchText);
             } catch (NumberFormatException e) {
-                System.out.println("ID không hợp lệ, vui lòng nhập số.");
                 return;
             }
         }
@@ -177,7 +176,7 @@ public class SubjectController implements Initializable {
     private void resetSearchFields() {
         searchField.setText("");
         extraSearchField.setText("");
-        selectBox.setValue("");
+        selectBox.setValue("Filter");
     }
 
     private void loadSubjectClassDataByLogic(Integer idSearch, String subjectNameSearch, String classNameYearSearch) {

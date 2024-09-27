@@ -152,7 +152,10 @@
                                                 <StackPane>
                                                    <children>
                                                       <!-- PasswordField -->
-                                                      <PasswordField fx:id="passwordField" prefHeight="45.0" prefWidth="245.0" promptText="Password" visible="true" />
+                                                      <PasswordField fx:id="passwordField" prefHeight="45.0" prefWidth="245.0" promptText="Password" visible="true">
+                                                         <font>
+                                                            <Font name="Sitka Text" size="14.0" />
+                                                         </font></PasswordField>
 
                                                             <!-- TextField hiển thị mật khẩu khi không ẩn -->
                                                       <TextField fx:id="passwordVisibleField" prefHeight="45.0" prefWidth="245.0" promptText="Password" visible="false" />

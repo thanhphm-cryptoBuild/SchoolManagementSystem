@@ -50,7 +50,7 @@
                                                    </children>
                                                 </HBox>
                                                 <Separator orientation="VERTICAL" prefHeight="200.0" />
-                                                <TextField prefHeight="30.0" prefWidth="280.0" promptText="Search Here" styleClass="search_field_class">
+                                                <TextField prefHeight="30.0" prefWidth="280.0" promptText="Class" styleClass="search_field_class">
                                                    <font>
                                                       <Font name="Sitka Text" size="14.0" />
                                                    </font>
@@ -58,7 +58,7 @@
                                                 <Pane prefHeight="1.0" prefWidth="1.0" styleClass="block_search_class" />
                                                 <ChoiceBox prefHeight="30.0" prefWidth="200.0" styleClass="select_box_class" />
                                                 <Pane layoutX="204.0" layoutY="11.0" prefHeight="1.0" prefWidth="1.0" styleClass="block_search_class" />
-                                                <TextField layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="220.0" promptText="..." styleClass="search_field_class">
+                                                <TextField layoutX="44.0" layoutY="12.0" prefHeight="30.0" prefWidth="220.0" promptText="ID, Section" styleClass="search_field_class">
                                                    <font>
                                                       <Font name="Sitka Text" size="14.0" />
                                                    </font>
