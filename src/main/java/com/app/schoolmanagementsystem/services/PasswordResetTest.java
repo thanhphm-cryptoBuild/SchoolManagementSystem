@@ -14,43 +14,29 @@ public class PasswordResetTest {
         Scanner scanner = new Scanner(System.in);
 
         try {
-            // Bước 1: Yêu cầu người dùng nhập email để yêu cầu mã khôi phục
-            System.out.print("Nhập email của bạn để yêu cầu mã khôi phục: ");
             String email = scanner.nextLine();
 
-            // Gửi mã khôi phục đến email
             authService.forgotPassword(email);
-            System.out.println("Mã khôi phục đã được gửi đến email của bạn.");
-
-            // Bước 2: Nhập mã khôi phục
-            System.out.print("Nhập mã khôi phục bạn nhận được: ");
             String resetCode = scanner.nextLine();
 
-            // Tìm StaffID từ email
             int staffID = getStaffIDByEmail(email);
 
-            // Xác thực mã khôi phục và yêu cầu mật khẩu mới nếu mã hợp lệ
             boolean isResetCodeValid = authService.validateResetCode(staffID, resetCode);
             if (isResetCodeValid) {
-                System.out.print("Nhập mật khẩu mới: ");
                 String newPassword = scanner.nextLine();
 
-                // Đặt lại mật khẩu nếu mã khôi phục hợp lệ và chưa hết hạn
                 try {
                     authService.resetPassword(staffID, resetCode, newPassword);
-                    System.out.println("Mật khẩu của bạn đã được đặt lại thành công.");
                 } catch (SQLException e) {
-                    System.out.println("Đã xảy ra lỗi khi đặt lại mật khẩu: " + e.getMessage());
-                    System.exit(1); // Thoát chương trình nếu có lỗi khi đặt lại mật khẩu
+                    e.printStackTrace();
+                    System.exit(1);
                 }
             } else {
-                System.out.println("Mã khôi phục không hợp lệ hoặc đã hết hạn.");
-                System.exit(1); // Thoát chương trình nếu mã khôi phục không hợp lệ
+                System.exit(1);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("Đã xảy ra lỗi: " + e.getMessage());
         }
     }
 
@@ -64,7 +50,7 @@ public class PasswordResetTest {
             if (rs.next()) {
                 return rs.getInt("StaffID");
             } else {
-                throw new SQLException("Email không tồn tại");
+                throw new SQLException("Email does not exist");
             }
         }
     }

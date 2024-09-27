@@ -109,9 +109,9 @@ public class EditStudentController implements Initializable {
     private Label academicYearErrorLabel;
 
     @FXML
-    private Label studentIdValueLabel; // New Label to display Student ID
+    private Label studentIdValueLabel;
 
-    private String avatarPath = "useravatar.png"; // Default avatar
+    private String avatarPath = "useravatar.png";
     private StudentModel student;
     private StudentFamilyModel studentFamily;
     private Map<String, Map<String, ClassModel>> classMap = new HashMap<>();
@@ -135,28 +135,22 @@ public class EditStudentController implements Initializable {
         addressField.setText(student.getAddress());
 
         ClassModel studentClass = getClassModelById(student.getClassID());
-        classNameField.setValue(studentClass.getClassName() + studentClass.getSection()); // Chọn lớp hiện tại
+        classNameField.setValue(studentClass.getClassName() + studentClass.getSection());
         updateAcademicYear(studentClass.getClassName() + studentClass.getSection());
 
         enrollmentDateField.setValue(student.getEnrollmentDate() != null ? convertToLocalDateViaSqlDate(student.getEnrollmentDate()) : null);
         previousSchoolField.setText(student.getPreviousSchool());
         reasonForLeavingField.setText(student.getReasonForLeaving());
         avatarPath = student.getAvatar();
-
-        // Kiểm tra và đặt hình ảnh đại diện
         try {
             Image avatarImage = new Image(avatarPath);
             avatarImageView.setImage(avatarImage);
         } catch (IllegalArgumentException e) {
-            // Nếu không tìm thấy hình ảnh, sử dụng hình ảnh mặc định
             avatarImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png"));
         }
-
-        // Lấy thông tin gia đình từ cơ sở dữ liệu
         loadStudentFamilyData(student.getStudentID());
 
-        // Set Student ID
-        studentIdValueLabel.setText(String.valueOf(student.getStudentID())); // Set the student ID
+        studentIdValueLabel.setText(String.valueOf(student.getStudentID()));
     }
 
     private LocalDate convertToLocalDateViaSqlDate(java.util.Date dateToConvert) {
@@ -204,7 +198,7 @@ public class EditStudentController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy
+        return null;
     }
 
     @FXML
@@ -231,14 +225,11 @@ public class EditStudentController implements Initializable {
         );
         File selectedFile = fileChooser.showOpenDialog(formEditStudent.getScene().getWindow());
         if (selectedFile != null) {
-            // Validate the image before setting it
             if (isValidImage(selectedFile)) {
-                // Set the image directly without resizing
                 Image avatarImage = new Image(selectedFile.toURI().toString());
                 avatarImageView.setImage(avatarImage);
                 avatarPath = selectedFile.toURI().toString();
             } else {
-                // Show error message if the image is not valid
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
@@ -248,23 +239,20 @@ public class EditStudentController implements Initializable {
         }
     }
 
-    // Update this method to validate the image
     private boolean isValidImage(File file) {
-        // Check if the image dimensions are approximately 2x3, 3x4, or 4x6 (width:height ratios)
         try {
             Image image = new Image(file.toURI().toString());
             double aspectRatio = image.getWidth() / image.getHeight();
-            return (aspectRatio >= 0.67 && aspectRatio <= 0.75) || // Acceptable range for 2x3
-                   (aspectRatio >= 0.75 && aspectRatio <= 0.85) || // Acceptable range for 3x4
-                   (aspectRatio >= 0.5 && aspectRatio <= 0.75);   // Acceptable range for 4x6
+            return (aspectRatio >= 0.67 && aspectRatio <= 0.75) ||
+                   (aspectRatio >= 0.75 && aspectRatio <= 0.85) ||
+                   (aspectRatio >= 0.5 && aspectRatio <= 0.75);
         } catch (Exception e) {
-            return false; // Return false if any error occurs
+            return false;
         }
     }
 
     @FXML
     private void updateStudent(MouseEvent event) {
-        // Reset error labels
         lastNameErrorLabel.setVisible(false);
         emailErrorLabel.setVisible(false);
         phoneNumberErrorLabel.setVisible(false);
@@ -274,14 +262,13 @@ public class EditStudentController implements Initializable {
         addressErrorLabel.setVisible(false);
         classNameErrorLabel.setVisible(false);
         enrollmentDateErrorLabel.setVisible(false);
-        fatherNameErrorLabel.setVisible(false); // Reset father name error label
-        fatherPhoneNumberErrorLabel.setVisible(false); // Reset father phone number error label
-        motherNameErrorLabel.setVisible(false); // Reset mother name error label
-        motherPhoneNumberErrorLabel.setVisible(false); // Reset mother phone number error label
+        fatherNameErrorLabel.setVisible(false);
+        fatherPhoneNumberErrorLabel.setVisible(false);
+        motherNameErrorLabel.setVisible(false);
+        motherPhoneNumberErrorLabel.setVisible(false);
     
         boolean hasError = false;
-    
-        // Validate fields
+
         if (lastNameField.getText() == null || lastNameField.getText().isEmpty() || !Character.isUpperCase(lastNameField.getText().charAt(0))) {
             lastNameErrorLabel.setText("Last name must start with an uppercase letter");
             lastNameErrorLabel.setVisible(true);
@@ -296,8 +283,7 @@ public class EditStudentController implements Initializable {
             emailErrorLabel.setText("Invalid email format");
             emailErrorLabel.setVisible(true);
             hasError = true;
-        } else if (isEmailExists(emailField.getText(), student.getStudentID())) { // Check for duplicate email
-            emailErrorLabel.setText("Email already exists");
+        } else if (isEmailExists(emailField.getText(), student.getStudentID())) {
             emailErrorLabel.setVisible(true);
             hasError = true;
         }
@@ -331,8 +317,7 @@ public class EditStudentController implements Initializable {
             classNameErrorLabel.setVisible(true);
             hasError = true;
         }
-    
-        // Validate father and mother fields
+
         if (fatherNameField.getText() != null && !fatherNameField.getText().isEmpty()) {
             if (!Character.isUpperCase(fatherNameField.getText().charAt(0))) {
                 fatherNameErrorLabel.setText("Father's name must start with an uppercase letter");
@@ -366,8 +351,7 @@ public class EditStudentController implements Initializable {
                 hasError = true;
             }
         }
-    
-        // Ensure at least one of the parent names is filled
+
         if ((fatherNameField.getText() == null || fatherNameField.getText().isEmpty()) && 
             (motherNameField.getText() == null || motherNameField.getText().isEmpty())) {
             fatherNameErrorLabel.setText("At least one parent name is required");
@@ -378,7 +362,6 @@ public class EditStudentController implements Initializable {
         }
     
         if (!hasError) {
-            // Proceed with updating the student
             String lastName = lastNameField.getText();
             String firstName = firstNameField.getText();
             String email = emailField.getText();
@@ -396,10 +379,8 @@ public class EditStudentController implements Initializable {
             String motherPhoneNumber = motherPhoneNumberField.getText();
             String previousSchool = previousSchoolField.getText();
             String reasonForLeaving = reasonForLeavingField.getText();
-    
-            // Connect and update data in the database
+
             try (Connection connection = ConnectDB.connection()) {
-                // Update student information
                 String studentQuery = "UPDATE students SET lastName = ?, firstName = ?, email = ?, dateOfBirth = ?, phoneNumber = ?, gender = ?, address = ?, classID = ?, enrollmentDate = ?, previousSchool = ?, reasonForLeaving = ?, avatar = ? WHERE StudentID = ?";
                 PreparedStatement studentPreparedStatement = connection.prepareStatement(studentQuery);
                 studentPreparedStatement.setString(1, lastName);
@@ -417,8 +398,7 @@ public class EditStudentController implements Initializable {
                 studentPreparedStatement.setInt(13, student.getStudentID());
     
                 studentPreparedStatement.executeUpdate();
-    
-                // Update student family information
+
                 String familyQuery = "UPDATE studentfamily SET FatherName = ?, FatherPhoneNumber = ?, MotherName = ?, MotherPhoneNumber = ? WHERE StudentID = ?";
                 PreparedStatement familyPreparedStatement = connection.prepareStatement(familyQuery);
                 familyPreparedStatement.setString(1, fatherName.isEmpty() ? null : fatherName);
@@ -428,8 +408,7 @@ public class EditStudentController implements Initializable {
                 familyPreparedStatement.setInt(5, student.getStudentID());
     
                 familyPreparedStatement.executeUpdate();
-    
-                // Show success message
+
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText(null);
@@ -450,12 +429,12 @@ public class EditStudentController implements Initializable {
             preparedStatement.setInt(2, currentStudentId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt(1) > 0; // Return true if email exists for another student
+                return resultSet.getInt(1) > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; // Return false if no error occurs and email does not exist
+        return false;
     }
 
     @FXML
@@ -485,7 +464,6 @@ public class EditStudentController implements Initializable {
         genderField.getItems().addAll("Male", "Female");
         loadClassNames();
 
-        // Thiết lập StringConverter cho classNameField
         classNameField.setConverter(new StringConverter<String>() {
             @Override
             public String toString(String className) {
@@ -498,10 +476,8 @@ public class EditStudentController implements Initializable {
             }
         });
 
-        // Set DatePicker constraints for Date of Birth
         setDatePickerConstraints();
 
-        // Add listener to classNameField to update academic year
         classNameField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 updateAcademicYear(newValue);
@@ -510,13 +486,9 @@ public class EditStudentController implements Initializable {
     }
 
     private void setDatePickerConstraints() {
-        // Define the maximum selectable date as December 31, 2010
         final LocalDate MAX_DATE = LocalDate.of(2011, 1, 1).minusDays(1);
 
-        // Set the default date to January 1, 2010
         dobField.setValue(LocalDate.of(2010, 1, 1));
-
-        // Apply DayCellFactory to disable dates after MAX_DATE
         dobField.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
@@ -524,12 +496,11 @@ public class EditStudentController implements Initializable {
 
                 if (date.isAfter(MAX_DATE)) {
                     setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;"); // Optional: Highlight disabled dates
+                    setStyle("-fx-background-color: #ffc0cb;");
                 }
             }
         });
 
-        // Optionally, set the maximum date to MAX_DATE to prevent manual entry
         dobField.setEditable(false);
     }
 
@@ -548,11 +519,9 @@ public class EditStudentController implements Initializable {
                 String displayName = className + section;
                 String academicYear = enrollmentDate.getYear() + " - " + completeDate.getYear();
 
-                // Add to classMap if not already present
                 classMap.putIfAbsent(displayName, new HashMap<>());
                 classMap.get(displayName).put(academicYear, new ClassModel(classID, className, section, enrollmentDate, completeDate));
-                
-                // Add to classNameField if not already present
+
                 if (!classNameField.getItems().contains(displayName)) {
                     classNameField.getItems().add(displayName);
                 }
@@ -563,10 +532,8 @@ public class EditStudentController implements Initializable {
     }
 
     private void updateAcademicYear(String className) {
-        // Clear previous items
         academicYearField.getItems().clear();
 
-        // Collect all academic years for the selected class name
         Map<String, ClassModel> classModels = classMap.get(className);
         if (classModels != null) {
             for (String academicYear : classModels.keySet()) {
@@ -574,7 +541,6 @@ public class EditStudentController implements Initializable {
             }
         }
 
-        // Set the first academic year as the default value
         if (!academicYearField.getItems().isEmpty()) {
             academicYearField.setValue(academicYearField.getItems().get(0));
         }

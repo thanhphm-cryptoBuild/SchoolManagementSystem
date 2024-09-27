@@ -50,8 +50,6 @@ public class ClassModel {
         this.completeDate = completeDate;
     }
 
-    // Getters and Setters
-
     public String getTeacherName() {
         return teacherName;
     }

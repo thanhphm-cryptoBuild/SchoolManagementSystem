@@ -407,7 +407,7 @@ public class ClassesController implements Initializable {
     @FXML
     void refreshTable(MouseEvent event) {
         loadClassesData();
-        showAlert(Alert.AlertType.INFORMATION, "Confirmed", "Refresh Success");
+        showAlert(Alert.AlertType.INFORMATION, "Success", "Data has been refreshed.");
     }
 
     @FXML
@@ -515,12 +515,7 @@ public class ClassesController implements Initializable {
                         }
                     }
 
-//                    List<Integer> teacherIDsWithPlaceholder = new ArrayList<>();
-//                    teacherIDsWithPlaceholder.add(-1);
-//                    teacherIDsWithPlaceholder.addAll(teacherIDs);
-
                     showEditTeacherID.setItems(FXCollections.observableArrayList(teacherIDs));
-//                    showEditTeacherID.getSelectionModel().selectFirst();
 
                     if (teacherIDs.contains(staffID)) {
                         showEditTeacherID.getSelectionModel().select(Integer.valueOf(staffID));
@@ -581,7 +576,6 @@ public class ClassesController implements Initializable {
                 if (empty) {
                     setGraphic(null);
                 } else {
-//                    HBox actionButton = new HBox(5, editButton);
                     setGraphic(editButton);
                 }
             }
@@ -617,14 +611,14 @@ public class ClassesController implements Initializable {
     }
 
     private void openFormEdit(ClassModel classModel) {
-        formEditClass.setTranslateX(-50);
+        formEditClass.setTranslateX(50);
         formEditClass.setVisible(true);
         formAddClass.setVisible(false);
 
 
         TranslateTransition openTransition = new TranslateTransition(Duration.seconds(0.2));
         openTransition.setNode(formEditClass);
-        openTransition.setFromX(-50);
+        openTransition.setFromX(50);
         openTransition.setToX(0);
         openTransition.play();
 
@@ -696,17 +690,14 @@ public class ClassesController implements Initializable {
     }
 
     private void disableformAddClass() {
-        // Kiểm tra vai trò của người dùng hiện tại
-        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName();
 
-        // Nếu vai trò là "Teacher", ẩn cột action
         if ("Teacher".equals(currentRole)) {
-            formAddClass.setDisable(true); // an add class
+            formAddClass.setDisable(true);
         }
     }
 
-    // Phương thức lấy roleName hiện tại
     private String getCurrentRoleName() {
-        return UserSession.getCurrentRoleName(); // Lấy roleName từ UserSession
+        return UserSession.getCurrentRoleName();
     }
 }

@@ -18,11 +18,9 @@ public class AdvancedModel {
     private Connection connection;
 
     public AdvancedModel() {
-        this.connection = ConnectDB.connection(); // Khởi tạo kết nối từ ConnectDB
+        this.connection = ConnectDB.connection();
     }
 
-
-    // Lấy danh sách các Staff có trạng thái 'inactive'
     public List<Staff> getInactiveStaff() {
         List<Staff> inactiveStaffList = new ArrayList<>();
         String sql = "SELECT * FROM Staff WHERE status = 'inactive'";
@@ -49,7 +47,6 @@ public class AdvancedModel {
         return inactiveStaffList;
     }
 
-    // Lấy danh sách các Student có trạng thái 'inactive'
     public List<Student> getInactiveStudents() {
         List<Student> inactiveStudentList = new ArrayList<>();
         String sql = "SELECT * FROM Students WHERE status = 'inactive'";
@@ -75,29 +72,27 @@ public class AdvancedModel {
         return inactiveStudentList;
     }
 
-    // Phương thức khôi phục trạng thái active của Staff
     public boolean restoreStaffStatus(int staffID) {
         String updateQuery = "UPDATE staff SET status = 'active' WHERE staffID = ? AND status = 'inactive'";
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
             preparedStatement.setInt(1, staffID);
             int rowsUpdated = preparedStatement.executeUpdate();
-            return rowsUpdated > 0; // Trả về true nếu có bản ghi được cập nhật
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Trả về false nếu có lỗi
+            return false;
         }
     }
 
-    // Phương thức khôi phục trạng thái active của Student
     public boolean restoreStudentStatus(int studentID) {
         String updateQuery = "UPDATE students SET status = 'active' WHERE studentID = ? AND status = 'inactive'";
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateQuery)) {
             preparedStatement.setInt(1, studentID);
             int rowsUpdated = preparedStatement.executeUpdate();
-            return rowsUpdated > 0; // Trả về true nếu có bản ghi được cập nhật
+            return rowsUpdated > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false; // Trả về false nếu có lỗi
+            return false;
         }
     }
 
@@ -105,7 +100,6 @@ public class AdvancedModel {
         List<Staff> resultList = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Staff WHERE status = 'inactive'");
 
-        // Xây dựng truy vấn động cho firstName và email
         boolean hasNameOrEmailCondition = false;
 
         if (firstName != null && !firstName.isEmpty()) {
@@ -117,7 +111,6 @@ public class AdvancedModel {
             hasNameOrEmailCondition = true;
         }
 
-        // Thêm các điều kiện bổ sung
         if (gender != null) {
             sql.append(" AND gender = ?");
         }
@@ -128,7 +121,6 @@ public class AdvancedModel {
         try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
             int paramIndex = 1;
 
-            // Set giá trị cho các tham số truy vấn
             if (firstName != null && !firstName.isEmpty()) {
                 statement.setString(paramIndex++, "%" + firstName + "%");
             }
@@ -158,7 +150,7 @@ public class AdvancedModel {
                 resultList.add(staff);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Xem xét ghi log hoặc thông báo lỗi
+            e.printStackTrace();
         }
         return resultList;
     }
@@ -167,7 +159,6 @@ public class AdvancedModel {
         List<Student> resultList = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM Students WHERE status = 'inactive'");
 
-        // Xây dựng truy vấn động cho firstName và email
         boolean hasNameOrEmailCondition = false;
 
         if (firstName != null && !firstName.isEmpty()) {
@@ -179,7 +170,6 @@ public class AdvancedModel {
             hasNameOrEmailCondition = true;
         }
 
-        // Thêm các điều kiện bổ sung
         if (gender != null) {
             sql.append(" AND gender = ?");
         }
@@ -190,7 +180,6 @@ public class AdvancedModel {
         try (PreparedStatement statement = connection.prepareStatement(sql.toString())) {
             int paramIndex = 1;
 
-            // Set giá trị cho các tham số truy vấn
             if (firstName != null && !firstName.isEmpty()) {
                 statement.setString(paramIndex++, "%" + firstName + "%");
             }
@@ -219,7 +208,7 @@ public class AdvancedModel {
                 resultList.add(student);
             }
         } catch (SQLException e) {
-            e.printStackTrace(); // Xem xét ghi log hoặc thông báo lỗi
+            e.printStackTrace();
         }
         return resultList;
     }

@@ -93,13 +93,9 @@ public class SignInController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        authService = new AuthService(); // Khởi tạo AuthService
-
-        // Đặt trạng thái ban đầu
+        authService = new AuthService();
         passwordVisibleField.setVisible(false);
         eyeCloseImageView.setVisible(false);
-
-        // Liên kết dữ liệu giữa TextField và PasswordField
         passwordVisibleField.textProperty().bindBidirectional(passwordField.textProperty());
 
     }
@@ -113,8 +109,6 @@ public class SignInController implements Initializable {
 
         boolean isValid = true;
 
-
-        // Kiểm tra email
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (email == null || email.isEmpty()) {
             emailError.setText("Email cannot be empty.");
@@ -126,7 +120,6 @@ public class SignInController implements Initializable {
             isValid = false;
         }
 
-        // Kiểm tra mật khẩu
         if (password == null || password.isEmpty()) {
             passwordError.setText("Password cannot be empty.");
             passwordError.setVisible(true);
@@ -139,15 +132,12 @@ public class SignInController implements Initializable {
 
         if (isValid) {
             if (authService.login(email, password)) {
-                // Lấy vai trò của người dùng
                 String roleName = authService.getRoleName(email);
 
-                // Nếu đăng nhập thành công
                 try {
                     FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/Dashboard.fxml"));
                     Scene scene = new Scene(fxmlLoader.load(), 1366, 780);
 
-                    // Truyền vai trò tới Controller
                     Controller dashboardController = fxmlLoader.getController();
                     dashboardController.setRoleName(roleName);
 
@@ -161,9 +151,8 @@ public class SignInController implements Initializable {
                     e.printStackTrace();
                 }
             } else {
-                // Nếu đăng nhập thất bại, hiển thị thông báo lỗi
                 passwordError.setText("Incorrect email or password.");
-                showAlert(Alert.AlertType.INFORMATION, "Error", "Incorrect email or password.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Incorrect email or password.");
             }
         }
     }
@@ -212,7 +201,6 @@ public class SignInController implements Initializable {
 
         boolean isValid = true;
 
-        // Kiểm tra email
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (email == null || email.isEmpty()) {
             emailSendError.setText("Email cannot be empty.");
@@ -229,10 +217,8 @@ public class SignInController implements Initializable {
             try {
                 authService.forgotPassword(email);
 
-                // Hiển thị thông báo đợi
                 showAlert(Alert.AlertType.INFORMATION, "Please Wait", "Code is being sent. You will be redirected shortly.");
 
-                // Thực hiện chuyển trang sau một khoảng thời gian ngắn
                 PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
                 pause.setOnFinished(e -> {
                     forgotPWPane.setTranslateX(500);
@@ -248,10 +234,9 @@ public class SignInController implements Initializable {
                 });
                 pause.play();
             } catch (Exception e) {
-                // Hiển thị thông báo lỗi nếu có lỗi
                 emailSendError.setText("Email does not exist.");
                 showAlert(Alert.AlertType.INFORMATION, "Error", "Email does not exist.");
-                e.printStackTrace(); // In lỗi để dễ dàng debug
+                e.printStackTrace();
             }
         }
     }
@@ -268,14 +253,12 @@ public class SignInController implements Initializable {
 
         boolean isValid = true;
 
-        // Kiểm tra mã khôi phục
         if (code.isEmpty()) {
             codeError.setText("Reset code cannot be empty.");
             codeError.setVisible(true);
             isValid = false;
         }
 
-        // Kiểm tra mật khẩu mới
         if (newPassword == null || newPassword.isEmpty()) {
             newPassError.setText("Password cannot be empty.");
             newPassError.setVisible(true);
@@ -286,36 +269,29 @@ public class SignInController implements Initializable {
             isValid = false;
         }
 
-        // Kiểm tra mật khẩu xác nhận
         if (!newPassword.equals(confirmPassword)) {
             confirmPassError.setText("Passwords do not match.");
             confirmPassError.setVisible(true);
             isValid = false;
         }
 
-        // Nếu form hợp lệ, bắt đầu xử lý mã khôi phục
         if (isValid) {
             try {
-                // Lấy StaffID dựa trên mã khôi phục
-                int staffID = getStaffIDByResetCode(code); // Giả sử bạn có phương thức để lấy staffID bằng mã khôi phục
-
-                // Nếu staffID không tồn tại
+                int staffID = getStaffIDByResetCode(code);
                 if (staffID == -1) {
                     showAlertAndRedirectToLogin("Invalid or expired code.");
                     return;
                 }
 
-                // Kiểm tra mã khôi phục
                 if (!authService.validateResetCode(staffID, code)) {
                     showAlertAndRedirectToLogin("Invalid, expired, or already used reset code.");
                     return;
                 }
 
-                // Đặt lại mật khẩu nếu mã khôi phục hợp lệ
                 if (authService.resetPassword(staffID, code, newPassword)) {
-                    setResetCodeUsed(staffID); // Đánh dấu mã khôi phục đã sử dụng
+                    setResetCodeUsed(staffID);
                     showAlert(Alert.AlertType.INFORMATION, "Success", "Password has been updated successfully.");
-                    backToSignIn(); // Chuyển về trang đăng nhập
+                    backToSignIn();
                 } else {
                     showAlertAndRedirectToLogin("Failed to update password.");
                 }
@@ -327,10 +303,8 @@ public class SignInController implements Initializable {
     }
 
     private void showAlertAndRedirectToLogin(String message) {
-        // Hiển thị thông báo lỗi
         showAlert(Alert.AlertType.ERROR, "Error", message);
 
-        // Chuyển người dùng về form đăng nhập
         backToSignIn();
     }
 
@@ -355,13 +329,12 @@ public class SignInController implements Initializable {
             if (rs.next()) {
                 return rs.getInt("StaffID");
             } else {
-                return -1; // Trả về -1 nếu không tìm thấy mã khôi phục
+                return -1;
             }
         }
     }
 
     private void backToSignIn() {
-        // Quay lại màn hình đăng nhập
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("/com/app/schoolmanagementsystem/views/SignIn.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 750, 550);
@@ -376,9 +349,6 @@ public class SignInController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
-
 
     @FXML
     void backToForgotPW(MouseEvent event) {

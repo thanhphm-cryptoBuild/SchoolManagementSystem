@@ -111,14 +111,14 @@ public class Controller implements Initializable {
     private boolean isSideBarOpen = false;
 
     @FXML
-    private Label roleLabel; // Thêm fx:id cho Label
+    private Label roleLabel;
+
     private String roleName;
 
     @FXML
     private ImageView img_avatar;
 
     @FXML ImageView img_logout;
-
 
 
     @Override
@@ -134,84 +134,44 @@ public class Controller implements Initializable {
 
             loadPage("/com/app/schoolmanagementsystem/views/PageDashboard.fxml");
 
-
             dropdownPane.setViewOrder(10);
             navbarMain.setViewOrder(0);
 
         } catch(Exception e) {
             e.printStackTrace();
         }
-
-
     }
 
     public void setRoleName(String roleName) {
         this.roleName = roleName;
         roleLabel.setText(roleName);
 
-        String avatarPath = UserSession.getStaffAvatar(); // Đường dẫn URL đến hình ảnh
+        String avatarPath = UserSession.getStaffAvatar();
         if (avatarPath != null && !avatarPath.isEmpty()) {
             try {
-                img_avatar.setImage(new Image(avatarPath)); // Cập nhật hình ảnh avatar từ đường dẫn URL
+                img_avatar.setImage(new Image(avatarPath));
             } catch (IllegalArgumentException e) {
                 System.out.println("Error loading image from URL: " + e.getMessage());
-                // Nếu không tải được hình ảnh từ URL, sử dụng hình ảnh mặc định
                 setDefaultAvatar();
             }
         } else {
-            // Nếu không có avatarPath, sử dụng hình ảnh mặc định
             setDefaultAvatar();
         }
-        // Thiết lập kích thước cho hình ảnh
         img_avatar.setFitHeight(40);
         img_avatar.setFitWidth(40);
-        // Tạo hình tròn để cắt hình ảnh
-        Circle clip = new Circle(20, 20, 20); // Tọa độ trung tâm là (12, 12) với bán kính 12
+        Circle clip = new Circle(20, 20, 20);
         img_avatar.setClip(clip);
     }
 
     private void setDefaultAvatar() {
-        String defaultPath = "useravatar.png"; // Tên file hình ảnh mặc định
+        String defaultPath = "useravatar.png";
         InputStream imageStream = getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/" + defaultPath);
         if (imageStream != null) {
-            img_avatar.setImage(new Image(imageStream)); // Cập nhật hình ảnh mặc định
+            img_avatar.setImage(new Image(imageStream));
         } else {
-            System.out.println("Default avatar image not found."); // Xử lý nếu không tìm thấy hình ảnh mặc định
+            System.out.println("Default avatar image not found.");
         }
     }
-
-
-//    private void configurePermissions() {
-//        String role = roleLabel.getText();  // Lấy vai trò từ Label
-//
-//        if ("Admin".equals(role)) {
-//            // Admin có quyền truy cập mọi chức năng
-//            iconStudentSB.setDisable(false);
-//            iconStaffSB.setDisable(false);
-//            iconClassSB.setDisable(false);
-//            iconAdvancedSB.setDisable(false);
-//        } else if ("Manager".equals(role)) {
-//            // Quản lý bị hạn chế một số quyền
-//            iconStudentSB.setDisable(false);  // Quản lý học sinh
-//            iconStaffSB.setDisable(true);     // Không quản lý nhân viên
-//            iconClassSB.setDisable(true);     // Không quản lý lớp học
-//            iconAdvancedSB.setDisable(false); // Quản lý chức năng nâng cao
-//        } else if ("Teacher".equals(role)) {
-//            // Giáo viên bị hạn chế nhiều quyền
-//            iconStudentSB.setDisable(true);   // Không quản lý học sinh
-//            iconStaffSB.setDisable(true);     // Không quản lý nhân viên
-//            iconClassSB.setDisable(false);    // Quản lý lớp học
-//            iconAdvancedSB.setDisable(true);  // Không quản lý chức năng nâng cao
-//        } else {
-//            // Các vai trò khác hoặc không hợp lệ sẽ bị hạn chế toàn bộ
-//            iconStudentSB.setDisable(true);
-//            iconStaffSB.setDisable(true);
-//            iconClassSB.setDisable(true);
-//            iconAdvancedSB.setDisable(true);
-//        }
-//    }
-
-
 
     private void loadPage(String page) throws IOException {
         Parent fxml = FXMLLoader.load(getClass().getResource(page));
@@ -263,7 +223,6 @@ public class Controller implements Initializable {
         });
     }
 
-
     @FXML
     void anchorSideBarExited(MouseEvent event) {
 
@@ -306,7 +265,6 @@ public class Controller implements Initializable {
             });
         }
     }
-
 
     @FXML
     void dropdownBTN(MouseEvent event) {
@@ -394,7 +352,6 @@ public class Controller implements Initializable {
         iconGifCar.setTranslateX(0);
     }
 
-
     @FXML
     void buttonAdvanced(MouseEvent event) throws IOException {
         if (roleLabel.getText().equals("Admin Master")) {
@@ -445,7 +402,6 @@ public class Controller implements Initializable {
         }
     }
 
-
     @FXML
     void buttonStudent(MouseEvent event) throws IOException {
         if (roleLabel.getText().equals("Admin Master") || roleLabel.getText().equals("Manager") || roleLabel.getText().equals("Teacher")) {
@@ -455,16 +411,11 @@ public class Controller implements Initializable {
         }
     }
 
-
     @FXML
     void handle_Logout(MouseEvent event) throws IOException {
-        // Tải trang đăng nhập
         Parent loginPage = FXMLLoader.load(getClass().getResource("/com/app/schoolmanagementsystem/views/SignIn.fxml"));
-
-        // Lấy cửa sổ hiện tại
         Stage currentStage = (Stage) ((ImageView) event.getSource()).getScene().getWindow();
 
-        // Đặt trang đăng nhập làm trang chính
         Scene scene = new Scene(loginPage);
         currentStage.setScene(scene);
         currentStage.show();
@@ -477,7 +428,4 @@ public class Controller implements Initializable {
         alert.setContentText(message);
         alert.showAndWait();
     }
-
-
-
 }

@@ -9,7 +9,7 @@ public class Timetable {
     private String teacher;
     private String subject;
     private String description;
-    private LocalDate date; // Thêm thuộc tính date
+    private LocalDate date;
 
     public Timetable(int timetableID, String time, String className, String teacher, String subject, String description, LocalDate date) {
         this.timetableID = timetableID;
@@ -18,7 +18,7 @@ public class Timetable {
         this.teacher = teacher;
         this.subject = subject;
         this.description = description;
-        this.date = date; // Khởi tạo thuộc tính date
+        this.date = date;
     }
 
     public int getTimetableID() {

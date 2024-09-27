@@ -3,7 +3,7 @@ package com.app.schoolmanagementsystem.entities;
 public class StaffRoles {
 
     private int StaffRoleID;
-    private String RoleName; // 'Admin Master', 'Manager', 'Teacher'
+    private String RoleName;
     private int StaffID;
 
     public StaffRoles(int staffRoleID, String roleName, int staffID) {
@@ -12,7 +12,6 @@ public class StaffRoles {
         StaffID = staffID;
     }
 
-    // Constructor mới với 1 tham số
     public StaffRoles(int staffID, String roleName) {
         this.StaffID = staffID;
         this.RoleName = roleName;

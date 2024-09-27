@@ -16,7 +16,6 @@ public class UserSession {
 
     private static Staff currentStaff;
 
-    // Getter và setter cho currentStaff
     public static Staff getCurrentStaff() {
         return currentStaff;
     }

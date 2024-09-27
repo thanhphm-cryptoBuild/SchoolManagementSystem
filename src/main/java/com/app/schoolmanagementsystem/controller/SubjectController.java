@@ -109,6 +109,17 @@ public class SubjectController implements Initializable {
     @FXML
     private TableColumn<SubjectClass, String> colTeacherName;
 
+    @FXML
+    private TextField searchField;
+
+    @FXML
+    private ChoiceBox<String> selectBox;
+
+    @FXML
+    private TextField extraSearchField;
+
+    private final SubjectClassModel subjectClassModel = new SubjectClassModel();
+
     private final Staff selectTeacherPlaceholder = new Staff(-1, "", "", "", "", "");
 
     @Override
@@ -118,6 +129,61 @@ public class SubjectController implements Initializable {
         populateChoiceBoxes();
         populateClassNames();
         loadClassSubjects();
+        setupSearch();
+    }
+
+    private void setupSearch() {
+        ObservableList<String> searchOptions = FXCollections.observableArrayList("Filter", "ID", "Class Name");
+        selectBox.setItems(searchOptions);
+        selectBox.setValue("Filter");
+
+        searchField.textProperty().addListener((observable, oldValue, newValue) -> searchSubjectDeatil());
+        selectBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> searchSubjectDeatil());
+        extraSearchField.textProperty().addListener((observable, oldValue, newValue) -> searchSubjectDeatil());
+
+        loadSubjectClassDataByLogic(null, null, null);
+    }
+
+    private void searchSubjectDeatil() {
+        String searchText = searchField.getText().trim();
+        String extraSearchText = extraSearchField.getText().trim();
+
+        String subjectNameSearch = null;
+
+        if (!searchText.isEmpty()) {
+            subjectNameSearch = searchText;
+        }
+
+        Integer idSearch = null;
+        String classNameYearSearch = null;
+
+        String selectedOption = selectBox.getValue();
+        if ("ID".equals(selectedOption)) {
+            try {
+                idSearch = Integer.valueOf(extraSearchText);
+            } catch (NumberFormatException e) {
+                System.out.println("ID không hợp lệ, vui lòng nhập số.");
+                return;
+            }
+        }
+        else if ("Class Name".equals(selectedOption)) {
+            classNameYearSearch = extraSearchText.isEmpty() ? null : extraSearchText;
+        }
+
+        loadSubjectClassDataByLogic(idSearch, subjectNameSearch, classNameYearSearch);
+    }
+
+
+    private void resetSearchFields() {
+        searchField.setText("");
+        extraSearchField.setText("");
+        selectBox.setValue("");
+    }
+
+    private void loadSubjectClassDataByLogic(Integer idSearch, String subjectNameSearch, String classNameYearSearch) {
+        List<SubjectClass> filteredList = subjectClassModel.searchSubjectClass(idSearch, subjectNameSearch, classNameYearSearch);
+        ObservableList<SubjectClass> observableList = FXCollections.observableArrayList(filteredList);
+        tableViewClassSubject.setItems(observableList);
     }
 
     @FXML
@@ -295,7 +361,8 @@ public class SubjectController implements Initializable {
     @FXML
     void refreshTableSubjectDetail(MouseEvent event) {
         loadClassSubjects();
-        showAlert(Alert.AlertType.INFORMATION, "Confirmed", "Refresh Success");
+        resetSearchFields();
+        showAlert(Alert.AlertType.INFORMATION, "Success", "Data has been refreshed.");
     }
 
     @FXML
@@ -314,17 +381,19 @@ public class SubjectController implements Initializable {
             formAddSubjectClass.setVisible(true);
             formEditSubjectClass.setVisible(false);
         });
+
+        resetSearchFields();
     }
 
     private void openFormEditSubjectClass(SubjectClass subjectClass) {
-        formEditSubjectClass.setTranslateX(-50);
+        formEditSubjectClass.setTranslateX(50);
         formEditSubjectClass.setVisible(true);
         formAddSubjectClass.setVisible(false);
 
 
         TranslateTransition openTransition = new TranslateTransition(Duration.seconds(0.2));
         openTransition.setNode(formEditSubjectClass);
-        openTransition.setFromX(-50);
+        openTransition.setFromX(50);
         openTransition.setToX(0);
         openTransition.play();
 
@@ -345,9 +414,8 @@ public class SubjectController implements Initializable {
             showEditClassName.getSelectionModel().select(classToEdit);
         }
 
-
+        resetSearchFields();
         populateEditTeacherChoiceBoxes(subjectClass.getStaffID());
-
     }
 
     private void deleteClassSubject(SubjectClass subjectClassToDelete) {
@@ -363,6 +431,8 @@ public class SubjectController implements Initializable {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Error", "Failed to delete subject detail ID: " + classSubjectID + ".");
         }
+
+        resetSearchFields();
     }
 
     private Subject findSubjectById(int subjectID) {
@@ -632,6 +702,11 @@ public class SubjectController implements Initializable {
         colAction.setStyle("-fx-alignment: CENTER;");
     }
 
+    @FXML
+    void searchButton(MouseEvent event) {
+
+    }
+
 
     private void loadClassSubjects() {
         SubjectClassModel subjectClassModel = new SubjectClassModel();
@@ -639,6 +714,7 @@ public class SubjectController implements Initializable {
 
         ObservableList<SubjectClass> observableSubjectClassList = FXCollections.observableArrayList(subjectClassList);
         tableViewClassSubject.setItems(observableSubjectClassList);
+        loadSubjectClassDataByLogic(null, null, null);
     }
 
 }

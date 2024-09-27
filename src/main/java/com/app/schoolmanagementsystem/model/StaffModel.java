@@ -26,18 +26,16 @@ import java.util.List;
 public class StaffModel {
 
     private Staff staff;
-    private Connection connection; // Thêm thuộc tính Connection
+    private Connection connection;
 
-    // Constructor
     public StaffModel(Staff staff, Connection connection) {
-        this.staff = staff; // Khởi tạo staff
-        this.connection = connection; // Khởi tạo Connection
+        this.staff = staff;
+        this.connection = connection;
     }
 
     public StaffModel() {
     }
 
-    // Phương thức tìm kiếm vai trò theo tên
     public StaffRoles findRoleByName(String roleName) {
         StaffRoles staffRole = null;
         String query = "SELECT * FROM staffroles WHERE RoleName = ?";
@@ -62,8 +60,6 @@ public class StaffModel {
         return staffRole;
     }
 
-
-    // Phương thức đếm số lượng nhân viên trạng thái active
     public int countActiveStaff() {
         int count = 0;
         String query = "SELECT COUNT(*) AS totalActiveStaff FROM Staff WHERE Status = ?";
@@ -85,10 +81,6 @@ public class StaffModel {
         return count;
     }
 
-    // Phương thức tìm vai trò theo tên
-
-
-    // Phương thức lấy danh sách tất cả nhân viên trạng thái active
     public List<Staff> getActiveStaff() {
         List<Staff> staffList = new ArrayList<>();
         String query = "SELECT StaffID, FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, PositionName, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed " +
@@ -141,7 +133,7 @@ public class StaffModel {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                avatarName = rs.getString("Avatar"); // Trả về tên tệp hình ảnh
+                avatarName = rs.getString("Avatar");
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -151,7 +143,6 @@ public class StaffModel {
     }
 
 
-    // Phương thức để lấy vai trò của nhân viên dựa trên StaffID
     public String getRoleByStaffID(int staffID) {
         String roleName = "";
         String query = "SELECT RoleName FROM StaffRoles WHERE StaffID = ?";
@@ -175,17 +166,14 @@ public class StaffModel {
 
 
 
-    // Phương thức thêm nhân viên mới
     public boolean addStaff(Staff staff, List<StaffFamily> familyMembers, StaffRoles staffRole) {
         boolean isValid = true;
 
-        // Kiểm tra dữ liệu nhân viên
         if (!validateStaffData(staff)) {
             System.out.println("Dữ liệu nhân viên không hợp lệ.");
             isValid = false;
         } else {
 
-            // Kiểm tra từng trường cụ thể của nhân viên
             if (staff.getFirstName() == null || staff.getFirstName().isEmpty()) {
                 System.out.println("Tên nhân viên không được trống.");
                 isValid = false;
@@ -230,8 +218,6 @@ public class StaffModel {
                 isValid = false;
             }
 
-            // Biểu thức chính quy để kiểm tra định dạng email
-            // Biểu thức chính quy để kiểm tra định dạng email
             String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
             if (staff.getEmail() == null || staff.getEmail().isEmpty()) {
@@ -241,7 +227,6 @@ public class StaffModel {
                 System.out.println("Email không đúng định dạng.");
                 isValid = false;
             } else {
-                // Kiểm tra email tồn tại trong CSDL và loại trừ staff hiện tại
                 try (Connection conn = ConnectDB.connection()) {
                     if (isEmailExists(staff.getEmail(), staff.getStaffID(), conn)) {
                         System.out.println("Email đã tồn tại trong cơ sở dữ liệu.");
@@ -267,7 +252,6 @@ public class StaffModel {
                 isValid = false;
             }
 
-            // Lấy hoặc thêm vị trí và nhận PositionName
             if (staff.getPositionName() == null || staff.getPositionName().isEmpty()) {
                 System.out.println("Vị trí không hợp lệ.");
                 isValid = false;
@@ -287,19 +271,16 @@ public class StaffModel {
                 System.out.println("Kinh nghiệm làm việc không được trống.");
                 isValid = false;
             }
-            // Kiểm tra định dạng của hình đại diện
+
             if (staff.getAvatar() == null || staff.getAvatar().isEmpty()) {
                 System.out.println("Hình đại diện không được trống.");
                 isValid = false;
             } else {
-                // Danh sách các định dạng hợp lệ
                 List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
 
-                // Lấy phần mở rộng của tệp
                 String avatar = staff.getAvatar();
                 String fileExtension = avatar.substring(avatar.lastIndexOf('.') + 1).toLowerCase();
 
-                // Kiểm tra định dạng
                 if (!validFormats.contains(fileExtension)) {
                     System.out.println("Hình đại diện phải có định dạng: png, jpg, hoặc jpeg.");
                     isValid = false;
@@ -307,7 +288,6 @@ public class StaffModel {
             }
         }
 
-        // Kiểm tra danh sách thành viên gia đình
         if (familyMembers == null || familyMembers.isEmpty()) {
             System.out.println("Vui lòng nhập ít nhất một thành viên gia đình.");
             isValid = false;
@@ -317,7 +297,6 @@ public class StaffModel {
             for (StaffFamily familyMember : familyMembers) {
                 boolean isValidMember = true;
 
-                // Kiểm tra từng trường của thành viên gia đình
                 if (familyMember.getFamilyMemberName() == null || familyMember.getFamilyMemberName().isEmpty()) {
                     System.out.println("Tên thành viên gia đình không được để trống.");
                     isValidMember = false;
@@ -336,29 +315,17 @@ public class StaffModel {
                     isValidMember = false;
                 }
 
-                // Nếu thông tin của thành viên này hợp lệ
                 if (isValidMember) {
                     validFamilyMemberFound = true;
                 }
             }
 
-            // Nếu không có bất kỳ thành viên hợp lệ nào
             if (!validFamilyMemberFound) {
                 System.out.println("Vui lòng nhập thông tin chính xác cho ít nhất một thành viên gia đình.");
                 isValid = false;
             }
         }
 
-        // Kiểm tra email tồn tại và loại trừ staffID hiện tại
-//        try (Connection conn = ConnectDB.connection()) {
-//            if (isEmailExists(staff.getEmail(), staff.getStaffID(), conn)) {
-//                System.out.println("Email đã tồn tại trong cơ sở dữ liệu.");
-//                isValid = false;
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//            isValid = false;
-//        }
 
         if (!isValid) {
             return false;
@@ -379,23 +346,20 @@ public class StaffModel {
 
              PreparedStatement familyStatement = conn.prepareStatement(insertFamilyMemberQuery)) {
 
-            conn.setAutoCommit(false); // Bắt đầu giao dịch
+            conn.setAutoCommit(false);
 
-
-            // Mã hóa mật khẩu
             String password = PasswordUtil.hashPassword(staff.getPassword());
             LocalDateTime resetCodeCreationTime = staff.getResetCodeCreationTime();
 
-            // Thiết lập tham số cho PreparedStatement
             staffStatement.setString(1, staff.getFirstName());
             staffStatement.setString(2, staff.getLastName());
-            staffStatement.setDate(3, staff.getDateOfBirth()); // Chuyển đổi LocalDate thành Date
+            staffStatement.setDate(3, staff.getDateOfBirth());
             staffStatement.setByte(4, staff.getGender());
             staffStatement.setString(5, staff.getAddress());
             staffStatement.setString(6, staff.getPhoneNumber());
             staffStatement.setString(7, staff.getEmail());
-            staffStatement.setString(8, password); // Mã hóa mật khẩu
-            staffStatement.setDate(9, staff.getHireDate()); // Chuyển đổi LocalDate thành Date
+            staffStatement.setString(8, password);
+            staffStatement.setDate(9, staff.getHireDate());
             staffStatement.setString(10, staff.getPositionName());
             staffStatement.setDouble(11, staff.getSalary());
             staffStatement.setString(12, staff.getEducationBackground());
@@ -410,14 +374,12 @@ public class StaffModel {
             }
             staffStatement.setBoolean(17, staff.isResetCodeUsed());
 
-            // Thực thi câu lệnh SQL để thêm nhân viên
             int rowsAffected = staffStatement.executeUpdate();
             if (rowsAffected > 0) {
                 try (ResultSet generatedKeys = staffStatement.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         int staffID = generatedKeys.getInt(1);
 
-                        // Xử lý bảng StaffFamily nếu có dữ liệu
                         if (familyMembers != null && !familyMembers.isEmpty()) {
                             for (StaffFamily familyMember : familyMembers) {
                                 familyStatement.setInt(1, staffID);
@@ -429,20 +391,19 @@ public class StaffModel {
                             familyStatement.executeBatch();
                         }
 
-                        // Xử lý bảng StaffRoles
                         if (staffRole != null) {
                             staffRoleStatement.setInt(1, staffID);
                             staffRoleStatement.setString(2, staffRole.getRoleName());
                             staffRoleStatement.executeUpdate();
                         }
 
-                        conn.commit(); // Xác nhận giao dịch
+                        conn.commit();
                         return true;
                     }
                 }
             }
 
-            conn.rollback(); // Hoàn tác giao dịch nếu có lỗi xảy ra
+            conn.rollback();
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -450,9 +411,6 @@ public class StaffModel {
         return false;
     }
 
-
-
-    // Kiểm tra dữ liệu đầu vào
     private boolean validateStaffData(Staff staff) {
         boolean isValid = true;
 
@@ -476,15 +434,9 @@ public class StaffModel {
             isValid = false;
         }
 
-//        if (staff.getPassword() == null || staff.getPassword().length() < 5) {
-//            System.out.println("Mật khẩu phải có ít nhất 5 ký tự.");
-//            isValid = false;
-//        }
-
         return isValid;
     }
 
-    // Kiểm tra xem email đã tồn tại trong cơ sở dữ liệu chưa
     private boolean isEmailExists(String email, int currentStaffID, Connection conn) throws SQLException {
         String query = "SELECT COUNT(*) FROM Staff WHERE Email = ? AND StaffID != ?";
         try (PreparedStatement ps = conn.prepareStatement(query)) {
@@ -496,18 +448,13 @@ public class StaffModel {
         }
     }
 
-
-
-    // Phương thức cập nhật nhân viên
     public boolean updateStaff(Staff staff, List<StaffFamily> familyMembers, StaffRoles staffRole) {
         boolean isValid = true;
 
-        // Kiểm tra dữ liệu nhân viên (cùng logic như addStaff)
         if (!validateStaffData(staff)) {
             System.out.println("Dữ liệu nhân viên không hợp lệ.");
             isValid = false;
         } else {
-            // Kiểm tra từng trường cụ thể của nhân viên (giống như addStaff)
             if (staff.getFirstName() == null || staff.getFirstName().isEmpty()) {
                 System.out.println("Tên nhân viên không được trống.");
                 isValid = false;
@@ -552,7 +499,6 @@ public class StaffModel {
                 isValid = false;
             }
 
-            // Biểu thức chính quy để kiểm tra định dạng email
             String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
 
             if (staff.getEmail() == null || staff.getEmail().isEmpty()) {
@@ -569,7 +515,6 @@ public class StaffModel {
                 isValid = false;
             }
 
-            // Lấy hoặc thêm vị trí và nhận PositionID
             if (staff.getPositionName() == null || staff.getPositionName().isEmpty()) {
                 System.out.println("Vị trí không hợp lệ.");
                 isValid = false;
@@ -589,19 +534,15 @@ public class StaffModel {
                 System.out.println("Kinh nghiệm làm việc không được trống.");
                 isValid = false;
             }
-            // Kiểm tra định dạng của hình đại diện
             if (staff.getAvatar() == null || staff.getAvatar().isEmpty()) {
                 System.out.println("Hình đại diện không được trống.");
                 isValid = false;
             } else {
-                // Danh sách các định dạng hợp lệ
                 List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
 
-                // Lấy phần mở rộng của tệp
                 String avatar = staff.getAvatar();
                 String fileExtension = avatar.substring(avatar.lastIndexOf('.') + 1).toLowerCase();
 
-                // Kiểm tra định dạng
                 if (!validFormats.contains(fileExtension)) {
                     System.out.println("Hình đại diện phải có định dạng: png, jpg, hoặc jpeg.");
                     isValid = false;
@@ -609,7 +550,6 @@ public class StaffModel {
             }
         }
 
-        // Kiểm tra danh sách thành viên gia đình
         if (familyMembers == null || familyMembers.isEmpty()) {
             System.out.println("Vui lòng nhập ít nhất một thành viên gia đình.");
             isValid = false;
@@ -619,7 +559,6 @@ public class StaffModel {
             for (StaffFamily familyMember : familyMembers) {
                 boolean isValidMember = true;
 
-                // Kiểm tra từng trường của thành viên gia đình
                 if (familyMember.getFamilyMemberName() == null || familyMember.getFamilyMemberName().isEmpty()) {
                     System.out.println("Tên thành viên gia đình không được để trống.");
                     isValidMember = false;
@@ -638,20 +577,17 @@ public class StaffModel {
                     isValidMember = false;
                 }
 
-                // Nếu thông tin của thành viên này hợp lệ
                 if (isValidMember) {
                     validFamilyMemberFound = true;
                 }
             }
 
-            // Nếu không có bất kỳ thành viên hợp lệ nào
             if (!validFamilyMemberFound) {
                 System.out.println("Vui lòng nhập thông tin chính xác cho ít nhất một thành viên gia đình.");
                 isValid = false;
             }
         }
 
-        // Kiểm tra email tồn tại và loại trừ staffID hiện tại
         try (Connection conn = ConnectDB.connection()) {
             if (isEmailExists(staff.getEmail(), staff.getStaffID(), conn)) {
                 System.out.println("Email đã tồn tại trong cơ sở dữ liệu.");
@@ -677,36 +613,31 @@ public class StaffModel {
              PreparedStatement deleteFamilyStatement = conn.prepareStatement(deleteFamilyMembersQuery);
              PreparedStatement familyStatement = conn.prepareStatement(insertFamilyMemberQuery)) {
 
-            conn.setAutoCommit(false); // Bắt đầu giao dịch
+            conn.setAutoCommit(false);
 
 
-            // Kiểm tra và mã hóa mật khẩu mới nếu được cung cấp
             String password;
             if (staff.getPassword() != null && !staff.getPassword().trim().isEmpty()) {
-                // Nếu mật khẩu mới được cung cấp, kiểm tra độ dài
                 if (staff.getPassword().length() < 5) {
                     System.out.println("Mật khẩu phải có ít nhất 5 ký tự.");
-                    return false; // Hoặc bạn có thể thực hiện xử lý lỗi tại đây
+                    return false;
                 }
-                // Mã hóa mật khẩu mới
                 password = PasswordUtil.hashPassword(staff.getPassword());
             } else {
-                // Nếu không có mật khẩu mới, giữ lại mật khẩu cũ từ cơ sở dữ liệu
                 password = getOldPasswordFromDatabase(staff.getStaffID());
             }
 
             LocalDateTime resetCodeCreationTime = staff.getResetCodeCreationTime();
 
-            // Thiết lập tham số cho PreparedStatement
             staffStatement.setString(1, staff.getFirstName());
             staffStatement.setString(2, staff.getLastName());
-            staffStatement.setDate(3, staff.getDateOfBirth()); // Chuyển đổi LocalDate thành Date
+            staffStatement.setDate(3, staff.getDateOfBirth());
             staffStatement.setByte(4, staff.getGender());
             staffStatement.setString(5, staff.getAddress());
             staffStatement.setString(6, staff.getPhoneNumber());
             staffStatement.setString(7, staff.getEmail());
             staffStatement.setString(8, password);
-            staffStatement.setDate(9, staff.getHireDate()); // Chuyển đổi LocalDate thành Date
+            staffStatement.setDate(9, staff.getHireDate());
             staffStatement.setString(10, staff.getPositionName());
             staffStatement.setDouble(11, staff.getSalary());
             staffStatement.setString(12, staff.getEducationBackground());
@@ -721,19 +652,16 @@ public class StaffModel {
             }
 
             staffStatement.setBoolean(17, staff.isResetCodeUsed());
-            staffStatement.setInt(18, staff.getStaffID()); // Thêm StaffID vào điều kiện WHERE
+            staffStatement.setInt(18, staff.getStaffID());
             staffStatement.executeUpdate();
 
-            // Cập nhật vai trò
             staffRoleStatement.setString(1, staffRole.getRoleName());
             staffRoleStatement.setInt(2, staff.getStaffID());
             staffRoleStatement.executeUpdate();
 
-            // Xóa các thành viên gia đình cũ
             deleteFamilyStatement.setInt(1, staff.getStaffID());
             deleteFamilyStatement.executeUpdate();
 
-            // Thêm thành viên gia đình mới
             for (StaffFamily familyMember : familyMembers) {
                 familyStatement.setInt(1, staff.getStaffID());
                 familyStatement.setString(2, familyMember.getFamilyMemberName());
@@ -742,7 +670,7 @@ public class StaffModel {
                 familyStatement.executeUpdate();
             }
 
-            conn.commit(); // Commit nếu mọi thứ thành công
+            conn.commit();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -750,7 +678,6 @@ public class StaffModel {
         }
     }
 
-    // Phương thức để lấy mật khẩu cũ từ cơ sở dữ liệu
     private String getOldPasswordFromDatabase(int staffID) {
         String currentPassword = null;
         String query = "SELECT Password FROM Staff WHERE StaffID = ?";
@@ -771,9 +698,6 @@ public class StaffModel {
         return currentPassword;
     }
 
-
-
-    // Phương thức xóa nhân viên (thay vì xóa thực tế, cập nhật trạng thái)
     public boolean deleteStaff(int staffID) {
         String query = "UPDATE Staff SET Status = 'inactive' WHERE StaffID = ?";
 
@@ -790,7 +714,6 @@ public class StaffModel {
         return false;
     }
 
-    // Phương thức lấy thông tin nhân viên theo ID
     public Staff getStaffByID(int staffID) {
         Staff staff = null;
         String query = "SELECT StaffID, FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, PositionName, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed " +
@@ -836,10 +759,8 @@ public class StaffModel {
         List<Staff> staffList = new ArrayList<>();
         StringBuilder query = new StringBuilder("SELECT StaffID, FirstName, LastName, DateOfBirth, Gender, Address, PhoneNumber, Email, Password, HireDate, PositionName, Salary, EducationBackground, Experience, Avatar, Status, ResetCode, ResetCodeCreationTime, IsResetCodeUsed FROM Staff WHERE Status = 'active'");
 
-        // Danh sách tham số cho PreparedStatement
         List<Object> parameters = new ArrayList<>();
 
-        // Thêm điều kiện tìm kiếm cho firstName và email
         if (firstName != null && !firstName.isEmpty()) {
             query.append(" AND FirstName LIKE ?");
             parameters.add("%" + firstName + "%");
@@ -850,13 +771,11 @@ public class StaffModel {
             parameters.add("%" + email + "%");
         }
 
-        // Thêm điều kiện phụ cho ID nếu có
         if (id != null) {
             query.append(" AND StaffID = ?");
             parameters.add(id);
         }
 
-        // Thêm điều kiện phụ cho gender nếu có
         if (gender != null) {
             query.append(" AND Gender = ?");
             parameters.add(gender);
@@ -865,7 +784,6 @@ public class StaffModel {
         try (Connection conn = ConnectDB.connection();
              PreparedStatement preparedStatement = conn.prepareStatement(query.toString())) {
 
-            // Thiết lập giá trị cho các tham số truy vấn
             for (int i = 0; i < parameters.size(); i++) {
                 preparedStatement.setObject(i + 1, parameters.get(i));
             }
@@ -908,7 +826,7 @@ public class StaffModel {
         String roleName = null;
         String query = "SELECT RoleName FROM StaffRoles WHERE StaffID = ?";
         try (PreparedStatement pstmt = connection.prepareStatement(query)) {
-            pstmt.setInt(1, staff.getStaffID()); // Sử dụng ID của Staff
+            pstmt.setInt(1, staff.getStaffID());
             try (ResultSet rs = pstmt.executeQuery()) {
                 if (rs.next()) {
                     roleName = rs.getString("RoleName");
@@ -928,11 +846,11 @@ public class StaffModel {
             try (ResultSet rs = pstmt.executeQuery()) {
                 while (rs.next()) {
                     StaffFamily member = new StaffFamily(
-                            rs.getInt("FamilyID"),                  // familyID
-                            rs.getInt("StaffID"),                   // staffID
-                            rs.getString("FamilyMemberName"),       // familyMemberName
-                            rs.getString("RelationshipType"),       // relationshipType
-                            rs.getString("ContactNumber")           // contactNumber
+                            rs.getInt("FamilyID"),
+                            rs.getInt("StaffID"),
+                            rs.getString("FamilyMemberName"),
+                            rs.getString("RelationshipType"),
+                            rs.getString("ContactNumber")
                     );
                     familyMembers.add(member);
                 }
@@ -965,15 +883,14 @@ public class StaffModel {
 
         return staffList;
     }
-
-    // Hàm cập nhật đường dẫn hình ảnh
+    
     public void updateImagePathInDatabase(Integer staffID, String imageName) {
         String sql = "UPDATE staff SET avatar = ? WHERE staffID = ?";
-        try (Connection connection = ConnectDB.connection(); // Thay bằng cách lấy kết nối của bạn
+        try (Connection connection = ConnectDB.connection();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
 
             preparedStatement.setString(1, imageName);
-            preparedStatement.setInt(2, staffID); // IDStaff là ID của nhân viên hiện tại
+            preparedStatement.setInt(2, staffID);
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -983,7 +900,6 @@ public class StaffModel {
             }
         } catch (SQLException e) {
             e.printStackTrace();
-            // Có thể ném ra ngoại lệ hoặc xử lý lỗi tại đây
         }
     }
 

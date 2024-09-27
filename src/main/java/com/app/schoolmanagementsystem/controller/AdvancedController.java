@@ -39,7 +39,6 @@ public class AdvancedController implements Initializable {
     @FXML
     private StackPane pageAdvanced;
 
-    //column staff
     @FXML
     private TableView<Staff> staffTableView;
 
@@ -73,7 +72,6 @@ public class AdvancedController implements Initializable {
     @FXML
     private TableColumn<Staff, Void> actionStaffColumn;
 
-    //column student
     @FXML
     private TableView<Student> studentTableView;
 
@@ -124,7 +122,7 @@ public class AdvancedController implements Initializable {
     @FXML
     private ImageView reloadStudentButton;
 
-    private AdvancedModel advancedModel; // Khai báo biến
+    private AdvancedModel advancedModel;
 
     private ObservableList<Staff> staffList = FXCollections.observableArrayList();
     private ObservableList<Student> studentList = FXCollections.observableArrayList();
@@ -146,17 +144,12 @@ public class AdvancedController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Khởi tạo model
         advancedModel = new AdvancedModel();
 
-        // Định nghĩa cột cho Staff TableView
         setupStaffTableColumns();
 
-        // Định nghĩa cột cho Student TableView
         setupStudentTableColumns();
 
-
-        //can le staff
         configureColumnAlignmentStaff(idStaffColumn);
         configureColumnAlignmentStaff(firstNameStaffColumn);
         configureColumnAlignmentStaff(lastNameStaffColumn);
@@ -166,7 +159,6 @@ public class AdvancedController implements Initializable {
         configureColumnAlignmentStaff(positionNameStaffColumn);
         configureColumnAlignmentStaff(statusStaffColumn);
 
-        //can le student
         configureColumnAlignmentStudent(idStudentColumn);
         configureColumnAlignmentStudent(firstNameStudentColumn);
         configureColumnAlignmentStudent(lastNameStudentColumn);
@@ -178,40 +170,33 @@ public class AdvancedController implements Initializable {
         reloadStaffButton.setOnMouseClicked(event -> reloadPageStaff());
         reloadStudentButton.setOnMouseClicked(event -> reloadPageStudent());
 
-        // Cấu hình ChoiceBox cho tìm kiếm
         setupChoiceBox();
 
-        // Tạo sự kiện khi người dùng nhập vào ô tìm kiếm hoặc chọn lựa chọn
         setupSearchListeners();
 
         configureActionStaffColumn();
         configureActionStudentColumn();
 
-        // Tải dữ liệu vào TableView
         loadInactiveStaff();
         loadInactiveStudents();
 
     }
 
     private void setupChoiceBox() {
-        // Cấu hình ChoiceBox cho Staff
         ObservableList<String> searchOptionStaff = FXCollections.observableArrayList("Equal", "Gender", "ID");
         selectBoxStaff.setItems(searchOptionStaff);
-        selectBoxStaff.setValue("Equal"); // Đặt giá trị mặc định
+        selectBoxStaff.setValue("Equal");
 
-        // Cấu hình ChoiceBox cho Student
         ObservableList<String> searchOptionStudent = FXCollections.observableArrayList("Equal", "Gender", "ID");
         selectBoxStudent.setItems(searchOptionStudent);
-        selectBoxStudent.setValue("Equal"); // Đặt giá trị mặc định
+        selectBoxStudent.setValue("Equal");
     }
 
     private void setupSearchListeners() {
-        // Sự kiện tìm kiếm cho Staff
         staffSearchField.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
         selectBoxStaff.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> searchStaff());
         extraSearchFieldStaff.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
 
-        // Sự kiện tìm kiếm cho Student
         studentSearchField.textProperty().addListener((observable, oldValue, newValue) -> searchStudent());
         selectBoxStudent.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> searchStudent());
         extraSearchFieldStudent.textProperty().addListener((observable, oldValue, newValue) -> searchStudent());
@@ -219,7 +204,6 @@ public class AdvancedController implements Initializable {
 
 
     private void setupStaffTableColumns() {
-        // Avatar Staff column với hình ảnh
         avatarStaffColumn.setCellValueFactory(new PropertyValueFactory<>("avatar"));
         avatarStaffColumn.setCellFactory(new Callback<TableColumn<Staff, String>, TableCell<Staff, String>>() {
             @Override
@@ -238,12 +222,11 @@ public class AdvancedController implements Initializable {
                                 Circle clip = new Circle(12, 12, 12);
                                 imageView.setClip(clip);
 
-                                // Tạo HBox và căn giữa
                                 HBox hBox = new HBox(imageView);
-                                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                                hBox.setAlignment(Pos.CENTER);
                                 setGraphic(hBox);
                             } catch (IllegalArgumentException e) {
-                                setGraphic(null); // Handle invalid URL gracefully
+                                setGraphic(null);
                             }
                         }
                     }
@@ -251,8 +234,6 @@ public class AdvancedController implements Initializable {
             }
         });
 
-
-        // Các cột khác
         idStaffColumn.setCellValueFactory(new PropertyValueFactory<>("staffID"));
         firstNameStaffColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameStaffColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -269,7 +250,6 @@ public class AdvancedController implements Initializable {
     }
 
     private void setupStudentTableColumns() {
-        // Avatar student column với hình ảnh
         avatarStudentColumn.setCellValueFactory(new PropertyValueFactory<>("avatar.png"));
         avatarStudentColumn.setCellFactory(new Callback<TableColumn<Student, String>, TableCell<Student, String>>() {
             @Override
@@ -288,12 +268,11 @@ public class AdvancedController implements Initializable {
                                 Circle clip = new Circle(12, 12, 12);
                                 imageView.setClip(clip);
 
-                                // Tạo HBox và căn giữa
                                 HBox hBox = new HBox(imageView);
-                                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                                hBox.setAlignment(Pos.CENTER);
                                 setGraphic(hBox);
                             } catch (IllegalArgumentException e) {
-                                setGraphic(null); // Handle invalid URL gracefully
+                                setGraphic(null);
                             }
                         }
                     }
@@ -301,7 +280,6 @@ public class AdvancedController implements Initializable {
             }
         });
 
-        // Các cột khác
         idStudentColumn.setCellValueFactory(new PropertyValueFactory<>("studentID"));
         firstNameStudentColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameStudentColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
@@ -346,7 +324,6 @@ public class AdvancedController implements Initializable {
         });
     }
 
-    // Cấu hình cột action cho Staff
     private void configureActionStaffColumn() {
         actionStaffColumn.setCellFactory(new Callback<>() {
             @Override
@@ -357,11 +334,9 @@ public class AdvancedController implements Initializable {
                     private final Button resetButton = new Button("", resetIcon);
 
                     {
-                        // Thiết lập kích thước hình ảnh
                         resetIcon.setFitHeight(20);
                         resetIcon.setFitWidth(20);
 
-                        // Thêm sự kiện khi nhấp vào hình ảnh reset
                         resetButton.setOnMouseClicked((MouseEvent event) -> {
                             Staff staff = getTableView().getItems().get(getIndex());
                             handleResetStaff(staff);
@@ -379,9 +354,8 @@ public class AdvancedController implements Initializable {
                         } else {
                             setGraphic(resetButton);
 
-                            // Tạo HBox và căn giữa
                             HBox hBox = new HBox(resetButton);
-                            hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                            hBox.setAlignment(Pos.CENTER);
                             setGraphic(hBox);
                         }
                     }
@@ -401,11 +375,9 @@ public class AdvancedController implements Initializable {
                     private final Button resetButton = new Button("", resetIcon);
 
                     {
-                        // Thiết lập kích thước hình ảnh
                         resetIcon.setFitHeight(20);
                         resetIcon.setFitWidth(20);
 
-                        // Thêm sự kiện khi nhấp vào hình ảnh reset
                         resetButton.setOnMouseClicked((MouseEvent event) -> {
                             Student student = getTableView().getItems().get(getIndex());
                             handleResetStudent(student);
@@ -423,10 +395,8 @@ public class AdvancedController implements Initializable {
                             setGraphic(null);
                         } else {
                             setGraphic(resetButton);
-
-                            // Tạo HBox và căn giữa
                             HBox hBox = new HBox(resetButton);
-                            hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                            hBox.setAlignment(Pos.CENTER);
                             setGraphic(hBox);
                         }
                     }
@@ -452,37 +422,29 @@ public class AdvancedController implements Initializable {
     }
 
     private void searchStaff() {
-        // Lấy giá trị từ các ô tìm kiếm
-        String searchText = staffSearchField.getText().trim(); // Tìm kiếm theo firstName hoặc email
-        String extraSearchText = extraSearchFieldStaff.getText().trim(); // Tìm kiếm theo ID hoặc Gender từ ChoiceBox
+        String searchText = staffSearchField.getText().trim();
+        String extraSearchText = extraSearchFieldStaff.getText().trim();
 
-        // Tách phần tìm kiếm cho firstName, email từ searchField
         String firstName = null;
         String email = null;
 
-        // Xử lý tìm kiếm theo searchField
         if (searchText.contains("@")) {
             email = searchText;
         } else if (!searchText.isEmpty()) {
             firstName = searchText;
         }
 
-        // Tách phần tìm kiếm cho ID, gender từ extraSearchField
         Integer id = null;
         Byte gender = null;
 
-        // Xử lý tìm kiếm theo lựa chọn từ ChoiceBox
         String selectedOption = selectBoxStaff.getValue();
         if ("ID".equals(selectedOption)) {
-            // Nếu lựa chọn là ID, tìm kiếm theo ID
             try {
                 id = Integer.parseInt(extraSearchText);
             } catch (NumberFormatException e) {
-                // Xử lý lỗi nếu extraSearchField không phải là số
                 id = null;
             }
         } else if ("Gender".equals(selectedOption)) {
-            // Nếu lựa chọn là Gender, tìm kiếm theo Gender
             if ("Male".equalsIgnoreCase(extraSearchText)) {
                 gender = (byte) 1;
             } else if ("Female".equalsIgnoreCase(extraSearchText)) {
@@ -494,37 +456,29 @@ public class AdvancedController implements Initializable {
     }
 
     private void searchStudent() {
-        // Lấy giá trị từ các ô tìm kiếm
-        String searchText = studentSearchField.getText().trim(); // Tìm kiếm theo firstName hoặc email
-        String extraSearchText = extraSearchFieldStudent.getText().trim(); // Tìm kiếm theo ID hoặc Gender từ ChoiceBox
+        String searchText = studentSearchField.getText().trim();
+        String extraSearchText = extraSearchFieldStudent.getText().trim();
 
-        // Tách phần tìm kiếm cho firstName, email từ searchField
         String firstName = null;
         String email = null;
 
-        // Xử lý tìm kiếm theo searchField
         if (searchText.contains("@")) {
             email = searchText;
         } else if (!searchText.isEmpty()) {
             firstName = searchText;
         }
 
-        // Tách phần tìm kiếm cho ID, gender từ extraSearchField
         Integer id = null;
         Byte gender = null;
 
-        // Xử lý tìm kiếm theo lựa chọn từ ChoiceBox
         String selectedOption = selectBoxStudent.getValue();
         if ("ID".equals(selectedOption)) {
-            // Nếu lựa chọn là ID, tìm kiếm theo ID
             try {
                 id = Integer.parseInt(extraSearchText);
             } catch (NumberFormatException e) {
-                // Xử lý lỗi nếu extraSearchField không phải là số
                 id = null;
             }
         } else if ("Gender".equals(selectedOption)) {
-            // Nếu lựa chọn là Gender, tìm kiếm theo Gender
             if ("Male".equalsIgnoreCase(extraSearchText)) {
                 gender = (byte) 1;
             } else if ("Female".equalsIgnoreCase(extraSearchText)) {
@@ -536,26 +490,22 @@ public class AdvancedController implements Initializable {
     }
 
     private void loadStaffDataByLogic(String firstName, String email, Byte gender, Integer id) {
-        staffList.clear(); // Xóa dữ liệu cũ từ ObservableList
-        List<Staff> staffs = advancedModel.searchInactiveStaff(firstName, email, gender, id); // Gọi phương thức tìm kiếm trong AdvancedModel
-        staffList.addAll(staffs); // Thêm kết quả tìm kiếm vào ObservableList
-        staffTableView.setItems(staffList); // Cập nhật TableView với staffList
+        staffList.clear();
+        List<Staff> staffs = advancedModel.searchInactiveStaff(firstName, email, gender, id);
+        staffList.addAll(staffs);
+        staffTableView.setItems(staffList);
     }
 
     private void loadStudentDataByLogic(String firstName, String email, Byte gender, Integer id) {
-        studentList.clear(); // Xóa dữ liệu cũ từ ObservableList
-        List<Student> students = advancedModel.searchInactiveStudent(firstName, email, gender, id); // Gọi phương thức tìm kiếm trong AdvancedModel
-        studentList.addAll(students); // Thêm kết quả tìm kiếm vào ObservableList
-        studentTableView.setItems(studentList); // Cập nhật TableView với studentList
+        studentList.clear();
+        List<Student> students = advancedModel.searchInactiveStudent(firstName, email, gender, id);
+        studentList.addAll(students);
+        studentTableView.setItems(studentList);
     }
 
-
-
-    // Phương thức xử lý Reset cho Staff
     @FXML
     void handleResetStaff(Staff selectedStaff) {
         if (selectedStaff != null) {
-            // Xác nhận trước khi reset
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
             confirmation.setTitle("Xác nhận");
             confirmation.setHeaderText(null);
@@ -566,7 +516,7 @@ public class AdvancedController implements Initializable {
                     boolean success = advancedModel.restoreStaffStatus(selectedStaff.getStaffID());
                     if (success) {
                         showSuccess("Status restored for ID agents: " + selectedStaff.getStaffID());
-                        loadInactiveStaff(); // Cập nhật lại TableView
+                        loadInactiveStaff();
                     } else {
                         showError("Status can't be restored to an employee.");
                     }
@@ -577,15 +527,11 @@ public class AdvancedController implements Initializable {
         }
     }
 
-
-
-    // Phương thức xử lý Reset cho Student
     @FXML
     void handleResetStudent(Student selectedStudent) {
         if (selectedStudent != null) {
-            // Xác nhận trước khi reset
             Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION);
-            confirmation.setTitle("Xác nhận");
+            confirmation.setTitle("Confirmation");
             confirmation.setHeaderText(null);
             confirmation.setContentText("Are you sure you want to restore student the ID agent: " + selectedStudent.getStudentID() + "?");
 
@@ -594,7 +540,7 @@ public class AdvancedController implements Initializable {
                     boolean success = advancedModel.restoreStudentStatus(selectedStudent.getStudentID());
                     if (success) {
                         showSuccess("Status restored for student ID: " + selectedStudent.getStudentID());
-                        loadInactiveStudents(); // Cập nhật lại TableView
+                        loadInactiveStudents();
                     } else {
                         showError("The student's status cannot be restored.");
                     }
@@ -606,10 +552,6 @@ public class AdvancedController implements Initializable {
 
     }
 
-
-
-
-    // Các phương thức hiển thị thông báo lỗi và thành công
     private void showError(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Lỗi");
@@ -627,19 +569,10 @@ public class AdvancedController implements Initializable {
     }
 
     private void reloadPageStaff() {
-
-        // Tải dữ liệu nhân viên
         loadInactiveStaff();
-
     }
 
     private void reloadPageStudent() {
-
-        // Tải dữ liệu nhân viên
         loadInactiveStudents();
-
     }
-
-
-
 }

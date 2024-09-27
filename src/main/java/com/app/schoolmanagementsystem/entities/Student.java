@@ -7,7 +7,7 @@ public class Student {
     private String firstName;
     private String lastName;
     private Date dateOfBirth;
-    private Byte gender; // true for male, false for female (tinyint)
+    private Byte gender;
     private String address;
     private String phoneNumber;
     private String email;
@@ -16,7 +16,7 @@ public class Student {
     private String avatar;
     private String previousSchool;
     private String reasonForLeaving;
-    private String status; // active or inactive
+    private String status;
 
     public Student() {
     }

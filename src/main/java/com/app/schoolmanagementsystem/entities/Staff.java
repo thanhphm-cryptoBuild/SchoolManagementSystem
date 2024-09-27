@@ -13,7 +13,7 @@ public class Staff {
     private String address;
     private String phoneNumber;
     private String email;
-    private String password; // Mật khẩu có thể được mã hóa
+    private String password;
     private Date hireDate;
     private String positionName;
 
@@ -272,25 +272,14 @@ public class Staff {
         return firstName + " " + lastName + " (" + positionName + ")";
     }
 
-    /**
-     * Lấy đường dẫn đầy đủ đến avatar dựa trên nguồn của nó.
-     *
-     * @return Đường dẫn đầy đủ đến ảnh avatar.
-     */
     public String getFullAvatarPath() {
         if (isExternalAvatar()) {
             return avatar;
         } else {
-            // Trả về đường dẫn tài nguyên nội bộ
             return "/com/app/schoolmanagementsystem/images/" + avatar;
         }
     }
 
-    /**
-     * Kiểm tra xem avatar có phải từ nguồn bên ngoài hay không.
-     *
-     * @return true nếu avatar là từ nguồn bên ngoài, ngược lại false.
-     */
     public boolean isExternalAvatar() {
         return avatar != null && (avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/"));
     }

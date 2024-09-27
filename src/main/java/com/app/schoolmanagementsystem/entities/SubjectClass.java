@@ -17,6 +17,12 @@ public class SubjectClass {
         this.staffID = staffID;
     }
 
+    public SubjectClass(int subjectID, String subjectName, String classNameYear) {
+        this.subjectID = subjectID;
+        this.subjectName = subjectName;
+        this.classNameYear = classNameYear;
+    }
+
     public SubjectClass(int classSubjectID, int classID, String classNameYear, int subjectID, String subjectName, int staffID, String teacherName, String teacherPhoneNumber) {
         this.classSubjectID = classSubjectID;
         this.classID = classID;

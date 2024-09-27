@@ -18,7 +18,6 @@ public class Classes {
     public Classes(int i, String selectedClass, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate,  String description) {
     }
 
-    // Constructor
     public Classes(int classID, String className, String section, int staffID, LocalDate enrollmentDate, LocalDate completeDate) {
         this.classID = classID;
         this.className = className;
@@ -27,8 +26,6 @@ public class Classes {
         this.enrollmentDate = enrollmentDate;
         this.completeDate = completeDate;
     }
-
-    // Getters and Setters
 
     public Classes() {
         //TODO Auto-generated constructor stub
@@ -84,7 +81,6 @@ public class Classes {
         this.completeDate = completeDate;
     }
 
-    // Save Class to Database
     public boolean saveClass(ClassModel newClass) {
         String sql = "INSERT INTO Classes (ClassName, Section, StaffID, Description, EnrollmentDate, CompleteDate) VALUES (?, ?, ?, ?, ?, ?)";
 

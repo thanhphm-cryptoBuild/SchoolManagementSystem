@@ -18,17 +18,13 @@ import java.time.Duration;
 
 public class AuthService {
 
-
-    // Phương thức đăng nhập
     public boolean login(String email, String password) {
-        // Validation email
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (email == null || email.isEmpty() || !email.matches(emailRegex)) {
             System.out.println("Invalid email format.");
             return false;
         }
 
-        // Validation password
         if (password == null || password.isEmpty() || password.length() < 5) {
             System.out.println("Password must be at least 5 characters long.");
             return false;
@@ -52,10 +48,8 @@ public class AuthService {
                     return false;
                 }
 
-                // Set currentRoleName
                 UserSession.setCurrentRoleName(roleName);
 
-                // Compare user password with hashed password
                 return BCrypt.checkpw(password, storedPassword);
             }
             return false;
@@ -73,27 +67,21 @@ public class AuthService {
             ResultSet rs = stmt.executeQuery();
 
             if (rs.next()) {
-                return rs.getString("Avatar"); // Trả về đường dẫn hình ảnh
+                return rs.getString("Avatar");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; // Trả về null nếu không tìm thấy
+        return null;
     }
 
-
-
-
-    // Phương thức quên mật khẩu
     public void forgotPassword(String email) throws Exception {
-        // Validation email
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (email == null || email.isEmpty() || !email.matches(emailRegex)) {
             throw new Exception("Invalid email format.");
         }
 
         try (Connection conn = ConnectDB.connection()) {
-            // Kiểm tra xem email có tồn tại trong cơ sở dữ liệu không
             String query = "SELECT StaffID FROM Staff WHERE Email = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setString(1, email);
@@ -104,7 +92,6 @@ public class AuthService {
                 String resetCode = generateResetCode();
                 LocalDateTime creationTime = LocalDateTime.now();
 
-                // Cập nhật mã khôi phục vào cơ sở dữ liệu
                 String updateQuery = "UPDATE Staff SET ResetCode = ?, ResetCodeCreationTime = ?, IsResetCodeUsed = FALSE WHERE StaffID = ?";
                 PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
                 updateStmt.setString(1, resetCode);
@@ -112,13 +99,11 @@ public class AuthService {
                 updateStmt.setInt(3, staffID);
                 updateStmt.executeUpdate();
 
-                // Gửi email chứa mã khôi phục
                 String subject = "Password Reset Request";
                 String messageBody = "To reset your password, use the following code: " + resetCode;
                 Mail mail = new Mail();
                 mail.sendEmail(email, subject, messageBody);
             } else {
-                // Email không tồn tại trong cơ sở dữ liệu
                 throw new Exception("Email does not exist.");
             }
         } catch (SQLException e) {
@@ -142,15 +127,14 @@ public class AuthService {
                 LocalDateTime creationTime = rs.getObject("ResetCodeCreationTime", LocalDateTime.class);
                 boolean isResetCodeUsed = rs.getBoolean("IsResetCodeUsed");
 
-                // So sánh mã khôi phục và kiểm tra trạng thái
                 if (storedResetCode != null && storedResetCode.equals(resetCode)) {
                     if (!isResetCodeUsed) {
                         LocalDateTime now = LocalDateTime.now();
                         Duration duration = Duration.between(creationTime, now);
                         long secondsElapsed = duration.getSeconds();
 
-                        if (secondsElapsed <= 60) { // 60 giây = 1 phút
-                            return true; // Mã khôi phục hợp lệ
+                        if (secondsElapsed <= 60) {
+                            return true;
                         } else {
                             throw new SQLException("Reset code has expired.");
                         }
@@ -173,9 +157,7 @@ public class AuthService {
         return String.format("%06d", code);
     }
 
-    // Phương thức đặt lại mật khẩu
     public boolean resetPassword(int staffID, String resetCode, String newPassword) throws SQLException {
-        // Validation for newPassword
         if (newPassword == null || newPassword.isEmpty() || newPassword.length() < 5) {
             throw new SQLException("Password must be at least 5 characters long.");
         }
@@ -191,24 +173,21 @@ public class AuthService {
                 LocalDateTime creationTime = rs.getObject("ResetCodeCreationTime", LocalDateTime.class);
                 boolean isResetCodeUsed = rs.getBoolean("IsResetCodeUsed");
 
-                // Compare reset code and check its status
                 if (storedResetCode != null && storedResetCode.equals(resetCode)) {
                     if (!isResetCodeUsed) {
                         LocalDateTime now = LocalDateTime.now();
-                        long minutesElapsed = ChronoUnit.SECONDS.between(creationTime, now); // Compare seconds
+                        long minutesElapsed = ChronoUnit.SECONDS.between(creationTime, now);
 
-                        if (minutesElapsed <= 60) { // 60 seconds expiry
-                            // Hash new password
+                        if (minutesElapsed <= 60) {
                             String hashedNewPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
-                            // Update password and reset reset code status
                             String updateQuery = "UPDATE Staff SET Password = ?, ResetCode = NULL, ResetCodeCreationTime = NULL, IsResetCodeUsed = TRUE WHERE StaffID = ?";
                             PreparedStatement updateStmt = conn.prepareStatement(updateQuery);
                             updateStmt.setString(1, hashedNewPassword);
                             updateStmt.setInt(2, staffID);
                             int rowsUpdated = updateStmt.executeUpdate();
 
-                            return rowsUpdated > 0; // Return true if the password was successfully updated
+                            return rowsUpdated > 0;
                         } else {
                             throw new SQLException("Reset code has expired.");
                         }
@@ -227,13 +206,11 @@ public class AuthService {
 
 
     public boolean hasRole(String email, String roleName) {
-        // Validation email
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (email == null || email.isEmpty() || !email.matches(emailRegex)) {
             return false;
         }
 
-        // Validation roleName
         if (roleName == null || roleName.isEmpty()) {
             return false;
         }
@@ -246,7 +223,7 @@ public class AuthService {
             stmt.setString(1, email);
             stmt.setString(2, roleName);
             ResultSet rs = stmt.executeQuery();
-            return rs.next(); // Nếu có bản ghi, người dùng có quyền
+            return rs.next();
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -258,24 +235,16 @@ public class AuthService {
 
         if (authService.hasRole(email, "Admin Master")) {
             System.out.println("Access granted to Admin Master.");
-            // Mở giao diện dành cho Admin Master
         } else if (authService.hasRole(email, "Manager")) {
             System.out.println("Access granted to Manager.");
-            // Mở giao diện dành cho Manager
         } else if (authService.hasRole(email, "Teacher")) {
             System.out.println("Access granted to Teacher.");
-            // Mở giao diện dành cho Teacher
         } else {
             System.out.println("Access denied.");
-            // Hiển thị thông báo từ chối truy cập
         }
     }
 
-
-
-    // Phương thức lấy RoleName của người dùng
     public String getRoleName(String email) {
-        // Validation email
         String emailRegex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         if (email == null || email.isEmpty() || !email.matches(emailRegex)) {
             return null;
@@ -301,7 +270,7 @@ public class AuthService {
     public boolean hasAccess(String roleName, String page) {
         switch (roleName) {
             case "Admin Master":
-                return true; // Admin Master có quyền truy cập tất cả các trang
+                return true;
 
             case "Manager":
                 return List.of(
@@ -325,9 +294,7 @@ public class AuthService {
                 ).contains(page);
 
             default:
-                return false; // Quyền truy cập không được xác định cho các vai trò khác
+                return false;
         }
     }
-
-
 }

@@ -96,7 +96,6 @@ public class EditStaffController implements Initializable {
     @FXML
     private TextField contactNumberField2;
 
-    // Error labels
     @FXML
     private Label firstNameErrorLabel;
     @FXML
@@ -157,7 +156,7 @@ public class EditStaffController implements Initializable {
     @FXML
     private ImageView profileImageView;
 
-    private String avatarPath = "useravatar.png"; // Default avatar
+    private String avatarPath = "useravatar.png";
 
     private StaffModel staffService;
 
@@ -169,7 +168,7 @@ public class EditStaffController implements Initializable {
     }
 
     public EditStaffController() {
-        staffService = new StaffModel(); // Initialize your service here
+        staffService = new StaffModel();
     }
 
     public void setPageStaff(StackPane pageStaff) {
@@ -198,9 +197,7 @@ public class EditStaffController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Load necessary data for the form
         loadStaffData();
-        // Make fields non-editable
         makeFieldsNonEditable();
     }
 
@@ -214,11 +211,7 @@ public class EditStaffController implements Initializable {
             emailField.setText(currentStaff.getEmail());
             phoneNumberField.setText(currentStaff.getPhoneNumber());
             addressField.setText(currentStaff.getAddress());
-
-            // Cập nhật label_StaffID với ID của nhân viên
             label_StaffID.setText(String.valueOf(currentStaff.getStaffID()));
-
-
 
             String gender = currentStaff.getGender() == 1 ? "Male" : "Female";
             genderChoiceBox.setValue(gender);
@@ -227,93 +220,72 @@ public class EditStaffController implements Initializable {
 
             salaryChoiceBox.setValue(String.valueOf(currentStaff.getSalary()));
             ObservableList<String> salaryOptions = FXCollections.observableArrayList(
-                    "5000", "6000", "7000", "8000" // Thay thế bằng các giá trị thực tế
+                    "5000", "6000", "7000", "8000", "other"
             );
             salaryChoiceBox.setItems(salaryOptions);
 
             educationChoiceBox.setValue(currentStaff.getEducationBackground());
-            // Các tùy chọn cho Education Background
             ObservableList<String> educationOptions = FXCollections.observableArrayList(
-                    "Intermediate", "College", "University", "Master's", "Ph.D." // Thay thế bằng các giá trị thực tế
+                    "Intermediate", "College", "University", "Master's", "Ph.D."
             );
             educationChoiceBox.setItems(educationOptions);
 
             experienceChoiceBox.setValue(currentStaff.getExperience());
-            // Các tùy chọn cho Experience
             ObservableList<String> experienceOptions = FXCollections.observableArrayList(
-                    "0-1 years", "1-3 years", "3-5 years", "5-10 years", "10+ years" // Thay thế bằng các giá trị thực tế
+                    "0-1 years", "1-3 years", "3-5 years", "5-10 years", "10+ years"
             );
             experienceChoiceBox.setItems(experienceOptions);
 
             positionNameChoiceBox.setValue(currentStaff.getPositionName());
-            // Các tùy cho PositionName
             ObservableList<String> positionOptions = FXCollections.observableArrayList(
                     "Admin Master", "Manager", "Biology Teacher", "Computer Science Teacher", "Chemistry Teacher", "English Teacher", "Geography Teacher", "History Teacher", "Mathematics Teacher", "Physical Education Teacher", "Physics Teacher", "Science Teacher"
             );
             positionNameChoiceBox.setItems(positionOptions);
 
-
             avatarPath = currentStaff.getAvatar();
 
-            // Kiểm tra và đặt hình ảnh đại diện
             try {
                 Image avatarImage = new Image(avatarPath);
                 profileImageView.setImage(avatarImage);
             } catch (IllegalArgumentException e) {
-                // Nếu không tìm thấy hình ảnh, sử dụng hình ảnh mặc định
                 profileImageView.setImage(new Image("file:src/main/resources/com/app/schoolmanagementsystem/images/useravatar.png"));
             }
 
-            // Giả sử bạn đã có đối tượng StaffModel và currentStaff
-            StaffModel staffModel = new StaffModel(currentStaff, connection()); // Khởi tạo StaffModel với currentStaff và Connection
+            StaffModel staffModel = new StaffModel(currentStaff, connection());
 
-            // Lấy dữ liệu roleName từ StaffModel
-            String roleName = staffModel.getRoleName(); // Gọi phương thức getRoleName của StaffModel
+            String roleName = staffModel.getRoleName();
 
-            // Đặt giá trị vào roleChoiceBox nếu có
             if (roleName != null) {
                 roleChoiceBox.setValue(roleName);
             } else {
-                roleChoiceBox.setValue(""); // Hoặc một giá trị mặc định nếu roleName là null
+                roleChoiceBox.setValue("");
             }
 
-            // Đảm bảo roleChoiceBox có các giá trị để chọn
             ObservableList<String> roleOptions = FXCollections.observableArrayList("Admin Master", "Manager", "Teacher");
-            // Kiểm tra vai trò người dùng hiện tại
             String currentRole = getCurrentRoleName();
 
-            // Nếu vai trò là "Manager", chỉ giữ lại "Teacher"
             if ("Manager".equals(currentRole)) {
-                roleOptions.clear(); // Xóa hết các tùy chọn hiện có
-                roleOptions.add("Teacher"); // Chỉ thêm "Teacher" vào
+                roleOptions.clear();
+                roleOptions.add("Teacher");
             }
-            // Đặt giá trị cho ChoiceBox
+
             roleChoiceBox.setItems(roleOptions);
 
-            // Lấy và hiển thị thông tin gia đình
             loadFamilyData(currentStaff.getStaffID());
-
-
         }
     }
 
     public String getCurrentRoleName() {
-        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
+        return UserSession.getCurrentRoleName();
     }
 
     private void loadFamilyData(int staffID) {
-        // Khởi tạo StaffModel với currentStaff và Connection
         StaffModel staffModel = new StaffModel(currentStaff, connection());
-
-        // Lấy danh sách thành viên gia đình từ StaffModel
         List<StaffFamily> familyMembers = staffModel.getFamilyMembers(staffID);
-
-        // Đảm bảo rằng các ChoiceBox đã được cấu hình với các giá trị tùy chọn
         ObservableList<String> relationshipOptions = FXCollections.observableArrayList(
-                "Father", "Mother", "Sibling", "Spouse", "Child" // Thay thế bằng các mối quan hệ thực tế
+                "Father", "Mother", "Sibling", "Spouse", "Child"
         );
 
-        // Giữ lại dữ liệu cũ và chỉ cập nhật khi có thông tin mới
         if (familyMembers.size() > 0) {
             StaffFamily member1 = familyMembers.get(0);
             familyMemberNameField1.setText(member1.getFamilyMemberName());
@@ -328,7 +300,6 @@ public class EditStaffController implements Initializable {
             contactNumberField2.setText(member2.getContactNumber());
         }
 
-        // Đặt các giá trị tùy chọn cho các ChoiceBox
         relationshipChoiceBox1.setItems(relationshipOptions);
         relationshipChoiceBox2.setItems(relationshipOptions);
     }
@@ -343,18 +314,12 @@ public class EditStaffController implements Initializable {
 
     @FXML
     private void handleUpdateButtonAction() {
-
-
-        // Xóa thông báo lỗi hiện tại
         clearErrorMessages();
 
-        //  staffId của nhân viên hiện tại
-        int staffId = currentStaff.getStaffID(); // Lấy ID của nhân viên hiện tại
+        int staffId = currentStaff.getStaffID();
 
-        // Lấy nhân viên từ cơ sở dữ liệu
         Staff staffFromDatabase = staffService.getStaffByID(staffId);
 
-        // Lấy avatar cũ từ cơ sở dữ liệu
         String oldAvatar = staffFromDatabase.getAvatar();
 
         String oldEmail = staffFromDatabase.getEmail();
@@ -375,18 +340,13 @@ public class EditStaffController implements Initializable {
         String experience = experienceChoiceBox.getValue();
         LocalDate dob = dobDatePicker.getValue();
         LocalDate hireDate = hireDatePicker.getValue();
-        // Lấy tên hình ảnh từ profileImageView nếu có
-        String newAvatar = avatarPath != null ? avatarPath : ""; // Đường dẫn ảnh mới
+        String newAvatar = avatarPath != null ? avatarPath : "";
 
-        // Kiểm tra và cập nhật avatar
         String avatarToSet = newAvatar.isEmpty() ? oldAvatar : newAvatar;
 
         boolean hasError = false;
         boolean isValid = true;
 
-
-
-        // Validate tên
         if (firstName.isEmpty()) {
             firstNameErrorLabel.setText("Name cannot be blank.");
             firstNameErrorLabel.setVisible(true);
@@ -415,7 +375,6 @@ public class EditStaffController implements Initializable {
             lastNameErrorLabel.setVisible(false);
         }
 
-        // Validate email
         if (email.isEmpty()) {
             emailErrorLabel.setText("Email cannot be blank.");
             emailErrorLabel.setVisible(true);
@@ -433,7 +392,6 @@ public class EditStaffController implements Initializable {
             }
         }
 
-        // Validate ngày sinh
         if (dob == null) {
             dobErrorLabel.setText("Date of birth cannot be left blank.");
             dobErrorLabel.setVisible(true);
@@ -451,8 +409,6 @@ public class EditStaffController implements Initializable {
             }
         }
 
-
-        // Validate số điện thoại
         if (phoneNumber.isEmpty()) {
             phoneErrorLabel.setText("Phone number cannot be left blank.");
             phoneErrorLabel.setVisible(true);
@@ -467,7 +423,6 @@ public class EditStaffController implements Initializable {
             phoneErrorLabel.setVisible(false);
         }
 
-        // Validate địa chỉ
         if (address.isEmpty()) {
             addressErrorLabel.setText("Address cannot be left blank.");
             addressErrorLabel.setVisible(true);
@@ -477,7 +432,6 @@ public class EditStaffController implements Initializable {
             addressErrorLabel.setVisible(false);
         }
 
-        // Validate ngày tuyển dụng
         if (hireDate == null) {
             hireDateErrorLabel.setText("Recruitment date cannot be left blank.");
             hireDateErrorLabel.setVisible(true);
@@ -496,7 +450,6 @@ public class EditStaffController implements Initializable {
             positionNameErrorLabel.setVisible(false);
         }
 
-        // Validate vai trò
         if (role == null) {
             roleErrorLabel.setText("Role cannot be left empty.");
             roleErrorLabel.setVisible(true);
@@ -506,7 +459,6 @@ public class EditStaffController implements Initializable {
             roleErrorLabel.setVisible(false);
         }
 
-        // Validate giới tính
         if (gender == null) {
             genderErrorLabel.setText("Gender cannot be left blank.");
             genderErrorLabel.setVisible(true);
@@ -516,7 +468,6 @@ public class EditStaffController implements Initializable {
             genderErrorLabel.setVisible(false);
         }
 
-        // Validate lương
         if (salary == null) {
             salaryErrorLabel.setText("Salary cannot be left blank.");
             salaryErrorLabel.setVisible(true);
@@ -526,7 +477,6 @@ public class EditStaffController implements Initializable {
             salaryErrorLabel.setVisible(false);
         }
 
-        // Validate trình độ học vấn
         if (educationBackground == null) {
             educationErrorLabel.setText("Education level cannot be left blank.");
             educationErrorLabel.setVisible(true);
@@ -536,7 +486,6 @@ public class EditStaffController implements Initializable {
             educationErrorLabel.setVisible(false);
         }
 
-        // Validate kinh nghiệm
         if (experience == null) {
             experienceErrorLabel.setText("Experience cannot be left blank.");
             experienceErrorLabel.setVisible(true);
@@ -546,27 +495,23 @@ public class EditStaffController implements Initializable {
             experienceErrorLabel.setVisible(false);
         }
 
-        // Kiểm tra định dạng của hình đại diện
         if (!newAvatar.isEmpty()) {
-            // Danh sách các định dạng hợp lệ
             List<String> validFormats = Arrays.asList("png", "jpg", "jpeg");
 
-            // Lấy phần mở rộng của tệp từ đường dẫn
             String fileExtension = "";
             try {
-                String fileName = new File(newAvatar).getName(); // Lấy tên tệp từ đường dẫn
-                int dotIndex = fileName.lastIndexOf('.'); // Tìm vị trí dấu chấm
+                String fileName = new File(newAvatar).getName();
+                int dotIndex = fileName.lastIndexOf('.');
                 if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
-                    fileExtension = fileName.substring(dotIndex + 1).toLowerCase(); // Lấy phần mở rộng
+                    fileExtension = fileName.substring(dotIndex + 1).toLowerCase();
                 }
             } catch (Exception e) {
-                fileExtension = ""; // Đặt mặc định nếu có lỗi
+                fileExtension = "";
             }
 
-            System.out.println("Avatar path: " + newAvatar); // Debugging line
-            System.out.println("File extension: " + fileExtension); // Debugging line
+            System.out.println("Avatar path: " + newAvatar);
+            System.out.println("File extension: " + fileExtension);
 
-            // Kiểm tra định dạng
             if (!validFormats.contains(fileExtension)) {
                 chooseFileErrorLabel.setText("Avatar must be in format: png, jpg, hoặc jpeg.");
                 chooseFileErrorLabel.setVisible(true);
@@ -577,10 +522,9 @@ public class EditStaffController implements Initializable {
             }
         }
 
-        // Kiểm tra nếu mật khẩu mới được nhập
         boolean isPasswordChanged = password != null && !password.trim().isEmpty();
 
-        if (isPasswordChanged) { // Nếu mật khẩu thay đổi
+        if (isPasswordChanged) {
             System.out.println("Mật khẩu mới: " + password);
             if (password.length() < 5) {
                 passwordErrorLabel.setText("Password must be at least 5 characters.");
@@ -591,7 +535,6 @@ public class EditStaffController implements Initializable {
                 passwordErrorLabel.setVisible(false);
             }
 
-            // Kiểm tra mật khẩu xác nhận chỉ nếu mật khẩu mới được nhập
             if (!password.equals(confirmPassword)) {
                 confirmPasswordErrorLabel.setText("Confirmation password does not match.");
                 confirmPasswordErrorLabel.setVisible(true);
@@ -606,22 +549,16 @@ public class EditStaffController implements Initializable {
 
             }
 
-        } else { // Nếu không thay đổi mật khẩu
-            // Log mật khẩu cũ
-            System.out.println("Mật khẩu cũ: " + oldPassword);
-
-            // Giữ mật khẩu cũ và không cần kiểm tra mật khẩu xác nhận
+        } else {
             confirmPasswordErrorLabel.setVisible(false);
         }
 
         if (!isValid) {
             showError("Please check and fix the errors above.");
-            return; // Nếu có lỗi, không thực hiện cập nhật
+            return;
 
         }
 
-
-        // Validate thông tin thành viên gia đình
         boolean hasFamilyMember = false;
 
         String familyMemberName1 = familyMemberNameField1.getText();
@@ -632,7 +569,6 @@ public class EditStaffController implements Initializable {
         String familyMemberRelationship2 = relationshipChoiceBox2.getValue();
         String familyMemberContact2 = contactNumberField2.getText();
 
-        // Kiểm tra và xác thực thông tin thành viên gia đình 1
         if (!familyMemberName1.isEmpty() || !familyMemberContact1.isEmpty() || familyMemberRelationship1 != null) {
             hasFamilyMember = true;
 
@@ -669,7 +605,6 @@ public class EditStaffController implements Initializable {
             }
         }
 
-        // Kiểm tra và xác thực thông tin thành viên gia đình 2
         if (!familyMemberName2.isEmpty() || !familyMemberContact2.isEmpty() || familyMemberRelationship2 != null) {
             hasFamilyMember = true;
 
@@ -706,7 +641,6 @@ public class EditStaffController implements Initializable {
             }
         }
 
-        // Hiển thị thông báo tổng hợp lỗi nếu có lỗi
         if (hasError) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Lỗi xác thực");
@@ -723,7 +657,7 @@ public class EditStaffController implements Initializable {
         currentStaff.setPhoneNumber(phoneNumber);
         currentStaff.setAddress(address);
         currentStaff.setGender(gender.equals("Male") ? (byte) 1 : (byte) 0);
-        currentStaff.setAvatar(avatarToSet);  // Gán tên hình ảnh cho currentStaff
+        currentStaff.setAvatar(avatarToSet);
         currentStaff.setPassword(password);
         currentStaff.setPositionName(position);
 
@@ -762,7 +696,6 @@ public class EditStaffController implements Initializable {
     }
 
     private void clearErrorMessages() {
-        // Hide all error labels and clear text
         firstNameErrorLabel.setVisible(false);
         firstNameErrorLabel.setText("");
 
@@ -843,14 +776,11 @@ public class EditStaffController implements Initializable {
         );
         File selectedFile = fileChooser.showOpenDialog(formEditStaff.getScene().getWindow());
         if (selectedFile != null) {
-            // Validate the image before setting it
             if (isValidImage(selectedFile)) {
-                // Set the image directly without resizing
                 Image avatarImage = new Image(selectedFile.toURI().toString());
                 profileImageView.setImage(avatarImage);
                 avatarPath = selectedFile.toURI().toString();
             } else {
-                // Show error message if the image is not valid
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
@@ -865,11 +795,10 @@ public class EditStaffController implements Initializable {
             double width = image.getWidth();
             double height = image.getHeight();
 
-            // Kiểm tra tỷ lệ khung hình (2x3, 3x4 hoặc 4x6)
             double aspectRatio = width / height;
-            return (Math.abs(aspectRatio - (2.0 / 3.0)) < 0.1 ||  // Tỷ lệ 2:3
-                    Math.abs(aspectRatio - (3.0 / 4.0)) < 0.1 ||  // Tỷ lệ 3:4
-                    Math.abs(aspectRatio - (4.0 / 6.0)) < 0.1);   // Tỷ lệ 4:6
+            return (Math.abs(aspectRatio - (2.0 / 3.0)) < 0.1 ||
+                    Math.abs(aspectRatio - (3.0 / 4.0)) < 0.1 ||
+                    Math.abs(aspectRatio - (4.0 / 6.0)) < 0.1);
         } catch (Exception e) {
             return false;
         }

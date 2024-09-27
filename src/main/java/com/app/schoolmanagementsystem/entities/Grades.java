@@ -5,7 +5,7 @@ public class Grades {
     private int studentID;
     private int subjectID;
     private double marks;
-    private String subjectName; // For displaying subject names
+    private String subjectName;
 
     public Grades(int gradeID, int studentID, int subjectID, double marks, String subjectName) {
         this.gradeID = gradeID;
@@ -14,8 +14,6 @@ public class Grades {
         this.marks = marks;
         this.subjectName = subjectName;
     }
-
-    // Getters and Setters
 
     public int getGradeID() {
         return gradeID;

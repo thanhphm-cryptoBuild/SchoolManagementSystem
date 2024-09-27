@@ -54,7 +54,7 @@ public class StudentController implements Initializable {
     private TableView<StudentModel> studentTable;
 
     @FXML
-    private TableColumn<StudentModel, Integer> colStudentID; // Add this line
+    private TableColumn<StudentModel, Integer> colStudentID;
 
     @FXML
     private TableColumn<StudentModel, String> colFirstName;
@@ -90,7 +90,7 @@ public class StudentController implements Initializable {
     private TableColumn<StudentModel, String> colAvatar;
 
     @FXML
-    private TableColumn<StudentModel, String> colAcademicSchool; // New Column
+    private TableColumn<StudentModel, String> colAcademicSchool;
 
     @FXML
     private TextField searchField;
@@ -113,32 +113,30 @@ public class StudentController implements Initializable {
         setupTableColumns();
         loadStudentData();
         setupSearchChoiceBox();
-        searchChoiceBox.getItems().add("Filter"); // Add "Select" as the first item
-        searchChoiceBox.setValue("Filter"); // Set default value to "Select"
+        searchChoiceBox.getItems().add("Filter");
+        searchChoiceBox.setValue("Filter");
         hideAction();
     }
 
     private void hideAction() {
-        // Kiểm tra vai trò của người dùng hiện tại
-        String currentRole = getCurrentRoleName(); // Phương thức này trả về vai trò của người dùng hiện tại
+        String currentRole = getCurrentRoleName();
 
-        // Nếu vai trò là "Teacher", ẩn cột action
         if ("Teacher".equals(currentRole)) {
-            colAction.setVisible(false); // Ẩn cột hành động nếu là Teacher
+            colAction.setVisible(false);
         }
     }
 
     private void setupSearchChoiceBox() {
-        searchChoiceBox.setItems(FXCollections.observableArrayList("Student ID", "Gender", "Class Name")); // Updated line
+        searchChoiceBox.setItems(FXCollections.observableArrayList("Student ID", "Gender", "Class Name"));
     }
 
     @FXML
     private void onSearchIconClicked() {
         isSearchIconClicked = true;
         if (searchField.getText().isEmpty() && filterField.getText().isEmpty()) {
-            loadStudentData(); // Refresh the page if search fields are empty
+            loadStudentData();
             searchChoiceBox.setValue("Filter");
-            isSearchIconClicked = false; // Reset the flag after refresh
+            isSearchIconClicked = false;
         } else {
             if (!searchField.getText().isEmpty() && filterField.getText().isEmpty()) {
                 searchChoiceBox.setValue("Filter");
@@ -161,7 +159,7 @@ public class StudentController implements Initializable {
         for (StudentModel student : studentData) {
             boolean matches = false;
             if (student.getFirstName().toLowerCase().contains(searchText) || student.getEmail().toLowerCase().contains(searchText)) {
-                if ("Student ID".equals(searchChoice) && String.valueOf(student.getStudentID()).equals(filterText)) { // Updated line
+                if ("Student ID".equals(searchChoice) && String.valueOf(student.getStudentID()).equals(filterText)) {
                     matches = true;
                 } else if ("Gender".equals(searchChoice) && (student.getGender() ? "male" : "female").equalsIgnoreCase(filterText)) {
                     matches = true;
@@ -181,10 +179,7 @@ public class StudentController implements Initializable {
         }
 
         studentTable.setItems(filteredData);
-        isSearchIconClicked = false; // Reset the flag after search
-
-        // Reset ChoiceBox to "Filter" after search
-//        searchChoiceBox.setValue("Filter");
+        isSearchIconClicked = false;
 
     }
 
@@ -199,34 +194,33 @@ public class StudentController implements Initializable {
     }
 
     private void setupTableColumns() {
-        colStudentID.setCellValueFactory(new PropertyValueFactory<>("studentID")); // Set the cell value factory for Student ID
-        colStudentID.setStyle("-fx-alignment: CENTER;"); // Center align Student ID column
+        colStudentID.setCellValueFactory(new PropertyValueFactory<>("studentID"));
+        colStudentID.setStyle("-fx-alignment: CENTER;");
 
         colFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        colFirstName.setStyle("-fx-alignment: CENTER;"); // Center align First Name column
+        colFirstName.setStyle("-fx-alignment: CENTER;");
 
         colLastName.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        colLastName.setStyle("-fx-alignment: CENTER;"); // Center align Last Name column
+        colLastName.setStyle("-fx-alignment: CENTER;");
 
         colDateOfBirth.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
-        colDateOfBirth.setStyle("-fx-alignment: CENTER;"); // Center align Date of Birth column
+        colDateOfBirth.setStyle("-fx-alignment: CENTER;");
 
         colGender.setCellValueFactory(new PropertyValueFactory<>("gender"));
-        colGender.setStyle("-fx-alignment: CENTER;"); // Center align Gender column
+        colGender.setStyle("-fx-alignment: CENTER;");
 
         colAddress.setCellValueFactory(new PropertyValueFactory<>("address"));
-        colAddress.setStyle("-fx-alignment: CENTER;"); // Center align Address column
+        colAddress.setStyle("-fx-alignment: CENTER;");
 
         colPhoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        colPhoneNumber.setStyle("-fx-alignment: CENTER;"); // Center align Phone Number column
+        colPhoneNumber.setStyle("-fx-alignment: CENTER;");
 
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colEmail.setStyle("-fx-alignment: CENTER;"); // Center align Email column
+        colEmail.setStyle("-fx-alignment: CENTER;");
 
         colEnrollmentDate.setCellValueFactory(new PropertyValueFactory<>("enrollmentDate"));
-        colEnrollmentDate.setStyle("-fx-alignment: CENTER;"); // Center align Enrollment Date column
+        colEnrollmentDate.setStyle("-fx-alignment: CENTER;");
 
-        // Configure Avatar column
         colAvatar.setCellFactory(column -> new TableCell<StudentModel, String>() {
             private final ImageView imageView = new ImageView();
 
@@ -236,7 +230,6 @@ public class StudentController implements Initializable {
                 if (empty || avatarPath == null || avatarPath.isEmpty()) {
                     imageView.setImage(defaultAvatar);
                 } else {
-                    // Get the current StudentModel object
                     StudentModel student = getTableView().getItems().get(getIndex());
                     String fullAvatarPath = student.getFullAvatarPath();
 
@@ -251,20 +244,18 @@ public class StudentController implements Initializable {
                     }
                     imageView.setImage(avatarImage);
                 }
-                imageView.setFitHeight(48); // Set fixed height for the avatar
-                imageView.setFitWidth(48); // Set fixed width for the avatar
-                imageView.setPreserveRatio(true); // Maintain aspect ratio
+                imageView.setFitHeight(48);
+                imageView.setFitWidth(48);
+                imageView.setPreserveRatio(true);
 
-                // Clip the image into a circle
-                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
+                imageView.setClip(new Circle(16, 16, 16));
                 setGraphic(empty ? null : imageView);
             }
         });
 
         colAvatar.setCellValueFactory(new PropertyValueFactory<>("avatar"));
-        colAvatar.setStyle("-fx-alignment: CENTER;"); // Center align Avatar column
+        colAvatar.setStyle("-fx-alignment: CENTER;");
 
-        // Configure Academic School column
         colAcademicSchool.setCellValueFactory(cellData -> {
             int classId = cellData.getValue().getClassID();
             Classes cls = getClassById(classId);
@@ -276,16 +267,14 @@ public class StudentController implements Initializable {
                 return new SimpleStringProperty("N/A");
             }
         });
-        colAcademicSchool.setStyle("-fx-alignment: CENTER;"); // Center align Academic School column
+        colAcademicSchool.setStyle("-fx-alignment: CENTER;");
 
-        // Configure Action column
         colAction.setCellFactory(param -> new TableCell<>() {
             private final Button deleteButton = new Button();
             private final Button editButton = new Button();
             private final Button gradeButton = new Button();
 
             {
-                // Delete button
                 Image deleteImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/cross.png")));
                 ImageView deleteImageView = new ImageView(deleteImage);
                 deleteImageView.setFitHeight(20);
@@ -295,7 +284,6 @@ public class StudentController implements Initializable {
                 deleteButton.setOnAction(event -> {
                     StudentModel student = getTableView().getItems().get(getIndex());
 
-                    // Show confirmation dialog
                     Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION);
                     confirmationAlert.setTitle("Delete Confirmation");
                     confirmationAlert.setHeaderText(null);
@@ -307,7 +295,6 @@ public class StudentController implements Initializable {
                     }
                 });
 
-                // Edit button
                 Image gearImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/edit.png")));
                 ImageView gearImageView = new ImageView(gearImage);
                 gearImageView.setFitHeight(20);
@@ -319,7 +306,6 @@ public class StudentController implements Initializable {
                     openEditStudentPage(student);
                 });
 
-                // Grade button
                 Image gradeImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/score.png")));
                 ImageView gradeImageView = new ImageView(gradeImage);
                 gradeImageView.setFitHeight(20);
@@ -346,7 +332,6 @@ public class StudentController implements Initializable {
 
         colAction.setStyle("-fx-alignment: CENTER;");
 
-        // Configure Gender column
         colGender.setCellFactory(column -> new TableCell<StudentModel, Boolean>() {
             @Override
             protected void updateItem(Boolean item, boolean empty) {
@@ -359,7 +344,6 @@ public class StudentController implements Initializable {
             }
         });
 
-        // Configure ClassName column
         colClassName.setCellValueFactory(cellData -> {
             int classID = cellData.getValue().getClassID();
             Classes cls = getClassById(classID);
@@ -370,7 +354,7 @@ public class StudentController implements Initializable {
                 return new SimpleStringProperty("N/A");
             }
         });
-        colClassName.setStyle("-fx-alignment: CENTER;"); // Center align ClassName column
+        colClassName.setStyle("-fx-alignment: CENTER;");
     }
 
     /**
@@ -454,7 +438,7 @@ public class StudentController implements Initializable {
             EditStudentController editStudentController = loader.getController();
             editStudentController.setPageStudent(pageStudent);
             editStudentController.setBGPageStudent(moveBG);
-            editStudentController.setStudentData(student); // Pass student data to the controller
+            editStudentController.setStudentData(student);
 
             pageEditStudent.setTranslateX(2000);
             pageEditStudent.setTranslateY(10);
@@ -528,7 +512,7 @@ public class StudentController implements Initializable {
                         rs.getDate("EnrollmentDate"),
                         rs.getInt("ClassID"),
                         rs.getString("Status"),
-                        rs.getString("Avatar") // Added avatar parameter
+                        rs.getString("Avatar")
                 );
                 studentData.add(student);
             }
@@ -544,17 +528,15 @@ public class StudentController implements Initializable {
     @FXML
     void addStudentBTN(MouseEvent event) throws IOException {
 
-        // Kiểm tra vai trò người dùng hiện tại
-        String currentRole = getCurrentRoleName(); // Lấy vai trò hiện tại của người dùng
+        String currentRole = getCurrentRoleName();
 
         if ("Teacher".equals(currentRole)) {
-            // Hiển thị thông báo không đủ thẩm quyền
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Cảnh báo");
             alert.setHeaderText(null);
             alert.setContentText("You do not have sufficient authority to add students.");
             alert.showAndWait();
-            return; // Dừng phương thức nếu là Teacher
+            return;
         }
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/app/schoolmanagementsystem/views/PageAddStudent.fxml"));
@@ -580,19 +562,16 @@ public class StudentController implements Initializable {
         translateTransition.setToY(6);
         translateTransition.play();
     }
-
-    // Phương thức lấy roleName hiện tại
     private String getCurrentRoleName() {
-        return UserSession.getCurrentRoleName(); // Lấy roleName từ UserSession
+        return UserSession.getCurrentRoleName();
     }
 
     @FXML
     void refreshData(MouseEvent event) {
         loadStudentData();
-//        showAlert(Alert.AlertType.INFORMATION, "Success", "Data has been refreshed.");
+        showAlert(Alert.AlertType.INFORMATION, "Success", "Data has been refreshed.");
     }
 
-    // Method to show alerts
     private void showAlert(Alert.AlertType alertType, String title, String message) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);

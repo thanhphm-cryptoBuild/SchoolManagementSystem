@@ -92,7 +92,7 @@ public class StaffController implements Initializable {
     private TextField extraSearchField;
 
     @FXML
-    private ImageView reloadButton; // Gán ID của ImageView
+    private ImageView reloadButton;
 
 
     private StaffModel staffModel = new StaffModel();
@@ -135,7 +135,7 @@ public class StaffController implements Initializable {
 
             translateTransition.play();
         } catch (IOException e) {
-            e.printStackTrace(); // In chi tiết lỗi ra console
+            e.printStackTrace();
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Failed to load PageAddStaff.fxml");
@@ -146,15 +146,14 @@ public class StaffController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        // Cấu hình các cột
         staffIDColumn.setCellValueFactory(new PropertyValueFactory<>("staffID"));
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
         dateOfBirthColumn.setCellValueFactory(new PropertyValueFactory<>("dateOfBirth"));
         genderColumn.setCellValueFactory(cellData -> {
-            byte genderValue = cellData.getValue().getGender();  // Lấy giới tính dưới dạng byte
-            String genderText = (genderValue == 1) ? "Male" : "Female";  // Chuyển đổi thành văn bản
-            return new SimpleStringProperty(genderText);  // Trả về văn bản giới tính dưới dạng StringProperty
+            byte genderValue = cellData.getValue().getGender();
+            String genderText = (genderValue == 1) ? "Male" : "Female";
+            return new SimpleStringProperty(genderText);
         });
         addressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
         phoneNumberColumn.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
@@ -166,12 +165,10 @@ public class StaffController implements Initializable {
         salaryColumn.setCellValueFactory(new PropertyValueFactory<>("salary"));
         educationBackgroundColumn.setCellValueFactory(new PropertyValueFactory<>("educationBackground"));
         experienceColumn.setCellValueFactory(new PropertyValueFactory<>("experience"));
-        // Cấu hình cột avatar
+
         avatarColumn.setCellValueFactory(new PropertyValueFactory<>("avatar"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-
-        // Cấu hình căn chỉnh cột
         configureColumnAlignment(staffIDColumn);
         configureColumnAlignment(firstNameColumn);
         configureColumnAlignment(lastNameColumn);
@@ -188,67 +185,50 @@ public class StaffController implements Initializable {
         configureColumnAlignment(avatarColumn);
         configureColumnAlignment(statusColumn);
 
-
-
-        // Cấu hình cột hành động
         configureActionColumn();
-        // Cấu hình cột avatar
         configureAvatarColumn();
 
         reloadButton.setOnMouseClicked(event -> reloadPage());
 
-        // Cấu hình ChoiceBox cho Gender và ID
-        ObservableList<String> searchOptions = FXCollections.observableArrayList("Equal", "Gender", "ID");
+        ObservableList<String> searchOptions = FXCollections.observableArrayList("Filter", "Gender", "ID");
         selectBox.setItems(searchOptions);
-        selectBox.setValue("Equal"); // Đặt giá trị mặc định là "" (không chọn gì)
+        selectBox.setValue("Filter");
 
-        // Tạo sự kiện khi người dùng nhập vào ô tìm kiếm
         searchField.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
         selectBox.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> searchStaff());
         extraSearchField.textProperty().addListener((observable, oldValue, newValue) -> searchStaff());
 
-        // Khởi tạo StaffModel
         staffModel = new StaffModel();
 
-        // Tải dữ liệu ban đầu
         loadStaffDataByLogic(null, null, null, null);
 
-        // Tải dữ liệu nhân viên
         loadStaffData();
     }
 
     private void searchStaff() {
-        // Lấy giá trị từ các ô tìm kiếm
-        String searchText = searchField.getText().trim(); // Tìm kiếm theo firstName hoặc email
-        String extraSearchText = extraSearchField.getText().trim(); // Tìm kiếm theo ID hoặc Gender từ ChoiceBox
+        String searchText = searchField.getText().trim();
+        String extraSearchText = extraSearchField.getText().trim();
 
-        // Tách phần tìm kiếm cho firstName, email từ searchField
         String firstName = null;
         String email = null;
 
-        // Xử lý tìm kiếm theo searchField
         if (searchText.contains("@")) {
             email = searchText;
         } else if (!searchText.isEmpty()) {
             firstName = searchText;
         }
 
-        // Tách phần tìm kiếm cho ID, gender từ extraSearchField
         Integer id = null;
         Byte gender = null;
 
-        // Xử lý tìm kiếm theo lựa chọn từ ChoiceBox
         String selectedOption = selectBox.getValue();
         if ("ID".equals(selectedOption)) {
-            // Nếu lựa chọn là ID, tìm kiếm theo ID
             try {
                 id = Integer.parseInt(extraSearchText);
             } catch (NumberFormatException e) {
-                // Xử lý lỗi nếu extraSearchField không phải là số
                 id = null;
             }
         } else if ("Gender".equals(selectedOption)) {
-            // Nếu lựa chọn là Gender, tìm kiếm theo Gender
             if ("Male".equalsIgnoreCase(extraSearchText)) {
                 gender = (byte) 1;
             } else if ("Female".equalsIgnoreCase(extraSearchText)) {
@@ -256,25 +236,23 @@ public class StaffController implements Initializable {
             }
         }
 
-        // Cập nhật cột hành động
         updateActionColumn();
 
-        // Tải dữ liệu nhân viên theo các tiêu chí tìm kiếm
         loadStaffDataByLogic(firstName, email, gender, id);
     }
 
 
     private void resetSearchFields() {
-        searchField.setText(""); // Đặt giá trị ô tìm kiếm chính là rỗng
-        extraSearchField.setText(""); // Đặt giá trị ô tìm kiếm phụ là rỗng
-        selectBox.setValue(""); // Đặt giá trị ChoiceBox về giá trị mặc định
+        searchField.setText("");
+        extraSearchField.setText("");
+        selectBox.setValue("");
     }
 
     private void loadStaffDataByLogic(String firstName, String email, Byte gender, Integer id) {
-        staffList.clear(); // Xóa dữ liệu cũ
-        List<Staff> staffs = staffModel.searchStaff(firstName, email, gender, id); // Gọi phương thức tìm kiếm trong StaffModel
-        staffList.addAll(staffs); // Thêm kết quả tìm kiếm vào ObservableList
-        staffTableView.setItems(staffList); // Cập nhật TableView
+        staffList.clear();
+        List<Staff> staffs = staffModel.searchStaff(firstName, email, gender, id);
+        staffList.addAll(staffs);
+        staffTableView.setItems(staffList);
     }
 
     private void configureAvatarColumn() {
@@ -287,7 +265,6 @@ public class StaffController implements Initializable {
                 if (empty || avatarPath == null || avatarPath.isEmpty()) {
                     imageView.setImage(defaultAvatar);
                 } else {
-                    // Lấy đối tượng StudentModel hiện tại
                     Staff staff = getTableView().getItems().get(getIndex());
                     String fullAvatarPath = staff.getFullAvatarPath();
 
@@ -302,16 +279,14 @@ public class StaffController implements Initializable {
                     }
                     imageView.setImage(avatarImage);
                 }
-                imageView.setFitHeight(32); // Set fixed height for the avatar
-                imageView.setFitWidth(32); // Set fixed width for the avatar
-                imageView.setPreserveRatio(true); // Maintain aspect ratio
+                imageView.setFitHeight(32);
+                imageView.setFitWidth(32);
+                imageView.setPreserveRatio(true);
 
-                // Cắt ảnh thành hình tròn
-                imageView.setClip(new Circle(16, 16, 16)); // Create a circular clip
+                imageView.setClip(new Circle(16, 16, 16));
                 setGraphic(empty ? null : imageView);
-                // Tạo HBox và căn giữa
                 HBox hBox = new HBox(imageView);
-                hBox.setAlignment(Pos.CENTER); // Căn giữa hình ảnh trong HBox
+                hBox.setAlignment(Pos.CENTER);
                 setGraphic(hBox);
             }
         });
@@ -348,7 +323,6 @@ public class StaffController implements Initializable {
                     private final ImageView deleteImageView = new ImageView(new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/delete.png")));
 
                     {
-                        // Set image sizes
                         detailImageView.setFitHeight(24);
                         detailImageView.setFitWidth(24);
                         editImageView.setFitHeight(24);
@@ -356,18 +330,16 @@ public class StaffController implements Initializable {
                         deleteImageView.setFitHeight(24);
                         deleteImageView.setFitWidth(24);
 
-                        // Create HBox and configure alignment
                         HBox hBox = new HBox(10, detailImageView, editImageView, deleteImageView);
                         hBox.setAlignment(Pos.CENTER);
 
-                        // Add event handlers for clicks
                         detailImageView.setOnMouseClicked(e -> showDetails(getIndex()));
 
                         editImageView.setOnMouseClicked(e -> {
                             Staff staff = getTableRow() != null ? getTableRow().getItem() : null;
                             if (staff != null) {
                                 System.out.println("Editing staff with ID: " + staff.getStaffID());
-                                editStaff(staff.getStaffID()); // Chuyển ID nhân viên để chỉnh sửa
+                                editStaff(staff.getStaffID());
                             } else {
                                 System.err.println("No staff data available.");
                             }
@@ -375,7 +347,6 @@ public class StaffController implements Initializable {
 
                         deleteImageView.setOnMouseClicked(e -> deleteStaff(getIndex()));
 
-                        // Add mouse enter and exit handlers to change cursor
                         detailImageView.setOnMouseEntered(e -> detailImageView.setCursor(Cursor.HAND));
                         detailImageView.setOnMouseExited(e -> detailImageView.setCursor(Cursor.DEFAULT));
                         editImageView.setOnMouseEntered(e -> editImageView.setCursor(Cursor.HAND));
@@ -400,9 +371,6 @@ public class StaffController implements Initializable {
             }
         });
     }
-
-
-
 
     private void updateActionColumn() {
         actionColumn.setCellFactory(new Callback<>() {
@@ -414,7 +382,6 @@ public class StaffController implements Initializable {
                     private final ImageView deleteImageView = new ImageView(new Image(getClass().getResourceAsStream("/com/app/schoolmanagementsystem/images/delete.png")));
 
                     {
-                        // Set image sizes
                         detailImageView.setFitHeight(24);
                         detailImageView.setFitWidth(24);
                         editImageView.setFitHeight(24);
@@ -422,21 +389,17 @@ public class StaffController implements Initializable {
                         deleteImageView.setFitHeight(24);
                         deleteImageView.setFitWidth(24);
 
-                        // Create HBox and configure alignment
                         HBox hBox = new HBox(10, detailImageView, editImageView, deleteImageView);
                         hBox.setAlignment(Pos.CENTER);
 
-                        // Add event handlers for clicks
                         detailImageView.setOnMouseClicked(e -> showDetails(getIndex()));
                         editImageView.setOnMouseClicked(e -> {
                             Staff staff = getTableRow().getItem();
                             if (staff != null) {
-                                editStaff(staff.getStaffID()); // Gọi phương thức editStaff với ID của nhân viên
+                                editStaff(staff.getStaffID());
                             }
                         });
                         deleteImageView.setOnMouseClicked(e -> deleteStaff(getIndex()));
-
-                        // Add mouse enter and exit handlers to change cursor
                         detailImageView.setOnMouseEntered(e -> detailImageView.setCursor(Cursor.HAND));
                         detailImageView.setOnMouseExited(e -> detailImageView.setCursor(Cursor.DEFAULT));
                         editImageView.setOnMouseEntered(e -> editImageView.setCursor(Cursor.HAND));
@@ -462,34 +425,29 @@ public class StaffController implements Initializable {
         });
     }
 
-    private AuthService authService = new AuthService(); // Thay thế bằng cách tiêm phụ thuộc nếu cần
+    private AuthService authService = new AuthService();
 
     public void loginUser(String email, String password) {
         if (authService.login(email, password)) {
-            // Lưu vai trò vào UserSession thay vì biến cục bộ
             String roleName = authService.getRoleName(email);
-            UserSession.setCurrentRoleName(roleName); // Sử dụng UserSession để lưu vai trò
+            UserSession.setCurrentRoleName(roleName);
             System.out.println("Logged in with role: " + roleName);
         } else {
             System.out.println("Login failed.");
         }
     }
 
-    // Phương thức để lấy roleName hiện tại
     public String getCurrentRoleName() {
-        return UserSession.getCurrentRoleName(); // Sử dụng UserSession để lấy vai trò
+        return UserSession.getCurrentRoleName();
     }
 
-    // Các phương thức khác liên quan đến phân quyền
     private boolean canPerformAction(int staffID) {
         String staffRoleName = getStaffRoleNameByStaffID(staffID);
         String userRoleName = getCurrentRoleName();
 
-        // Console log roleName của người dùng và nhân viên
         System.out.println("User roleName: " + userRoleName);
         System.out.println("Staff roleName: " + staffRoleName);
 
-        // Phân quyền dựa trên vai trò của người dùng đăng nhập và vai trò của nhân viên
         if ("Admin Master".equals(userRoleName)) {
             return true;
         } else if ("Manager".equals(userRoleName) && "Teacher".equals(staffRoleName)) {
@@ -498,24 +456,19 @@ public class StaffController implements Initializable {
         return false;
     }
 
-    // Phương thức lấy vai trò (RoleName) của nhân viên dựa trên StaffID
     private String getStaffRoleNameByStaffID(int staffID) {
-        return staffModel.getRoleByStaffID(staffID); // Gọi phương thức từ StaffModel
+        return staffModel.getRoleByStaffID(staffID);
     }
-
-
 
     private void showDetails(int index) {
         Staff staff = staffTableView.getItems().get(index);
 
-        // Lấy vai trò của người dùng hiện tại từ UserSession
         String userRoleName = UserSession.getCurrentRoleName();
         String staffRoleName = getStaffRoleNameByStaffID(staff.getStaffID());
 
         System.out.println("User roleName: " + userRoleName);
         System.out.println("Staff roleName: " + staffRoleName);
 
-        // Kiểm tra quyền của người dùng hiện tại
         if (canPerformAction(staff.getStaffID())) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Staff Details");
@@ -533,9 +486,6 @@ public class StaffController implements Initializable {
         resetSearchFields();
     }
 
-
-
-    // Cập nhật phương thức editStaff để nhận đối tượng Staff
     private void editStaff(int staffId) {
         System.out.println("Attempting to edit staff with ID: " + staffId);
 
@@ -549,7 +499,6 @@ public class StaffController implements Initializable {
 
             System.out.println("Editing staff: " + staff);
 
-            // Lấy vai trò của người dùng hiện tại từ UserSession
             String userRoleName = UserSession.getCurrentRoleName();
             String staffRoleName = getStaffRoleNameByStaffID(staffId);
 
@@ -606,32 +555,22 @@ public class StaffController implements Initializable {
         }
     }
 
-
-
-
-
-
-
-
     private void deleteStaff(int index) {
         Staff staff = staffTableView.getItems().get(index);
 
-        // Lấy vai trò của người dùng hiện tại từ UserSession
         String userRoleName = UserSession.getCurrentRoleName();
         String staffRoleName = getStaffRoleNameByStaffID(staff.getStaffID());
 
         System.out.println("User roleName: " + userRoleName);
         System.out.println("Staff roleName: " + staffRoleName);
 
-        // Kiểm tra quyền của người dùng hiện tại
         if (canPerformAction(staff.getStaffID())) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
             alert.setTitle("Delete Staff");
             alert.setHeaderText("Are you sure you want to delete Staff ID: " + staff.getStaffID() + "?");
             if (alert.showAndWait().get().getButtonData().isDefaultButton()) {
-                // Implement delete logic here
                 staffModel.deleteStaff(staff.getStaffID());
-                loadStaffData(); // Refresh the list
+                loadStaffData();
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -647,24 +586,17 @@ public class StaffController implements Initializable {
 
 
     private void loadStaffData() {
-        // Create a new list from the model
         List<Staff> newStaffList = staffModel.getActiveStaff();
         staffList.clear();
         staffList.addAll(newStaffList);
         staffTableView.setItems(staffList);
         updateActionColumn();
-        configureAvatarColumn(); // Cấu hình lại cột avatar
-        loadStaffDataByLogic(null, null, null, null); // Tải dữ liệu toàn bộ nếu không có điều kiện tìm kiếm
+        configureAvatarColumn();
+        loadStaffDataByLogic(null, null, null, null);
     }
 
     private void reloadPage() {
-        // Logic để tải lại trang
-        // ...
-
-        // Đặt lại các trường tìm kiếm
         resetSearchFields();
-
-        // Tải dữ liệu nhân viên
         loadStaffData();
     }
 }

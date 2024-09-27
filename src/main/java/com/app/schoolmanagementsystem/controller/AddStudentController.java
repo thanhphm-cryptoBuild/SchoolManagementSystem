@@ -107,7 +107,7 @@ public class AddStudentController implements Initializable {
     @FXML
     private Label academicYearErrorLabel;
 
-    private String avatarPath = "useravatar.png"; // Default avatar
+    private String avatarPath = "useravatar.png";
     private Map<String, Map<String, ClassModel>> classMap = new HashMap<>();
 
     public void setPageStudent(StackPane pageStudent) {
@@ -142,14 +142,11 @@ public class AddStudentController implements Initializable {
         );
         File selectedFile = fileChooser.showOpenDialog(formAddStudent.getScene().getWindow());
         if (selectedFile != null) {
-            // Validate the image before setting it
             if (isValidImage(selectedFile)) {
-                // Set the image directly without resizing
                 Image avatarImage = new Image(selectedFile.toURI().toString());
                 avatarImageView.setImage(avatarImage);
                 avatarPath = selectedFile.toURI().toString();
             } else {
-                // Show error message if the image is not valid
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Invalid Image");
                 alert.setHeaderText(null);
@@ -159,23 +156,20 @@ public class AddStudentController implements Initializable {
         }
     }
 
-    // Update this method to validate the image
     private boolean isValidImage(File file) {
-        // Check if the image dimensions are approximately 2x3, 3x4, or 4x6 (width:height ratios)
         try {
             Image image = new Image(file.toURI().toString());
             double aspectRatio = image.getWidth() / image.getHeight();
-            return (aspectRatio >= 0.67 && aspectRatio <= 0.75) || // Acceptable range for 2x3
-                   (aspectRatio >= 0.75 && aspectRatio <= 0.85) || // Acceptable range for 3x4
-                   (aspectRatio >= 0.5 && aspectRatio <= 0.75);   // Acceptable range for 4x6
+            return (aspectRatio >= 0.67 && aspectRatio <= 0.75) ||
+                   (aspectRatio >= 0.75 && aspectRatio <= 0.85) ||
+                   (aspectRatio >= 0.5 && aspectRatio <= 0.75);
         } catch (Exception e) {
-            return false; // Return false if any error occurs
+            return false;
         }
     }
 
     @FXML
     void addStudent(MouseEvent event) {
-        // Reset error labels
         lastNameErrorLabel.setVisible(false);
         emailErrorLabel.setVisible(false);
         phoneNumberErrorLabel.setVisible(false);
@@ -194,7 +188,6 @@ public class AddStudentController implements Initializable {
 
         boolean hasError = false;
 
-        // Validate fields
         if (lastNameField.getText().isEmpty() || !Character.isUpperCase(lastNameField.getText().charAt(0))) {
             lastNameErrorLabel.setText("Last name must start with an uppercase letter");
             lastNameErrorLabel.setVisible(true);
@@ -259,7 +252,6 @@ public class AddStudentController implements Initializable {
         }
 
         if (!hasError) {
-            // Check for duplicate email
             if (isEmailExists(emailField.getText())) {
                 emailErrorLabel.setText("Email already exists");
                 emailErrorLabel.setVisible(true);
@@ -285,11 +277,9 @@ public class AddStudentController implements Initializable {
                 String previousSchool = previousSchoolField.getText();
                 String reasonForLeaving = reasonForLeavingField.getText();
 
-                String status = "active"; // Default status
+                String status = "active";
 
-                // Kết nối và lưu dữ liệu vào database
                 try (Connection connection = ConnectDB.connection()) {
-                    // Lấy ID tiếp theo cho sinh viên
                     String getMaxStudentIdQuery = "SELECT COALESCE(MAX(StudentID), 0) + 1 AS nextID FROM students";
                     PreparedStatement getMaxStudentIdStatement = connection.prepareStatement(getMaxStudentIdQuery);
                     ResultSet studentResultSet = getMaxStudentIdStatement.executeQuery();
@@ -298,7 +288,6 @@ public class AddStudentController implements Initializable {
                         nextStudentID = studentResultSet.getInt("nextID");
                     }
 
-                    // Lưu thông tin sinh viên
                     String studentQuery = "INSERT INTO students (StudentID, lastName, firstName, email, dateOfBirth, phoneNumber, gender, address, classID, enrollmentDate, previousSchool, reasonForLeaving, status, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     PreparedStatement studentPreparedStatement = connection.prepareStatement(studentQuery);
                     studentPreparedStatement.setInt(1, nextStudentID);
@@ -318,7 +307,6 @@ public class AddStudentController implements Initializable {
 
                     studentPreparedStatement.executeUpdate();
 
-                    // Lấy ID tiếp theo cho gia đình
                     String getMaxFamilyIdQuery = "SELECT COALESCE(MAX(FamilyID), 0) + 1 AS nextID FROM studentfamily";
                     PreparedStatement getMaxFamilyIdStatement = connection.prepareStatement(getMaxFamilyIdQuery);
                     ResultSet familyResultSet = getMaxFamilyIdStatement.executeQuery();
@@ -327,7 +315,6 @@ public class AddStudentController implements Initializable {
                         nextFamilyID = familyResultSet.getInt("nextID");
                     }
 
-                    // Lưu thông tin gia đình
                     String familyQuery = "INSERT INTO studentfamily (FamilyID, StudentID, FatherName, FatherPhoneNumber, MotherName, MotherPhoneNumber) VALUES (?, ?, ?, ?, ?, ?)";
                     PreparedStatement familyPreparedStatement = connection.prepareStatement(familyQuery);
                     familyPreparedStatement.setInt(1, nextFamilyID);
@@ -339,7 +326,6 @@ public class AddStudentController implements Initializable {
 
                     familyPreparedStatement.executeUpdate();
 
-                    // Hiển thị thông báo thành công
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText(null);
@@ -360,12 +346,12 @@ public class AddStudentController implements Initializable {
             preparedStatement.setString(1, email);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                return resultSet.getInt(1) > 0; // Return true if email exists
+                return resultSet.getInt(1) > 0;
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false; // Return false if no error occurs and email does not exist
+        return false;
     }
 
     @FXML
@@ -394,10 +380,8 @@ public class AddStudentController implements Initializable {
         genderField.getItems().addAll("Male", "Female");
         loadClassNames();
 
-        // Set DatePicker constraints for Date of Birth
         setDatePickerConstraints();
 
-        // Add listener to classNameField to update academic year
         classNameField.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
                 updateAcademicYear(newValue);
@@ -406,13 +390,10 @@ public class AddStudentController implements Initializable {
     }
 
     private void setDatePickerConstraints() {
-        // Define the maximum selectable date as December 31, 2010
         final LocalDate MAX_DATE = LocalDate.of(2011, 1, 1).minusDays(1);
 
-        // Set the default date to January 1, 2010
         dobField.setValue(LocalDate.of(2010, 1, 1));
 
-        // Apply DayCellFactory to disable dates after MAX_DATE
         dobField.setDayCellFactory(picker -> new DateCell() {
             @Override
             public void updateItem(LocalDate date, boolean empty) {
@@ -420,12 +401,11 @@ public class AddStudentController implements Initializable {
 
                 if (date.isAfter(MAX_DATE)) {
                     setDisable(true);
-                    setStyle("-fx-background-color: #ffc0cb;"); // Optional: Highlight disabled dates
+                    setStyle("-fx-background-color: #ffc0cb;");
                 }
             }
         });
 
-        // Optionally, set the maximum date to MAX_DATE to prevent manual entry
         dobField.setEditable(false);
     }
 
@@ -444,11 +424,9 @@ public class AddStudentController implements Initializable {
                 String displayName = className + section;
                 String academicYear = enrollmentDate.getYear() + " - " + completeDate.getYear();
 
-                // Add to classMap if not already present
                 classMap.putIfAbsent(displayName, new HashMap<>());
                 classMap.get(displayName).put(academicYear, new ClassModel(classID, className, section, enrollmentDate, completeDate));
-                
-                // Add to classNameField if not already present
+
                 if (!classNameField.getItems().contains(displayName)) {
                     classNameField.getItems().add(displayName);
                 }
@@ -459,10 +437,8 @@ public class AddStudentController implements Initializable {
     }
 
     private void updateAcademicYear(String className) {
-        // Clear previous items
         academicYearField.getItems().clear();
 
-        // Collect all academic years for the selected class name
         Map<String, ClassModel> classModels = classMap.get(className);
         if (classModels != null) {
             for (String academicYear : classModels.keySet()) {
@@ -470,7 +446,6 @@ public class AddStudentController implements Initializable {
             }
         }
 
-        // Set the first academic year as the default value
         if (!academicYearField.getItems().isEmpty()) {
             academicYearField.setValue(academicYearField.getItems().get(0));
         }

@@ -8,7 +8,6 @@ public class StudentFamilyModel {
     private String motherName;
     private String motherPhoneNumber;
 
-    // Constructor
     public StudentFamilyModel(int familyID, int studentID, String fatherName, String fatherPhoneNumber, String motherName, String motherPhoneNumber) {
         this.familyID = familyID;
         this.studentID = studentID;
@@ -18,7 +17,6 @@ public class StudentFamilyModel {
         this.motherPhoneNumber = motherPhoneNumber;
     }
 
-    // Getters và Setters
     public int getFamilyID() {
         return familyID;
     }

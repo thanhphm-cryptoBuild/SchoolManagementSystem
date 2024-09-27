@@ -1,6 +1,5 @@
 package com.app.schoolmanagementsystem.model;
 
-import com.app.schoolmanagementsystem.entities.Subject;
 import com.app.schoolmanagementsystem.entities.SubjectClass;
 import com.app.schoolmanagementsystem.utils.ConnectDB;
 
@@ -209,5 +208,75 @@ public class SubjectClassModel {
         }
 
         return classesList;
+    }
+
+    public List<SubjectClass> searchSubjectClass(Integer idSearch, String subjectNameSearch, String classNameYearSearch) {
+        List<SubjectClass> subjectClassList = new ArrayList<>();
+        StringBuilder query = new StringBuilder("SELECT c.ClassSubjectID, c.ClassID, c.SubjectID, c.StaffID, " +
+                "       CONCAT(s.FirstName, ' ', s.LastName) AS TeacherName, " +
+                "       s.PhoneNumber AS TeacherPhoneNumber, " +
+                "       CONCAT(g.ClassName, g.Section, ' (', YEAR(g.EnrollmentDate), ' - ', YEAR(g.CompleteDate), ') ') AS ClassNameYear, " +
+                "       h.SubjectName " +
+                "FROM ClassSubjects c " +
+                "JOIN Staff s ON c.StaffID = s.StaffID " +
+                "JOIN Classes g ON c.ClassID = g.ClassID " +
+                "JOIN Subjects h ON c.SubjectID = h.SubjectID");
+
+        List<Object> parameters = new ArrayList<>();
+
+        if (subjectNameSearch != null && !subjectNameSearch.isEmpty()) {
+            query.append(" AND h.SubjectName LIKE ?");
+            parameters.add("%" + subjectNameSearch + "%");
+        }
+
+        if (idSearch != null) {
+            query.append(" AND c.ClassSubjectID = ?");
+            parameters.add(idSearch);
+        }
+
+        if (classNameYearSearch != null && !classNameYearSearch.isEmpty()) {
+            query.append(" AND (g.ClassName LIKE ? OR CONCAT(g.ClassName, g.Section) LIKE ?)");
+            parameters.add("%" + classNameYearSearch + "%");
+            parameters.add("%" + classNameYearSearch + "%");
+        }
+
+        try (Connection conn = ConnectDB.connection();
+             PreparedStatement preparedStatement = conn.prepareStatement(query.toString())) {
+
+            for (int i = 0; i < parameters.size(); i++) {
+                preparedStatement.setObject(i + 1, parameters.get(i));
+            }
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                while (resultSet.next()) {
+                    int classSubjectID = resultSet.getInt("ClassSubjectID");
+                    int classID = resultSet.getInt("ClassID");
+                    int subjectID = resultSet.getInt("SubjectID");
+                    int staffID = resultSet.getInt("StaffID");
+                    String teacherName = resultSet.getString("TeacherName");
+                    String teacherPhoneNumber = resultSet.getString("TeacherPhoneNumber");
+                    String classNameYear = resultSet.getString("ClassNameYear");
+                    String subjectName = resultSet.getString("SubjectName");
+
+                    SubjectClass sjc = new SubjectClass(
+                            classSubjectID,
+                            classID,
+                            classNameYear,
+                            subjectID,
+                            subjectName,
+                            staffID,
+                            teacherName,
+                            teacherPhoneNumber
+                    );
+
+                    subjectClassList.add(sjc);
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return subjectClassList;
     }
 }

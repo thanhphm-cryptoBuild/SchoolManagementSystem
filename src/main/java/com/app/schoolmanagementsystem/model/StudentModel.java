@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.Date;
 
 public class StudentModel {
-    private int studentID; // Ensure this field exists
+    private int studentID;
     private String firstName;
     private String lastName;
     private Date dateOfBirth;
@@ -18,18 +18,17 @@ public class StudentModel {
     private String phoneNumber;
     private String email;
     private Date enrollmentDate;
-    private int classID; // Added ClassID
+    private int classID;
     private String previousSchool;
     private String reasonForLeaving;
     private String status;
     private int stt;
     private String avatar;
-    private boolean isExternalAvatar; // To determine avatar source
+    private boolean isExternalAvatar;
 
-    // Constructor
     public StudentModel(int studentID, String firstName, String lastName, Date dateOfBirth, boolean gender,
                         String address, String phoneNumber, String email, Date enrollmentDate, int classID, String status, String avatar) {
-        this.studentID = studentID; // Initialize studentID
+        this.studentID = studentID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.dateOfBirth = dateOfBirth;
@@ -40,10 +39,8 @@ public class StudentModel {
         this.enrollmentDate = enrollmentDate;
         this.classID = classID;
         this.status = status;
-        setAvatar(avatar); // Use setter to handle avatar source
+        setAvatar(avatar);
     }
-
-    // Getters and Setters
 
     public int getStudentID() {
         return studentID;
@@ -161,50 +158,28 @@ public class StudentModel {
         return avatar;
     }
 
-    /**
-     * Sets the avatar and determines its source.
-     *
-     * @param avatar Path to the avatar image. It can be an internal resource or an external URL.
-     */
     public void setAvatar(String avatar) {
         if (avatar != null && !avatar.isEmpty()) {
             this.avatar = avatar;
             this.isExternalAvatar = avatar.startsWith("http://") || avatar.startsWith("https://") || avatar.startsWith("file:/");
         } else {
-            // Set default avatar if not provided
-            this.avatar = "default_avatar.png"; // Assuming the image is in the specified resource path
+            this.avatar = "default_avatar.png";
             this.isExternalAvatar = false;
         }
     }
 
-    /**
-     * Checks if the avatar is from an external source.
-     *
-     * @return true if external, false otherwise.
-     */
     public boolean isExternalAvatar() {
         return isExternalAvatar;
     }
 
-    /**
-     * Sets the source of the avatar.
-     *
-     * @param external true if external, false otherwise.
-     */
     public void setExternalAvatar(boolean external) {
         this.isExternalAvatar = external;
     }
 
-    /**
-     * Retrieves the full path to the avatar image based on its source.
-     *
-     * @return Full path to the avatar image.
-     */
     public String getFullAvatarPath() {
         if (isExternalAvatar) {
             return avatar;
         } else {
-            // Return the internal resource path
             return "/com/app/schoolmanagementsystem/images/" + avatar;
         }
     }
